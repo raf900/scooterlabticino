@@ -1,0 +1,49 @@
+<svg class="hero-scooter" viewBox="0 0 480 360" fill="none" aria-hidden="true">
+  <defs>
+    <radialGradient id="hs-floor">
+      <stop offset="0" stop-color="var(--accent)" stop-opacity=".55" />
+      <stop offset="1" stop-color="var(--accent)" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="hs-beam" x1="1" y1="0" x2="0" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity=".35" />
+      <stop offset="1" stop-color="#fff" stop-opacity="0" />
+    </linearGradient>
+    <filter id="hs-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="7" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <ellipse cx="245" cy="340" rx="210" ry="16" fill="url(#hs-floor)" />
+  <path d="M130 144 30 112v76z" fill="url(#hs-beam)" />
+
+  <g class="hs-speed" stroke-width="6" stroke-linecap="round">
+    <path d="M372 122h86" /><path d="M392 150h66" /><path d="M412 178h46" />
+  </g>
+
+  <g class="hs-rim" stroke-width="3">
+    <circle cx="100" cy="280" r="32" />
+    <circle cx="380" cy="280" r="32" />
+  </g>
+
+  <g class="hs-line" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M100 280 160 60" stroke-width="14" />
+    <path d="M126 58h70" stroke-width="10" />
+    <path d="M114 228 156 252h166A64 64 0 0 1 443 265" stroke-width="14" />
+    <circle cx="100" cy="280" r="52" stroke-width="14" />
+    <circle cx="380" cy="280" r="52" stroke-width="14" />
+  </g>
+
+  <g class="hs-grip" stroke-width="12" stroke-linecap="round">
+    <path d="M126 58h14" /><path d="M182 58h14" />
+  </g>
+
+  <g class="hs-accent" filter="url(#hs-glow)">
+    <circle cx="100" cy="280" r="8" />
+    <circle cx="380" cy="280" r="8" />
+    <rect x="143" y="72" width="22" height="10" rx="3" />
+    <path d="M176 270h130" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" />
+    <path d="M300 84 246 168h34l-18 64 64-94h-36z" />
+  </g>
+  <circle cx="135" cy="146" r="7" fill="#fff" filter="url(#hs-glow)" />
+</svg>

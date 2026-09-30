@@ -1,5 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Logo from '../components/Logo.astro';
+import ScooterMark from '../components/ScooterMark.astro';
+import HeroScooter from '../components/HeroScooter.astro';
 import { site, services, scooters, steps } from '../data/site.js';
 
 const wa = (text) => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
@@ -8,7 +11,7 @@ const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
 <Layout>
   <header class="nav">
     <div class="wrap nav-inner">
-      <a href="#" class="logo"><span class="bolt">⚡</span> ScooterLab<b>Ticino</b></a>
+      <Logo />
       <nav>
         <a href="#riparazioni">Riparazioni</a>
         <a href="#usato">Usato</a>
@@ -22,7 +25,7 @@ const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
     <section class="hero">
       <div class="wrap hero-grid">
         <div>
-          <p class="eyebrow">Officina monopattini elettrici · Ticino</p>
+          <p class="eyebrow">Ripara · Modifica · Tua città, più veloce</p>
           <h1>Il tuo monopattino,<br /><span class="accent">di nuovo in strada.</span></h1>
           <p class="lead">Riparazioni rapide, manutenzione e monopattini usati controllati e garantiti. Tutte le marche: Xiaomi, Segway-Ninebot, Kaabo, Dualtron e altre.</p>
           <div class="cta-row">
@@ -35,15 +38,8 @@ const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
             <li>✓ Garanzia sugli interventi</li>
           </ul>
         </div>
-        <div class="hero-art" aria-hidden="true">
-          <svg viewBox="0 0 320 260" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="70" cy="200" r="38" />
-            <circle cx="255" cy="200" r="38" />
-            <path d="M70 200h120l65 0" />
-            <path d="M190 200 225 40" />
-            <path d="M200 40h55" />
-            <path class="spark" d="M120 60 100 110h28l-14 44 40-60h-28l14-34z" stroke-width="6" />
-          </svg>
+        <div class="hero-art">
+          <HeroScooter />
         </div>
       </div>
     </section>
@@ -88,11 +84,8 @@ const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
         <div class="grid grid-3">
           {scooters.map((s) => (
             <article class="card scooter">
-              <div class="scooter-img" aria-hidden="true">
-                <svg viewBox="0 0 320 260" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="70" cy="200" r="38" /><circle cx="255" cy="200" r="38" />
-                  <path d="M70 200h185" /><path d="M190 200 225 40" /><path d="M200 40h55" />
-                </svg>
+              <div class="scooter-img">
+                <ScooterMark />
                 <span class="tag">{s.condition}</span>
               </div>
               <h3>{s.model}</h3>

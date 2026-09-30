@@ -1,0 +1,14 @@
+---
+// Marchio Scooter Lab: monopattino a linea con fulmine blu.
+const { class: className, ...rest } = Astro.props;
+---
+<svg class={className} viewBox="0 0 124 80" aria-hidden="true" {...rest}>
+  <g fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 64 32 10" />
+    <path d="M21 10h22" />
+    <path d="M26 44 38 62h42A19 19 0 0 1 116 59" />
+    <circle cx="22" cy="64" r="12" />
+    <circle cx="98" cy="64" r="12" />
+  </g>
+  <path d="M76 14 60 38h10l-5 18 19-26H74z" fill="var(--accent)" />
+</svg>
