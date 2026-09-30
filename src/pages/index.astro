@@ -89,13 +89,13 @@ const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
             <article class="card scooter">
               <div class="scooter-img">
                 <ScooterMark />
-                {s.condition && <span class="tag">{s.condition}</span>}
               </div>
               <h3>{s.model}</h3>
               <ul class="specs">
                 {s.year && <li>{s.year}</li>}
                 {s.km != null && <li>{s.km.toLocaleString('de-CH')} km</li>}
                 <li>Autonomia {s.range}</li>
+                {s.condition && <li>{s.condition}</li>}
               </ul>
               <div class="scooter-foot">
                 <span class="big-price">{chf(s.price)}</span>
