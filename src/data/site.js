@@ -14,12 +14,43 @@ export const site = {
   ],
 };
 
+// Zone del monopattino nello schema interattivo della sezione Riparazioni.
+export const zones = [
+  {
+    id: 'volante', label: 'Volante', title: 'Volante e comandi',
+    text: 'Leve freno, acceleratore, display e manopole: sostituzione e regolazione dei comandi.',
+    parts: ['Manopole', 'Leve freno', 'Acceleratore', 'Display', 'Campanello', 'Cablaggi'],
+    price: 'da CHF 25',
+  },
+  {
+    id: 'davanti', label: 'Ruota davanti', title: 'Ruota anteriore',
+    text: 'Forature, pneumatici pieni o tubeless, freno, sospensione e cuscinetti.',
+    parts: ['Pneumatico', 'Cerchio', 'Freno (disco/pastiglie)', 'Sospensione', 'Cuscinetti', 'Parafango'],
+    price: 'da CHF 35',
+  },
+  {
+    id: 'dietro', label: 'Ruota dietro', title: 'Ruota posteriore e motore',
+    text: 'Pneumatico, freno posteriore e motore nel mozzo: diagnosi e riparazione.',
+    parts: ['Pneumatico', 'Cerchio', 'Motore', 'Freno (disco/pastiglie)', 'Cuscinetti', 'Parafango'],
+    price: 'da CHF 35',
+  },
+  {
+    id: 'scocca', label: 'Scocca', title: 'Scocca e telaio',
+    text: 'Telaio, piantone, meccanismo di chiusura, pedana e cavalletto. Eliminiamo giochi e scricchiolii.',
+    parts: ['Telaio', 'Piantone e chiusura', 'Pedana', 'Parafanghi', 'Cavalletto', 'Viti e fissaggi'],
+    price: 'da CHF 25',
+  },
+  {
+    id: 'elettronica', label: 'Elettronica', title: 'Batteria ed elettronica',
+    text: 'Test di capacità della batteria, controller, cablaggi, luci e porta di ricarica.',
+    parts: ['Batteria', 'Controller', 'Cavi e connettori', 'Sensori', 'Luci', 'Porta di ricarica'],
+    price: 'su preventivo',
+  },
+];
+
+// Servizi generali, fuori dallo schema.
 export const services = [
   { title: 'Diagnosi completa', text: 'Controllo di batteria, motore, freni ed elettronica. Preventivo chiaro prima di ogni intervento.', price: 'da CHF 30' },
-  { title: 'Forature e pneumatici', text: 'Sostituzione di camere d’aria e pneumatici pieni o tubeless, per tutte le misure più comuni.', price: 'da CHF 35' },
-  { title: 'Freni', text: 'Regolazione e sostituzione di pastiglie, dischi e cavi per frenate sicure.', price: 'da CHF 25' },
-  { title: 'Batterie', text: 'Test di capacità, riparazione e sostituzione di pacchi batteria.', price: 'su preventivo' },
-  { title: 'Elettronica', text: 'Centraline, display, acceleratori, cablaggi e connettori.', price: 'su preventivo' },
   { title: 'Tagliando', text: 'Manutenzione completa: serraggi, lubrificazione, aggiornamento firmware e pulizia.', price: 'da CHF 59' },
 ];
 

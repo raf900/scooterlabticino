@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Logo from '../components/Logo.astro';
 import ScooterMark from '../components/ScooterMark.astro';
 import HeroScooter from '../components/HeroScooter.astro';
+import RepairDiagram from '../components/RepairDiagram.astro';
 import { site, services, scooters, steps } from '../data/site.js';
 
 const wa = (text) => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
@@ -47,8 +48,10 @@ const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
     <section id="riparazioni" class="section">
       <div class="wrap">
         <p class="eyebrow">Riparazioni e manutenzione</p>
-        <h2>Cosa possiamo fare per te</h2>
-        <div class="grid grid-3">
+        <h2>Dove interveniamo</h2>
+        <p class="sub">Tocca una parte del monopattino per vedere cosa ripariamo e quanto costa.</p>
+        <RepairDiagram />
+        <div class="grid grid-2">
           {services.map((s) => (
             <article class="card">
               <h3>{s.title}</h3>

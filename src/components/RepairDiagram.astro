@@ -1,0 +1,174 @@
+---
+import { site, zones } from '../data/site.js';
+
+const initial = 'davanti';
+const wa = (text) => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
+
+// Posizione dei marcatori numerati, nelle coordinate del viewBox (800×480).
+const markers = {
+  volante: [360, 36],
+  davanti: [60, 236],
+  dietro: [752, 248],
+  scocca: [400, 250],
+  elettronica: [460, 440],
+};
+const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}`;
+---
+<div class="dg" data-diagram data-default={initial}>
+  <div class="dg-figure">
+    <svg class="dg-svg" viewBox="0 0 800 480" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <ellipse cx="400" cy="462" rx="340" ry="10" class="dg-floor" />
+
+      <g class={cls('scocca')} data-zone="scocca">
+        <path d="M175 292 240 70" stroke-width="14" />
+        <circle cx="176" cy="292" r="9" stroke-width="5" />
+        <path d="M178 298 240 344" stroke-width="14" />
+        <rect x="232" y="336" width="320" height="30" rx="14" stroke-width="8" />
+        <path d="M300 366 276 426" stroke-width="8" />
+        <path d="M400 266v64" class="dg-lead" />
+      </g>
+
+      <g class={cls('elettronica')} data-zone="elettronica">
+        <rect x="258" y="344" width="264" height="14" rx="5" stroke-width="3" class="dg-thin" />
+        <path d="M302 344v14M346 344v14M390 344v14M434 344v14M478 344v14" stroke-width="2" class="dg-thin" />
+        <path d="M242 96 184 300 244 346" stroke-width="3" stroke-dasharray="6 7" class="dg-thin" />
+        <circle cx="204" cy="160" r="8" stroke-width="4" />
+        <rect x="726" y="364" width="12" height="8" rx="2" class="dg-tail" />
+        <path d="M456 424 442 366" class="dg-lead" />
+      </g>
+
+      <g class={cls('davanti')} data-zone="davanti">
+        <path d="M150 380 176 292" stroke-width="16" />
+        <path d="M67 350A88 88 0 0 1 194 304" stroke-width="8" />
+        <circle cx="150" cy="380" r="70" stroke-width="16" />
+        <circle cx="150" cy="380" r="44" stroke-width="3" class="dg-thin" />
+        <circle cx="150" cy="380" r="26" stroke-width="3" stroke-dasharray="4 5" class="dg-thin" />
+        <circle cx="150" cy="380" r="9" class="dg-fill" />
+        <path d="M68 252 100 324" class="dg-lead" />
+      </g>
+
+      <g class={cls('dietro')} data-zone="dietro">
+        <path d="M555 349A90 90 0 0 1 730 372" stroke-width="8" />
+        <circle cx="640" cy="380" r="70" stroke-width="16" />
+        <circle cx="640" cy="380" r="36" stroke-width="3" class="dg-thin" />
+        <circle cx="640" cy="380" r="24" stroke-width="3" stroke-dasharray="4 5" class="dg-thin" />
+        <circle cx="640" cy="380" r="9" class="dg-fill" />
+        <path d="M742 262 694 326" class="dg-lead" />
+      </g>
+
+      <g class={cls('volante')} data-zone="volante">
+        <path d="M182 70H298" stroke-width="10" />
+        <path d="M182 70h24M274 70h24" stroke-width="16" class="dg-grip" />
+        <rect x="229" y="52" width="26" height="14" rx="4" stroke-width="4" />
+        <path d="M210 78 230 92" stroke-width="5" />
+        <path d="M268 78 262 90" stroke-width="5" />
+        <path d="M346 42 302 64" class="dg-lead" />
+      </g>
+    </svg>
+
+    {zones.map((z, i) => (
+      <button
+        type="button"
+        class="dg-marker"
+        data-pick={z.id}
+        aria-pressed={String(z.id === initial)}
+        aria-label={z.title}
+        style={`left:${markers[z.id][0] / 8}%;top:${markers[z.id][1] / 4.8}%`}
+      >{i + 1}</button>
+    ))}
+  </div>
+
+  <div class="dg-panel card">
+    <div class="dg-tabs" role="group" aria-label="Parti del monopattino">
+      {zones.map((z, i) => (
+        <button type="button" class="dg-tab" data-pick={z.id} aria-pressed={String(z.id === initial)}>
+          <span>{i + 1}</span>{z.label}
+        </button>
+      ))}
+    </div>
+    {zones.map((z, i) => (
+      <div class="dg-info" data-panel={z.id} hidden={z.id !== initial}>
+        <h3><span class="dg-num">{i + 1}</span>{z.title}</h3>
+        <p>{z.text}</p>
+        <ul class="dg-parts">
+          {z.parts.map((p) => <li>{p}</li>)}
+        </ul>
+        <div class="dg-foot">
+          <span class="dg-price">{z.price}</span>
+          <a class="btn btn-sm" href={wa(`Ciao! Ho un problema a: ${z.title.toLowerCase()}. Posso avere un preventivo?`)}>Prenota su WhatsApp</a>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-diagram]').forEach((root) => {
+    const select = (id: string) => {
+      root.querySelectorAll<HTMLElement>('[data-zone]').forEach((el) => el.classList.toggle('active', el.dataset.zone === id));
+      root.querySelectorAll<HTMLElement>('[data-panel]').forEach((el) => (el.hidden = el.dataset.panel !== id));
+      root.querySelectorAll<HTMLElement>('[data-pick]').forEach((el) => el.setAttribute('aria-pressed', String(el.dataset.pick === id)));
+    };
+    root.querySelectorAll<HTMLElement>('[data-pick], svg [data-zone]').forEach((el) => {
+      const id = (el.dataset.pick ?? el.dataset.zone)!;
+      el.addEventListener('click', () => select(id));
+      el.addEventListener('mouseenter', () => select(id));
+    });
+  });
+</script>
+
+<style>
+  .dg { display: grid; grid-template-columns: 1.55fr 1fr; gap: 32px; align-items: center; margin-top: 2rem; }
+  .dg-figure { position: relative; }
+  .dg-svg { display: block; width: 100%; height: auto; }
+  .dg-floor { fill: rgb(47 143 255 / .12); }
+
+  .zone { stroke: var(--text); cursor: pointer; transition: opacity .25s, stroke .25s, filter .25s; }
+  .dg:has(.zone.active) .zone:not(.active) { opacity: .35; }
+  .zone.active { stroke: var(--accent); filter: drop-shadow(0 0 8px rgb(47 143 255 / .65)); }
+  .dg-thin { stroke: #3a4c6c; }
+  .dg-grip { stroke: #50627f; }
+  .dg-fill { fill: var(--muted); stroke: none; }
+  .dg-tail { fill: #ff4d5e; stroke: none; }
+  .dg-lead { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 5; }
+  .zone.active :is(.dg-thin, .dg-grip, .dg-lead) { stroke: var(--accent); }
+  .zone.active .dg-fill { fill: var(--accent); }
+
+  .dg-marker {
+    position: absolute; transform: translate(-50%, -50%);
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 2px solid var(--accent); background: var(--bg); color: var(--text);
+    font: 800 .95rem var(--display); cursor: pointer;
+    transition: background .2s, box-shadow .2s, transform .2s;
+  }
+  .dg-marker:hover, .dg-marker[aria-pressed='true'] {
+    background: var(--accent); color: #fff; box-shadow: 0 0 0 6px rgb(47 143 255 / .2), 0 0 24px var(--accent);
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+
+  .dg-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 18px; margin-bottom: 20px; border-bottom: 1px solid var(--line); }
+  .dg-tab {
+    display: inline-flex; align-items: center; gap: 6px;
+    font: 500 .82rem Inter, sans-serif; color: var(--muted);
+    background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px 4px 5px; cursor: pointer;
+  }
+  .dg-tab span { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--line); color: var(--text); font-size: .72rem; font-weight: 700; }
+  .dg-tab:hover { color: var(--text); border-color: rgb(47 143 255 / .5); }
+  .dg-tab[aria-pressed='true'] { color: var(--text); border-color: var(--accent); background: var(--accent-soft); }
+  .dg-tab[aria-pressed='true'] span { background: var(--accent); color: #fff; }
+
+  .dg-info h3 { display: flex; align-items: center; gap: 12px; font-size: 1.35rem; }
+  .dg-num { display: grid; place-items: center; flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 1rem; box-shadow: 0 0 20px -4px var(--accent); }
+  .dg-parts { list-style: none; padding: 0; margin: 0 0 22px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .dg-parts li { font-size: .82rem; color: var(--text); border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; }
+  .dg-parts li::before { content: '✓ '; color: var(--accent); }
+  .dg-foot { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .dg-price { font-family: var(--display); font-weight: 800; font-size: 1.4rem; color: var(--accent); }
+
+  @media (max-width: 900px) {
+    .dg { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .dg-marker { width: 26px; height: 26px; font-size: .78rem; }
+  }
+</style>
