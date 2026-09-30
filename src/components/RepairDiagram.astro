@@ -84,13 +84,6 @@ const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}
   </div>
 
   <div class="dg-panel card">
-    <div class="dg-tabs" role="group" aria-label="Parti del monopattino">
-      {zones.map((z, i) => (
-        <button type="button" class="dg-tab" data-pick={z.id} aria-pressed={String(z.id === initial)}>
-          <span>{i + 1}</span>{z.label}
-        </button>
-      ))}
-    </div>
     <div class="dg-stack">
     {zones.map((z, i) => (
       <div class="dg-info" data-panel={z.id} aria-hidden={String(z.id !== initial)}>
@@ -156,17 +149,6 @@ const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}
     transform: translate(-50%, -50%) scale(1.08);
   }
 
-  .dg-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 18px; margin-bottom: 20px; border-bottom: 1px solid var(--line); }
-  .dg-tab {
-    display: inline-flex; align-items: center; gap: 6px;
-    font: 500 .82rem Inter, sans-serif; color: var(--muted);
-    background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px 4px 5px; cursor: pointer;
-  }
-  .dg-tab span { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--line); color: var(--text); font-size: .72rem; font-weight: 700; }
-  .dg-tab:hover { color: var(--text); border-color: rgb(47 143 255 / .5); }
-  .dg-tab[aria-pressed='true'] { color: var(--text); border-color: var(--accent); background: var(--accent-soft); }
-  .dg-tab[aria-pressed='true'] span { background: var(--accent); color: #fff; }
-
   /* Tutti i pannelli nella stessa cella: il box prende l'altezza del più lungo e non cambia dimensione. */
   .dg-stack { display: grid; }
   .dg-info { grid-area: 1 / 1; display: flex; flex-direction: column; transition: opacity .2s; }
@@ -185,5 +167,8 @@ const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}
   }
   @media (max-width: 600px) {
     .dg-marker { width: 26px; height: 26px; font-size: .78rem; }
+    .dg-info { text-align: center; }
+    .dg-info h3, .dg-parts, .dg-foot { justify-content: center; }
+    .dg-foot { flex-direction: column; }
   }
 </style>
