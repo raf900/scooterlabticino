@@ -86,8 +86,9 @@ const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}
         </button>
       ))}
     </div>
+    <div class="dg-stack">
     {zones.map((z, i) => (
-      <div class="dg-info" data-panel={z.id} hidden={z.id !== initial}>
+      <div class="dg-info" data-panel={z.id} aria-hidden={String(z.id !== initial)}>
         <h3><span class="dg-num">{i + 1}</span>{z.title}</h3>
         <p>{z.text}</p>
         <ul class="dg-parts">
@@ -99,6 +100,7 @@ const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}
         </div>
       </div>
     ))}
+    </div>
   </div>
 </div>
 
@@ -106,7 +108,7 @@ const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}
   document.querySelectorAll<HTMLElement>('[data-diagram]').forEach((root) => {
     const select = (id: string) => {
       root.querySelectorAll<HTMLElement>('[data-zone]').forEach((el) => el.classList.toggle('active', el.dataset.zone === id));
-      root.querySelectorAll<HTMLElement>('[data-panel]').forEach((el) => (el.hidden = el.dataset.panel !== id));
+      root.querySelectorAll<HTMLElement>('[data-panel]').forEach((el) => el.setAttribute('aria-hidden', String(el.dataset.panel !== id)));
       root.querySelectorAll<HTMLElement>('[data-pick]').forEach((el) => el.setAttribute('aria-pressed', String(el.dataset.pick === id)));
     };
     root.querySelectorAll<HTMLElement>('[data-pick], svg [data-zone]').forEach((el) => {
@@ -157,6 +159,11 @@ const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}
   .dg-tab[aria-pressed='true'] { color: var(--text); border-color: var(--accent); background: var(--accent-soft); }
   .dg-tab[aria-pressed='true'] span { background: var(--accent); color: #fff; }
 
+  /* Tutti i pannelli nella stessa cella: il box prende l'altezza del più lungo e non cambia dimensione. */
+  .dg-stack { display: grid; }
+  .dg-info { grid-area: 1 / 1; display: flex; flex-direction: column; transition: opacity .2s; }
+  .dg-info[aria-hidden='true'] { visibility: hidden; opacity: 0; }
+  .dg-info .dg-foot { margin-top: auto; }
   .dg-info h3 { display: flex; align-items: center; gap: 12px; font-size: 1.35rem; }
   .dg-num { display: grid; place-items: center; flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 1rem; box-shadow: 0 0 20px -4px var(--accent); }
   .dg-parts { list-style: none; padding: 0; margin: 0 0 22px; display: flex; flex-wrap: wrap; gap: 6px; }

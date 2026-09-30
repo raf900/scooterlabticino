@@ -2,7 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Logo from '../components/Logo.astro';
 import ScooterMark from '../components/ScooterMark.astro';
-import HeroScooter from '../components/HeroScooter.astro';
+import { Image } from 'astro:assets';
+import officina from '../assets/officina.webp';
 import RepairDiagram from '../components/RepairDiagram.astro';
 import { site, services, scooters, steps } from '../data/site.js';
 
@@ -40,7 +41,15 @@ const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
           </ul>
         </div>
         <div class="hero-art">
-          <HeroScooter />
+          <Image
+            src={officina}
+            alt="L'officina Scooter Lab: due tecnici al lavoro su un monopattino elettrico"
+            widths={[480, 841]}
+            sizes="(max-width: 900px) 100vw, 480px"
+            loading="eager"
+            fetchpriority="high"
+            class="hero-photo"
+          />
         </div>
       </div>
     </section>

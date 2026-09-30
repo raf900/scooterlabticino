@@ -73,12 +73,11 @@ a { color: var(--accent); }
           mask-image: radial-gradient(70% 80% at 70% 40%, #000, transparent);
 }
 .hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
-.hero-scooter { width: 100%; height: auto; display: block; }
-.hs-line { stroke: var(--text); }
-.hs-rim { stroke: #3a4c6c; }
-.hs-grip { stroke: #50627f; }
-.hs-speed { stroke: var(--accent); opacity: .45; }
-.hs-accent { fill: var(--accent); }
+.hero-photo {
+  display: block; width: 100%; height: auto;
+  border-radius: 20px; border: 1px solid rgb(47 143 255 / .35);
+  box-shadow: 0 30px 80px -30px rgb(47 143 255 / .55), 0 0 0 8px rgb(47 143 255 / .06);
+}
 .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0; }
 .badges { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--muted); font-size: .95rem; }
 
@@ -124,7 +123,7 @@ a { color: var(--accent); }
 
 @media (max-width: 900px) {
   .hero-grid, .contact-grid { grid-template-columns: 1fr; }
-  .hero-art { max-width: 440px; }
+  .hero-art { max-width: 560px; }
   .grid-3 { grid-template-columns: 1fr 1fr; }
   .steps { grid-template-columns: 1fr 1fr; }
 }
