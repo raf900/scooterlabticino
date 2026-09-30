@@ -28,7 +28,7 @@ export const zones = [
     price: 'da CHF 35',
   },
   {
-    id: 'dietro', label: 'Ruota dietro', title: 'Ruota posteriore e motore',
+    id: 'dietro', label: 'Ruota dietro', title: 'Motore',
     text: 'Pneumatico, freno posteriore e motore nel mozzo: diagnosi e riparazione.',
     parts: ['Pneumatico', 'Cerchio', 'Motore', 'Freno (disco/pastiglie)', 'Cuscinetti', 'Parafango'],
     price: 'da CHF 35',
