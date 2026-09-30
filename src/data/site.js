@@ -57,9 +57,10 @@ export const zones = [
 // Monopattini usati in vendita — aggiungere, modificare o rimuovere voci qui.
 export const scooters = [
   // year, km e condition sono facoltativi: se mancano non vengono mostrati.
-  { model: 'Xiaomi Mi Electric Scooter Pro 2', range: '45 km', price: 140 },
-  { model: 'Xiaomi Electric Scooter 4 Pro', range: '55 km', price: 200 },
-  { model: 'Xiaomi Electric Scooter 5 Pro', range: '60 km', price: 300 },
+  // year = anno di uscita del modello.
+  { model: 'Xiaomi Mi Electric Scooter Pro 2', year: 2020, range: '45 km', price: 140 },
+  { model: 'Xiaomi Electric Scooter 4 Pro', year: 2022, range: '55 km', price: 200 },
+  { model: 'Xiaomi Electric Scooter 5 Pro', year: 2025, range: '60 km', price: 300 },
 ];
 
 export const steps = [
