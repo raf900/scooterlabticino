@@ -46,12 +46,12 @@ export const zones = [
     parts: ['Batteria', 'Controller', 'Cavi e connettori', 'Sensori', 'Luci', 'Porta di ricarica'],
     price: 'su preventivo',
   },
-];
-
-// Servizi generali, fuori dallo schema.
-export const services = [
-  { title: 'Diagnosi completa', text: 'Controllo di batteria, motore, freni ed elettronica. Preventivo chiaro prima di ogni intervento.', price: 'da CHF 30' },
-  { title: 'Tagliando', text: 'Manutenzione completa: serraggi, lubrificazione, aggiornamento firmware e pulizia.', price: 'da CHF 59' },
+  {
+    id: 'completo', label: 'Check-up', title: 'Check-up completo',
+    text: 'Diagnosi di tutto il monopattino con preventivo chiaro. Tagliando completo da CHF 59.',
+    parts: ['Diagnosi completa', 'Tagliando', 'Serraggi', 'Lubrificazione', 'Aggiornamento firmware', 'Pulizia'],
+    price: 'da CHF 30',
+  },
 ];
 
 // Monopattini usati in vendita — aggiungere, modificare o rimuovere voci qui.

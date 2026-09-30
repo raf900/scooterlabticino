@@ -11,6 +11,7 @@ const markers = {
   dietro: [752, 248],
   scocca: [400, 250],
   elettronica: [460, 440],
+  completo: [700, 14],
 };
 const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}`;
 ---
@@ -18,6 +19,10 @@ const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}
   <div class="dg-figure">
     <svg class="dg-svg" viewBox="0 0 800 480" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <ellipse cx="400" cy="462" rx="340" ry="10" class="dg-floor" />
+
+      <g class={cls('completo')} data-zone="completo">
+        <rect x="20" y="14" width="760" height="454" rx="28" class="dg-frame" />
+      </g>
 
       <g class={cls('scocca')} data-zone="scocca">
         <path d="M175 292 240 70" stroke-width="14" />
@@ -107,7 +112,8 @@ const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}
 <script>
   document.querySelectorAll<HTMLElement>('[data-diagram]').forEach((root) => {
     const select = (id: string) => {
-      root.querySelectorAll<HTMLElement>('[data-zone]').forEach((el) => el.classList.toggle('active', el.dataset.zone === id));
+      // Il check-up completo accende tutto il monopattino, cornice compresa.
+      root.querySelectorAll<HTMLElement>('[data-zone]').forEach((el) => el.classList.toggle('active', id === 'completo' || el.dataset.zone === id));
       root.querySelectorAll<HTMLElement>('[data-panel]').forEach((el) => el.setAttribute('aria-hidden', String(el.dataset.panel !== id)));
       root.querySelectorAll<HTMLElement>('[data-pick]').forEach((el) => el.setAttribute('aria-pressed', String(el.dataset.pick === id)));
     };
@@ -133,6 +139,8 @@ const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}
   .dg-fill { fill: var(--muted); stroke: none; }
   .dg-tail { fill: #ff4d5e; stroke: none; }
   .dg-lead { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 5; }
+  .dg-frame { stroke: #3a4c6c; stroke-width: 2.5; stroke-dasharray: 2 9; pointer-events: none; }
+  .zone.active .dg-frame { stroke: var(--accent); }
   .zone.active :is(.dg-thin, .dg-grip, .dg-lead) { stroke: var(--accent); }
   .zone.active .dg-fill { fill: var(--accent); }
 

@@ -5,7 +5,7 @@ import ScooterMark from '../components/ScooterMark.astro';
 import { Image } from 'astro:assets';
 import officina from '../assets/officina.webp';
 import RepairDiagram from '../components/RepairDiagram.astro';
-import { site, services, scooters, steps } from '../data/site.js';
+import { site, scooters, steps } from '../data/site.js';
 
 const wa = (text) => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
 const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
@@ -60,15 +60,6 @@ const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
         <h2>Dove interveniamo</h2>
         <p class="sub">Tocca una parte del monopattino per vedere cosa ripariamo e quanto costa.</p>
         <RepairDiagram />
-        <div class="grid grid-2">
-          {services.map((s) => (
-            <article class="card">
-              <h3>{s.title}</h3>
-              <p>{s.text}</p>
-              <span class="price">{s.price}</span>
-            </article>
-          ))}
-        </div>
       </div>
     </section>
 
