@@ -2,11 +2,10 @@
 export const site = {
   name: 'ScooterLab Ticino',
   tagline: 'Riparazione e vendita di monopattini elettrici in Ticino',
-  phone: '+41 91 000 00 00', // TODO
-  whatsapp: '41910000000', // TODO: numero senza "+" e spazi, per il link wa.me
+  phone: '+41 78 257 54 34',
+  whatsapp: '41782575434', // numero senza "+" e spazi, per il link wa.me
   email: 'info@scooterlabticino.ch',
-  address: 'Via Esempio 1, 6900 Lugano', // TODO
-  mapsUrl: 'https://maps.google.com/?q=Lugano', // TODO
+  instagram: 'scooterlabticino',
   hours: [
     ['Lun – Ven', '09:00 – 12:00 · 14:00 – 18:30'], // TODO
     ['Sabato', '09:00 – 16:00'],

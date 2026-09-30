@@ -121,7 +121,7 @@ const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
             <li><span>Telefono</span><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></li>
             <li><span>WhatsApp</span><a href={wa('Ciao ScooterLab!')}>Scrivici</a></li>
             <li><span>Email</span><a href={`mailto:${site.email}`}>{site.email}</a></li>
-            <li><span>Indirizzo</span><a href={site.mapsUrl} target="_blank" rel="noopener">{site.address}</a></li>
+            <li><span>Instagram</span><a href={`https://www.instagram.com/${site.instagram}/`} target="_blank" rel="noopener">@{site.instagram}</a></li>
           </ul>
         </div>
         <div class="card hours">
