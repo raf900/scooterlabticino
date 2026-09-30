@@ -56,9 +56,10 @@ export const zones = [
 
 // Monopattini usati in vendita — aggiungere, modificare o rimuovere voci qui.
 export const scooters = [
-  { model: 'Xiaomi Mi Electric Scooter 4 Pro', year: 2023, km: 1200, range: '45 km', price: 390, condition: 'Ottimo' },
-  { model: 'Segway Ninebot MAX G30', year: 2022, km: 2800, range: '65 km', price: 450, condition: 'Buono' },
-  { model: 'Segway Ninebot E2 Plus', year: 2024, km: 300, range: '25 km', price: 260, condition: 'Come nuovo' },
+  // year, km e condition sono facoltativi: se mancano non vengono mostrati.
+  { model: 'Xiaomi Mi Electric Scooter Pro 2', range: '45 km', price: 140 },
+  { model: 'Xiaomi Electric Scooter 4 Pro', range: '55 km', price: 200 },
+  { model: 'Xiaomi Electric Scooter 5 Pro', range: '60 km', price: 300 },
 ];
 
 export const steps = [
