@@ -141,7 +141,6 @@ a { color: var(--accent); }
   .lead, .sub { margin-inline: auto; }
   .cta-row, .badges, .specs, .footer .wrap { justify-content: center; }
   .step-n, .hero-art { margin-inline: auto; }
-  .scooter-foot { flex-direction: column; }
   .contact-list li { flex-direction: column; align-items: center; gap: 2px; }
   .contact-list span { width: auto; }
 }
