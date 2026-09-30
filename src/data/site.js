@@ -58,9 +58,10 @@ export const zones = [
 export const scooters = [
   // year, km e condition sono facoltativi: se mancano non vengono mostrati.
   // year = anno di uscita del modello.
-  { model: 'Xiaomi Pro 2', year: 2020, km: 800, speed: '40 km/h', price: 140, condition: 'Molto buono' },
-  { model: 'Xiaomi 4 Pro', year: 2022, km: 400, speed: '35 km/h', price: 200, condition: 'Molto buono' },
-  { model: 'Xiaomi 5 Pro', year: 2025, km: 200, speed: '35 km/h', price: 300, condition: 'Come nuovo' },
+  // image = nome del file in src/assets/
+  { model: 'Xiaomi Pro 2', image: 'xiaomi-pro-2.png', year: 2020, km: 800, speed: '40 km/h', price: 140, condition: 'Molto buono' },
+  { model: 'Xiaomi 4 Pro', image: 'xiaomi-4-pro.png', year: 2022, km: 400, speed: '35 km/h', price: 200, condition: 'Molto buono' },
+  { model: 'Xiaomi 5 Pro', image: 'xiaomi-5-pro.png', year: 2025, km: 200, speed: '35 km/h', price: 300, condition: 'Come nuovo' },
 ];
 
 export const steps = [

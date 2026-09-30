@@ -99,7 +99,8 @@ a { color: var(--accent); }
 .scooter { display: flex; flex-direction: column; }
 .scooter-img { position: relative; display: grid; place-items: center; aspect-ratio: 16 / 10; background: radial-gradient(70% 60% at 50% 70%, rgb(47 143 255 / .16), var(--bg) 75%); border-radius: 12px; margin-bottom: 18px; color: #5d6f8f; }
 .scooter-img svg { width: 55%; height: auto; }
-.tag { position: absolute; top: 12px; left: 12px; background: var(--accent); color: #fff; font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+.scooter-img.has-photo { aspect-ratio: 4 / 3; background: radial-gradient(80% 70% at 50% 45%, #fff, #e3e9f2); }
+.scooter-img.has-photo img { position: absolute; inset: 14px; width: calc(100% - 28px); height: calc(100% - 28px); object-fit: contain; mix-blend-mode: multiply; }
 .specs { list-style: none; padding: 0; margin: 0 0 18px; display: flex; flex-wrap: wrap; gap: 6px; }
 .specs li { font-size: .82rem; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; }
 .scooter-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
