@@ -94,7 +94,7 @@ const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
               <ul class="specs">
                 {s.year && <li>{s.year}</li>}
                 {s.km != null && <li>{s.km.toLocaleString('de-CH')} km</li>}
-                <li>Autonomia {s.range}</li>
+                <li>{s.speed}</li>
                 {s.condition && <li>{s.condition}</li>}
               </ul>
               <div class="scooter-foot">

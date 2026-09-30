@@ -58,9 +58,9 @@ export const zones = [
 export const scooters = [
   // year, km e condition sono facoltativi: se mancano non vengono mostrati.
   // year = anno di uscita del modello.
-  { model: 'Xiaomi Pro 2', year: 2020, km: 800, range: '45 km', price: 140, condition: 'Molto buono' },
-  { model: 'Xiaomi 4 Pro', year: 2022, km: 400, range: '55 km', price: 200, condition: 'Molto buono' },
-  { model: 'Xiaomi 5 Pro', year: 2025, km: 200, range: '60 km', price: 300, condition: 'Come nuovo' },
+  { model: 'Xiaomi Pro 2', year: 2020, km: 800, speed: '40 km/h', price: 140, condition: 'Molto buono' },
+  { model: 'Xiaomi 4 Pro', year: 2022, km: 400, speed: '35 km/h', price: 200, condition: 'Molto buono' },
+  { model: 'Xiaomi 5 Pro', year: 2025, km: 200, speed: '35 km/h', price: 300, condition: 'Come nuovo' },
 ];
 
 export const steps = [
