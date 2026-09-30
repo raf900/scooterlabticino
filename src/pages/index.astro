@@ -1,0 +1,141 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site, services, scooters, steps } from '../data/site.js';
+
+const wa = (text) => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
+const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
+---
+<Layout>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a href="#" class="logo"><span class="bolt">⚡</span> ScooterLab<b>Ticino</b></a>
+      <nav>
+        <a href="#riparazioni">Riparazioni</a>
+        <a href="#usato">Usato</a>
+        <a href="#contatti">Contatti</a>
+      </nav>
+      <a class="btn btn-sm" href={wa('Ciao ScooterLab! Vorrei informazioni.')}>WhatsApp</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">Officina monopattini elettrici · Ticino</p>
+          <h1>Il tuo monopattino,<br /><span class="accent">di nuovo in strada.</span></h1>
+          <p class="lead">Riparazioni rapide, manutenzione e monopattini usati controllati e garantiti. Tutte le marche: Xiaomi, Segway-Ninebot, Kaabo, Dualtron e altre.</p>
+          <div class="cta-row">
+            <a class="btn" href={wa('Ciao! Il mio monopattino ha bisogno di una riparazione.')}>Richiedi un preventivo</a>
+            <a class="btn btn-ghost" href="#usato">Vedi l'usato</a>
+          </div>
+          <ul class="badges">
+            <li>✓ Preventivo gratuito</li>
+            <li>✓ Riparazioni in 1–3 giorni</li>
+            <li>✓ Garanzia sugli interventi</li>
+          </ul>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <svg viewBox="0 0 320 260" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="70" cy="200" r="38" />
+            <circle cx="255" cy="200" r="38" />
+            <path d="M70 200h120l65 0" />
+            <path d="M190 200 225 40" />
+            <path d="M200 40h55" />
+            <path class="spark" d="M120 60 100 110h28l-14 44 40-60h-28l14-34z" stroke-width="6" />
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section id="riparazioni" class="section">
+      <div class="wrap">
+        <p class="eyebrow">Riparazioni e manutenzione</p>
+        <h2>Cosa possiamo fare per te</h2>
+        <div class="grid grid-3">
+          {services.map((s) => (
+            <article class="card">
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+              <span class="price">{s.price}</span>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="wrap">
+        <p class="eyebrow">Come funziona</p>
+        <h2>Semplice, veloce, trasparente</h2>
+        <ol class="steps">
+          {steps.map((s, i) => (
+            <li>
+              <span class="step-n">{i + 1}</span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section id="usato" class="section">
+      <div class="wrap">
+        <p class="eyebrow">Usato garantito</p>
+        <h2>Monopattini di seconda mano</h2>
+        <p class="sub">Ogni monopattino è revisionato nella nostra officina, testato su strada e venduto con 6 mesi di garanzia.</p>
+        <div class="grid grid-3">
+          {scooters.map((s) => (
+            <article class="card scooter">
+              <div class="scooter-img" aria-hidden="true">
+                <svg viewBox="0 0 320 260" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="70" cy="200" r="38" /><circle cx="255" cy="200" r="38" />
+                  <path d="M70 200h185" /><path d="M190 200 225 40" /><path d="M200 40h55" />
+                </svg>
+                <span class="tag">{s.condition}</span>
+              </div>
+              <h3>{s.model}</h3>
+              <ul class="specs">
+                <li>{s.year}</li><li>{s.km.toLocaleString('de-CH')} km</li><li>Autonomia {s.range}</li>
+              </ul>
+              <div class="scooter-foot">
+                <span class="big-price">{chf(s.price)}</span>
+                <a class="btn btn-sm" href={wa(`Ciao! Sono interessato al ${s.model} (${chf(s.price)}). È ancora disponibile?`)}>Chiedi info</a>
+              </div>
+            </article>
+          ))}
+        </div>
+        <p class="note">Vuoi vendere il tuo monopattino? <a href={wa('Ciao! Vorrei vendere il mio monopattino.')}>Scrivici per una valutazione</a>.</p>
+      </div>
+    </section>
+
+    <section id="contatti" class="section alt">
+      <div class="wrap contact-grid">
+        <div>
+          <p class="eyebrow">Contatti</p>
+          <h2>Passa in officina</h2>
+          <ul class="contact-list">
+            <li><span>Telefono</span><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></li>
+            <li><span>WhatsApp</span><a href={wa('Ciao ScooterLab!')}>Scrivici</a></li>
+            <li><span>Email</span><a href={`mailto:${site.email}`}>{site.email}</a></li>
+            <li><span>Indirizzo</span><a href={site.mapsUrl} target="_blank" rel="noopener">{site.address}</a></li>
+          </ul>
+        </div>
+        <div class="card hours">
+          <h3>Orari di apertura</h3>
+          <table>
+            {site.hours.map(([d, h]) => <tr><th>{d}</th><td>{h}</td></tr>)}
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <span>© {new Date().getFullYear()} {site.name}</span>
+      <span>scooterlabticino.ch</span>
+    </div>
+  </footer>
+</Layout>
