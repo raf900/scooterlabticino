@@ -1,35 +1,46 @@
 ---
-// Marchio Scooter Lab: lo stesso monopattino dello schema riparazioni, in blu, con scie di velocità.
+// Marchio Scooter Lab: il monopattino dello schema riparazioni, tutto blu e un po' più spesso, con scie di velocità.
 import { scooterPaths } from '../data/scooterArt.js';
 
 const { class: className, ...rest } = Astro.props;
 
-// Scie: [y, x inizio, x fine, mezzo spessore] — rastremate, con l'estremo arrotondato vicino al piantone.
-const streak = ([y, x0, x1, h]) => `M${x0} ${y - h}L${x1} ${y - 1.5}a1.5 1.5 0 0 1 0 3L${x0} ${y + h}a${h} ${h} 0 0 1 0 ${-2 * h}Z`;
-const streaks = [[835, 435, 735, 15], [935, 415, 640, 12], [1035, 392, 565, 9]];
+// Tutto tranne il cavo del freno (path 0).
+const body = scooterPaths.filter((_, i) => i !== 0).map((p) => p.d);
+const wheels = [[282, 1225], [678, 1225]];
 
-// id univoco: il marchio compare più volte nella stessa pagina.
-const gid = `sm-grad-${Math.random().toString(36).slice(2, 8)}`;
+// Scie: partono appena dietro il piantone seguendone l'inclinazione, lunghezze e spessori diversi,
+// alcune finiscono con un trattino staccato.
+const stemX = (y) => 400 - (y - 744) * 0.249;
+const rows = [
+  { y: 815, w: 18, len: 250, dash: 40 },
+  { y: 865, w: 13, len: 185, dash: 0 },
+  { y: 915, w: 18, len: 285, dash: 50 },
+  { y: 965, w: 12, len: 160, dash: 28 },
+  { y: 1015, w: 16, len: 220, dash: 0 },
+  { y: 1065, w: 11, len: 135, dash: 24 },
+];
+const lines = rows.flatMap(({ y, w, len, dash }) => {
+  const x0 = stemX(y) + 42, x1 = x0 + len;
+  const segs = [{ d: `M${x0} ${y}H${x1}`, w, o: 1 }];
+  if (dash) segs.push({ d: `M${x1 + w + 10} ${y}h${dash}`, w, o: 0.55 });
+  return segs;
+});
+
+// id univoci: il marchio compare più volte nella stessa pagina.
+const mid = `sm-mask-${Math.random().toString(36).slice(2, 8)}`;
 ---
-<svg class:list={['logo-mark', 'sm-blue', className]} viewBox="222 730 525 555" aria-hidden="true" {...rest}>
+<svg class:list={['logo-mark', className]} viewBox="220 728 560 562" aria-hidden="true" {...rest}>
   <defs>
-    <linearGradient id={gid} gradientUnits="userSpaceOnUse" x1="390" y1="0" x2="740" y2="0">
-      <stop offset="0" stop-color="var(--accent)" />
-      <stop offset="1" stop-color="var(--accent)" stop-opacity="0" />
-    </linearGradient>
+    <mask id={mid} maskUnits="userSpaceOnUse" x="200" y="700" width="620" height="620">
+      <rect x="200" y="700" width="620" height="620" fill="#fff" />
+      {wheels.map(([cx, cy]) => <circle cx={cx} cy={cy} r="37" fill="#000" />)}
+      {wheels.map(([cx, cy]) => <circle cx={cx} cy={cy} r="13" fill="#fff" />)}
+    </mask>
   </defs>
-  {streaks.map((s) => <path d={streak(s)} fill={`url(#${gid})`} />)}
-  {scooterPaths.map((p) => <path d={p.d} class={p.tone} />)}
+  <g class="sm-lines">
+    {lines.map((l) => <path d={l.d} stroke-width={l.w} opacity={l.o} />)}
+  </g>
+  <g class="sm-body" mask={`url(#${mid})`}>
+    {body.map((d) => <path d={d} />)}
+  </g>
 </svg>
-
-<style>
-  /* Stessi toni blu della zona selezionata nello schema riparazioni. */
-  .sm-blue .t1 { fill: #d4e7ff; }
-  .sm-blue .t2 { fill: #a3ccff; }
-  .sm-blue .t3 { fill: #63aaff; }
-  .sm-blue .t4 { fill: #2f8fff; }
-  .sm-blue .t5 { fill: #1d66c4; }
-  .sm-blue .t6 { fill: #164c92; }
-  .sm-blue .r { fill: #ff4d5e; }
-  .sm-blue .r2 { fill: #c23040; }
-</style>
