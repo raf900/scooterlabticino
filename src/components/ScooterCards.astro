@@ -1,32 +1,37 @@
 ---
 import { Image } from 'astro:assets';
 import ScooterMark from './ScooterMark.astro';
-import { scooters, wa, chf } from '../data/site.js';
+import { scooters, statusLabel, chf } from '../data/site.js';
+import { photo } from '../data/photos.js';
 
-const assets = import.meta.glob('../assets/*.{png,jpg,jpeg,webp}', { eager: true, import: 'default' });
-const photo = (file) => file && assets[`../assets/${file}`];
-const statusLabel = { disponibile: 'Disponibile', arrivo: 'In arrivo', esaurito: 'Non disponibile' };
+// exclude: slug da non mostrare (es. il monopattino della pagina corrente)
+const { exclude } = Astro.props;
+const list = scooters.filter((s) => s.slug !== exclude);
 ---
 <div class="grid grid-3">
-  {scooters.map((s) => (
-    <article class="card scooter">
-      <div class={photo(s.image) ? 'scooter-img has-photo' : 'scooter-img'}>
-        {photo(s.image)
-          ? <Image src={photo(s.image)} alt={s.model} widths={[320, 640]} sizes="(max-width: 600px) 90vw, 340px" />
-          : <ScooterMark />}
-        {s.status && <span class={`status status-${s.status}`}>{statusLabel[s.status]}</span>}
-      </div>
-      <h3>{s.model}</h3>
-      <ul class="specs">
-        {s.year && <li>{s.year}</li>}
-        {s.km != null && <li>{s.km.toLocaleString('de-CH')} km</li>}
-        <li>{s.speed}</li>
-        {s.condition && <li>{s.condition}</li>}
-      </ul>
-      <div class="scooter-foot">
-        <span class="big-price">{chf(s.price)}</span>
-        <a class="btn btn-sm" href={wa(`Ciao! Sono interessato al ${s.model} (${chf(s.price)}). È ancora disponibile?`)}>Chiedi info</a>
-      </div>
-    </article>
-  ))}
+  {list.map((s) => {
+    const img = photo(s.photos?.[0]);
+    const href = `/usato/${s.slug}`;
+    return (
+      <article class="card scooter">
+        <a href={href} class={img ? 'scooter-img has-photo' : 'scooter-img'} aria-label={s.model}>
+          {img
+            ? <Image src={img} alt={s.model} widths={[320, 640]} sizes="(max-width: 600px) 90vw, 340px" />
+            : <ScooterMark />}
+          {s.status && <span class={`status status-${s.status}`}>{statusLabel[s.status]}</span>}
+        </a>
+        <h3><a href={href} class="scooter-link">{s.model}</a></h3>
+        <ul class="specs">
+          {s.year && <li>{s.year}</li>}
+          {s.km != null && <li>{s.km.toLocaleString('de-CH')} km</li>}
+          <li>{s.speed}</li>
+          {s.condition && <li>{s.condition}</li>}
+        </ul>
+        <div class="scooter-foot">
+          <span class="big-price">{chf(s.price)}</span>
+          <a class="btn btn-sm" href={href}>Dettagli</a>
+        </div>
+      </article>
+    );
+  })}
 </div>

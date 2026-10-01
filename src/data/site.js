@@ -57,15 +57,67 @@ export const zones = [
 ];
 
 // Monopattini usati in vendita — aggiungere, modificare o rimuovere voci qui.
+// Ogni monopattino ha una pagina propria: /usato/<slug>
+//   photos      file in src/assets/ — il primo è la foto principale
+//   status      'disponibile' (verde), 'arrivo' (arancione), 'esaurito' (rosso)
+//   year        anno di uscita del modello; year, km e condition sono facoltativi
+//   video       facoltativo: link YouTube oppure file in public/video/ (es. '/video/pro2.mp4')
+//   specs       scheda tecnica [etichetta, valore] — dati del produttore, TODO: verificare
+//   description, work (revisione effettuata), included — TODO: testi segnaposto
 export const scooters = [
-  // year, km e condition sono facoltativi: se mancano non vengono mostrati.
-  // year = anno di uscita del modello.
-  // image = nome del file in src/assets/
-  // status: 'disponibile' (verde), 'arrivo' (arancione), 'esaurito' (rosso)
-  { model: 'Xiaomi Pro 2', image: 'xiaomi-pro-2.png', status: 'disponibile', year: 2020, km: 800, speed: '40 km/h', price: 140, condition: 'Molto buono' },
-  { model: 'Xiaomi 4 Pro', image: 'xiaomi-4-pro.png', status: 'arrivo', year: 2022, km: 400, speed: '35 km/h', price: 200, condition: 'Molto buono' },
-  { model: 'Xiaomi 5 Pro', image: 'xiaomi-5-pro.png', status: 'esaurito', year: 2025, km: 200, speed: '35 km/h', price: 300, condition: 'Come nuovo' },
+  {
+    slug: 'xiaomi-pro-2', model: 'Xiaomi Pro 2', photos: ['xiaomi-pro-2.png'], status: 'disponibile',
+    year: 2020, km: 800, speed: '40 km/h', price: 140, condition: 'Molto buono',
+    description: 'Un classico affidabile, leggero e pieghevole: perfetto per gli spostamenti in città. Revisionato nella nostra officina e pronto per la strada.',
+    specs: [
+      ['Motore', '300 W (picco 600 W)'],
+      ['Batteria', '474 Wh'],
+      ['Autonomia dichiarata', '45 km'],
+      ['Pneumatici', '8,5" con camera d’aria'],
+      ['Freni', 'Disco posteriore + E-ABS anteriore'],
+      ['Peso', '14,2 kg'],
+      ['Carico massimo', '100 kg'],
+    ],
+    work: ['Test capacità batteria', 'Controllo e regolazione freni', 'Controllo pneumatici', 'Serraggio di tutte le viti', 'Prova su strada'],
+    included: ['Caricatore', '6 mesi di garanzia'],
+    video: '',
+  },
+  {
+    slug: 'xiaomi-4-pro', model: 'Xiaomi 4 Pro', photos: ['xiaomi-4-pro.png'], status: 'arrivo',
+    year: 2022, km: 400, speed: '35 km/h', price: 200, condition: 'Molto buono',
+    description: 'Ruote da 10" tubeless, più autonomia e più comfort rispetto ai modelli precedenti. Ideale per tragitti quotidiani anche lunghi.',
+    specs: [
+      ['Motore', '350 W (picco 700 W)'],
+      ['Batteria', '446 Wh'],
+      ['Autonomia dichiarata', '55 km'],
+      ['Pneumatici', '10" tubeless'],
+      ['Freni', 'Tamburo anteriore + disco posteriore'],
+      ['Peso', '16,5 kg'],
+      ['Carico massimo', '120 kg'],
+    ],
+    work: ['Test capacità batteria', 'Controllo e regolazione freni', 'Controllo pneumatici', 'Serraggio di tutte le viti', 'Prova su strada'],
+    included: ['Caricatore', '6 mesi di garanzia'],
+    video: '',
+  },
+  {
+    slug: 'xiaomi-5-pro', model: 'Xiaomi 5 Pro', photos: ['xiaomi-5-pro.png'], status: 'esaurito',
+    year: 2025, km: 200, speed: '35 km/h', price: 300, condition: 'Come nuovo',
+    description: 'Il modello più recente: motore potente, sospensione anteriore e pneumatici autosigillanti. Praticamente nuovo.',
+    specs: [
+      ['Motore', '400 W (picco 1000 W)'],
+      ['Batteria', '477 Wh'],
+      ['Autonomia dichiarata', '60 km'],
+      ['Pneumatici', '10" tubeless autosigillanti'],
+      ['Sospensioni', 'Anteriore'],
+      ['Carico massimo', '120 kg'],
+    ],
+    work: ['Test capacità batteria', 'Controllo e regolazione freni', 'Controllo pneumatici', 'Serraggio di tutte le viti', 'Prova su strada'],
+    included: ['Caricatore', '6 mesi di garanzia'],
+    video: '',
+  },
 ];
+
+export const statusLabel = { disponibile: 'Disponibile', arrivo: 'In arrivo', esaurito: 'Non disponibile' };
 
 // Quanto paghiamo i monopattini usati: min = condizioni scarse, max = ottime condizioni (CHF).
 // Ordine delle marche nella fisarmonica; una marca appare solo se ha almeno un modello.

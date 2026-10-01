@@ -1,0 +1,190 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import ScooterMark from '../../components/ScooterMark.astro';
+import ScooterCards from '../../components/ScooterCards.astro';
+import { scooters, statusLabel, wa, chf } from '../../data/site.js';
+import { photo } from '../../data/photos.js';
+
+export function getStaticPaths() {
+  return scooters.map((s) => ({ params: { slug: s.slug }, props: { s } }));
+}
+
+const { s } = Astro.props;
+const photos = (s.photos ?? []).map(photo).filter(Boolean);
+
+// Video: link YouTube → embed senza cookie; altrimenti file in public/.
+const yt = s.video?.match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/)?.[1];
+
+const quick = [
+  s.year && ['Anno', s.year],
+  s.km != null && ['Chilometri', `${s.km.toLocaleString('de-CH')} km`],
+  s.speed && ['Velocità', s.speed],
+  s.condition && ['Condizioni', s.condition],
+].filter(Boolean);
+
+const available = s.status !== 'esaurito';
+const ask = available
+  ? wa(`Ciao! Sono interessato al ${s.model} (${chf(s.price)}). È ancora disponibile?`)
+  : wa(`Ciao! Avvisatemi se arriva un altro ${s.model}.`);
+---
+<Layout
+  title={`${s.model} usato — ${chf(s.price)} | Scooter Lab Ticino`}
+  description={`${s.model} usato e revisionato, ${chf(s.price)}. ${s.description}`}
+>
+  <section class="section page-top">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Percorso">
+        <a href="/usato">Usato</a><span aria-hidden="true">›</span><span>{s.model}</span>
+      </nav>
+
+      <div class="pd-top">
+        <div class="pd-gallery" data-gallery>
+          <div class="pd-main">
+            {photos.length
+              ? photos.map((p, i) => (
+                  <Image src={p} alt={`${s.model} — foto ${i + 1}`} widths={[480, 960]} sizes="(max-width: 900px) 92vw, 560px"
+                    loading={i === 0 ? 'eager' : 'lazy'} data-photo={i} aria-hidden={i === 0 ? undefined : 'true'} />
+                ))
+              : <ScooterMark />}
+            {s.status && <span class={`status status-${s.status}`}>{statusLabel[s.status]}</span>}
+          </div>
+          {photos.length > 1 && (
+            <div class="pd-thumbs">
+              {photos.map((p, i) => (
+                <button type="button" data-thumb={i} aria-pressed={String(i === 0)} aria-label={`Foto ${i + 1}`}>
+                  <Image src={p} alt="" widths={[160]} sizes="80px" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div class="pd-info">
+          <p class="eyebrow">Usato revisionato</p>
+          <h1 class="page-title">{s.model}</h1>
+          <p class="pd-price">{chf(s.price)}</p>
+          <dl class="pd-quick">
+            {quick.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+          </dl>
+          <div class="cta-row">
+            <a class="btn" href={ask}>{available ? 'Chiedi info su WhatsApp' : 'Avvisami se arriva'}</a>
+            {available && <a class="btn btn-ghost" href={wa(`Ciao! Vorrei provare il ${s.model}. Quando posso passare?`)}>Prenota una prova</a>}
+          </div>
+          <p class="pd-note">✓ Revisionato in officina · ✓ Testato su strada · ✓ 6 mesi di garanzia</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap pd-body">
+      <div>
+        <h2>Descrizione</h2>
+        <p class="pd-text">{s.description}</p>
+
+        {s.work?.length > 0 && (
+          <>
+            <h3 class="pd-h3">Revisione effettuata</h3>
+            <ul class="pd-checks">{s.work.map((w) => <li>{w}</li>)}</ul>
+          </>
+        )}
+        {s.included?.length > 0 && (
+          <>
+            <h3 class="pd-h3">Incluso</h3>
+            <ul class="pd-checks">{s.included.map((w) => <li>{w}</li>)}</ul>
+          </>
+        )}
+      </div>
+
+      {s.specs?.length > 0 && (
+        <div class="card pd-specs">
+          <h2>Scheda tecnica</h2>
+          <table>
+            {s.speed && <tr><th>Velocità massima</th><td>{s.speed}</td></tr>}
+            {s.specs.map(([k, v]) => <tr><th>{k}</th><td>{v}</td></tr>)}
+          </table>
+        </div>
+      )}
+    </div>
+  </section>
+
+  {s.video && (
+    <section class="section">
+      <div class="wrap">
+        <h2>Video</h2>
+        <div class="pd-video">
+          {yt
+            ? <iframe src={`https://www.youtube-nocookie.com/embed/${yt}`} title={`Video ${s.model}`} loading="lazy"
+                allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            : <video src={s.video} controls preload="metadata" playsinline></video>}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {scooters.length > 1 && (
+    <section class="section">
+      <div class="wrap">
+        <h2>Altri monopattini</h2>
+        <ScooterCards exclude={s.slug} />
+      </div>
+    </section>
+  )}
+</Layout>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((g) => {
+    const show = (i: string) => {
+      g.querySelectorAll<HTMLElement>('[data-photo]').forEach((el) => el.toggleAttribute('aria-hidden', el.dataset.photo !== i));
+      g.querySelectorAll<HTMLElement>('[data-thumb]').forEach((el) => el.setAttribute('aria-pressed', String(el.dataset.thumb === i)));
+    };
+    g.querySelectorAll<HTMLElement>('[data-thumb]').forEach((b) => b.addEventListener('click', () => show(b.dataset.thumb!)));
+  });
+</script>
+
+<style>
+  .crumbs { display: flex; gap: 8px; font-size: .9rem; color: var(--muted); margin-bottom: 24px; }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--accent); }
+
+  .pd-top { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: start; }
+  .pd-main { position: relative; aspect-ratio: 1; border-radius: var(--radius); overflow: hidden; display: grid; background: radial-gradient(80% 70% at 50% 45%, #fff, #e3e9f2); }
+  .pd-main :global(img) { grid-area: 1 / 1; width: 100%; height: 100%; object-fit: contain; padding: 24px; mix-blend-mode: multiply; transition: opacity .25s; }
+  .pd-main :global(img[aria-hidden]) { opacity: 0; visibility: hidden; }
+  .pd-main :global(svg) { grid-area: 1 / 1; width: 60%; margin: auto; color: #5d6f8f; }
+  .pd-thumbs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+  .pd-thumbs button { width: 76px; height: 76px; padding: 6px; border-radius: 10px; border: 2px solid var(--line); background: #eef2f8; cursor: pointer; }
+  .pd-thumbs button[aria-pressed='true'] { border-color: var(--accent); }
+  .pd-thumbs :global(img) { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+
+  .pd-price { font-family: var(--display); font-weight: 800; font-size: 2rem; color: var(--accent); margin: 0 0 20px; }
+  .pd-quick { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 0 0 8px; }
+  .pd-quick div { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .pd-quick dt { font-size: .78rem; color: var(--muted); }
+  .pd-quick dd { margin: 2px 0 0; font-weight: 600; }
+  .pd-note { color: var(--muted); font-size: .92rem; margin: 0; }
+
+  .pd-body { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: start; }
+  .pd-text { color: var(--muted); font-size: 1.05rem; max-width: 38em; }
+  .pd-h3 { margin-top: 1.6rem; }
+  .pd-checks { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .pd-checks li::before { content: '✓'; color: var(--accent); font-weight: 700; margin-right: 10px; }
+  .pd-specs:hover { transform: none; }
+  .pd-specs table { width: 100%; border-collapse: collapse; }
+  .pd-specs th, .pd-specs td { padding: 11px 0; border-bottom: 1px solid var(--line); text-align: left; font-weight: 500; }
+  .pd-specs td { text-align: right; color: var(--muted); }
+  .pd-specs tr:last-child > * { border-bottom: 0; }
+
+  .pd-video { aspect-ratio: 16 / 9; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: #000; margin-top: 1rem; }
+  .pd-video iframe, .pd-video video { width: 100%; height: 100%; border: 0; display: block; }
+
+  @media (max-width: 900px) {
+    .pd-top, .pd-body { grid-template-columns: 1fr; gap: 32px; }
+  }
+  @media (max-width: 600px) {
+    .crumbs, .pd-thumbs { justify-content: center; }
+    .pd-checks { justify-items: center; }
+    .pd-specs th { text-align: left; }
+  }
+</style>
