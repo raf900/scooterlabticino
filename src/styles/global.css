@@ -68,7 +68,6 @@ a { color: var(--accent); }
 .sc-art .t6 { fill: #28344b; }
 .sc-art .r { fill: #ff4d5e; }
 .sc-art .r2 { fill: #c23040; }
-.sc-bolt { fill: var(--accent); }
 
 /* Menu mobile (visibile solo sotto i 600px, vedi media query) */
 .menu-btn {

@@ -1,10 +1,42 @@
 ---
-// Marchio Scooter Lab: il monopattino dell'illustrazione con il fulmine blu.
-import { scooterViewBox, scooterPaths } from '../data/scooterArt.js';
+// Marchio Scooter Lab: silhouette del monopattino (dall'illustrazione) con scie di velocità blu.
+import { scooterPaths } from '../data/scooterArt.js';
 
 const { class: className, ...rest } = Astro.props;
+
+// Parti usate per la silhouette (indici dei path dell'illustrazione); le ruote sono ridisegnate come anelli.
+const body = [1, 2, 3, 4, 5, 38, 39, 41, 43, 44, 45, 47, 48, 49, 50, 51].map((i) => scooterPaths[i].d);
+const wheels = [[282, 1225], [678, 1225]];
+
+// Scie: [y, x inizio, x fine, mezzo spessore] — rastremate, con l'estremo arrotondato vicino al piantone.
+const streak = ([y, x0, x1, h]) => `M${x0} ${y - h}L${x1} ${y - 1.5}a1.5 1.5 0 0 1 0 3L${x0} ${y + h}a${h} ${h} 0 0 1 0 ${-2 * h}Z`;
+const streaks = [[835, 445, 735, 15], [935, 425, 640, 12], [1035, 400, 565, 9]];
+
+// id univoco: il marchio compare più volte nella stessa pagina.
+const gid = `sm-grad-${Math.random().toString(36).slice(2, 8)}`;
 ---
-<svg class:list={['sc-art', className]} viewBox={scooterViewBox.join(' ')} aria-hidden="true" {...rest}>
-  {scooterPaths.map((p) => <path d={p.d} class={p.tone} />)}
-  <path d="M585 880 515 1010h45l-25 110 95-150h-48z" class="sc-bolt" />
+<svg class:list={['logo-mark', className]} viewBox="205 715 545 590" aria-hidden="true" {...rest}>
+  <defs>
+    <linearGradient id={gid} gradientUnits="userSpaceOnUse" x1="390" y1="0" x2="740" y2="0">
+      <stop offset="0" stop-color="var(--accent)" />
+      <stop offset="1" stop-color="var(--accent)" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  {streaks.map((s) => <path d={streak(s)} fill={`url(#${gid})`} />)}
+  <g class="sm-body">
+    {body.map((d) => <path d={d} />)}
+  </g>
+  {wheels.map(([cx, cy]) => (
+    <>
+      <circle cx={cx} cy={cy} r="47" class="sm-tyre" />
+      <circle cx={cx} cy={cy} r="13" class="sm-hub" />
+    </>
+  ))}
 </svg>
+
+<style>
+  .logo-mark { --sm-fg: var(--text); }
+  .sm-body path { fill: var(--sm-fg); stroke: var(--sm-fg); stroke-width: 14; stroke-linejoin: round; }
+  .sm-tyre { fill: none; stroke: var(--sm-fg); stroke-width: 20; }
+  .sm-hub { fill: var(--sm-fg); }
+</style>
