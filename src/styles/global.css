@@ -110,18 +110,6 @@ a { color: var(--accent); }
 .sm-body path { fill: var(--sm-color); stroke: var(--sm-color); stroke-width: 9; stroke-linejoin: round; }
 .sm-lines path { fill: none; stroke: var(--sm-color); stroke-linecap: round; }
 
-/* Pulsante tema: in scuro mostra il sole (passa al chiaro), in chiaro la luna */
-.theme-btn {
-  display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; padding: 0;
-  background: transparent; border: 1px solid var(--line); border-radius: 12px; color: var(--text); cursor: pointer;
-  transition: border-color .2s, color .2s;
-}
-.theme-btn:hover { border-color: var(--accent); color: var(--accent); }
-.theme-btn svg { grid-area: 1 / 1; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.theme-btn .ti-moon { display: none; }
-[data-theme='light'] .theme-btn .ti-sun { display: none; }
-[data-theme='light'] .theme-btn .ti-moon { display: block; }
-
 /* Menu mobile (visibile solo sotto i 600px, vedi media query) */
 .menu-btn {
   display: none; flex-direction: column; justify-content: center; gap: 5px;
@@ -158,15 +146,7 @@ a { color: var(--accent); }
 }
 .drawer-nav a[aria-current='page'] { color: var(--accent); }
 .drawer-wa { margin-top: 28px; text-align: center; }
-.drawer-theme {
-  display: flex; align-items: center; gap: 14px; width: 100%; padding: 16px 4px;
-  background: none; border: 0; border-bottom: 1px solid var(--line); color: var(--text); cursor: pointer;
-  font: 700 1.25rem var(--display); text-align: left;
-}
-.drawer-theme .theme-btn { pointer-events: none; width: 22px; height: 22px; border: 0; color: var(--muted); }
-.drawer-theme .t-dark { display: none; }
-[data-theme='light'] .drawer-theme .t-light { display: none; }
-[data-theme='light'] .drawer-theme .t-dark { display: inline; }
+.drawer-theme { padding: 18px 4px; border-bottom: 1px solid var(--line); }
 
 /* Hero */
 .hero {
@@ -276,7 +256,7 @@ a { color: var(--accent); }
 @media (max-width: 600px) {
   .nav nav, .nav-wa { display: none; }
   .menu-btn { display: flex; }
-  .nav-inner .theme-btn { display: none; }   /* su telefono il tema si cambia dal menu laterale */
+  .nav-theme { display: none; }   /* su telefono il tema si cambia dal menu laterale */
   .drawer, .drawer-backdrop { display: flex; }
   .logo-mark { height: 28px; }
   .logo-word, .logo .logo-mark { font-size: 1.05rem; }
