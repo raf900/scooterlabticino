@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ScooterCards from '../components/ScooterCards.astro';
+import { buyPrices, wa, chf } from '../data/site.js';
+
+const rows = [...buyPrices].sort((a, b) => `${a.brand} ${a.model}`.localeCompare(`${b.brand} ${b.model}`));
+---
+<Layout
+  title="Monopattini usati — Scooter Lab Ticino"
+  description="Monopattini elettrici usati revisionati e garantiti in Ticino. Vendi il tuo monopattino: ecco quanto lo paghiamo."
+>
+  <section class="section page-top">
+    <div class="wrap">
+      <p class="eyebrow">Usato garantito</p>
+      <h1 class="page-title">Monopattini usati</h1>
+      <p class="sub">Ogni monopattino è revisionato nella nostra officina, testato su strada e venduto con 6 mesi di garanzia.</p>
+      <ScooterCards />
+    </div>
+  </section>
+
+  <section id="vendi" class="section alt">
+    <div class="wrap">
+      <p class="eyebrow">Vendi il tuo monopattino</p>
+      <h2>Quanto paghiamo il tuo monopattino</h2>
+      <p class="sub">Prezzi indicativi in base alle condizioni. Il prezzo finale lo confermiamo dopo un controllo in officina.</p>
+      <div class="buy-table card">
+        <table>
+          <thead>
+            <tr><th>Marca e modello</th><th>Condizioni scarse</th><th>Ottime condizioni</th></tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr>
+                <th scope="row"><span class="buy-brand">{r.brand}</span> {r.model}</th>
+                <td>{chf(r.min)}</td>
+                <td class="buy-max">{chf(r.max)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div class="cta-row">
+        <a class="btn" href={wa('Ciao! Vorrei vendere il mio monopattino. Modello: ')}>Chiedi una valutazione</a>
+      </div>
+    </div>
+  </section>
+</Layout>

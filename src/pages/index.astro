@@ -1,143 +1,95 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Logo from '../components/Logo.astro';
-import ScooterMark from '../components/ScooterMark.astro';
 import { Image } from 'astro:assets';
 import officina from '../assets/officina.webp';
 import RepairDiagram from '../components/RepairDiagram.astro';
-import { site, scooters, steps } from '../data/site.js';
-
-const assets = import.meta.glob('../assets/*.{png,jpg,jpeg,webp}', { eager: true, import: 'default' });
-const photo = (file) => file && assets[`../assets/${file}`];
-const wa = (text) => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
-const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
+import ScooterCards from '../components/ScooterCards.astro';
+import { site, steps, wa } from '../data/site.js';
 ---
 <Layout>
-  <header class="nav">
-    <div class="wrap nav-inner">
-      <Logo />
-      <nav>
-        <a href="#riparazioni">Riparazioni</a>
-        <a href="#usato">Usato</a>
-        <a href="#contatti">Contatti</a>
-      </nav>
-      <a class="btn btn-sm" href={wa('Ciao ScooterLab! Vorrei informazioni.')}>WhatsApp</a>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Riparazioni e modifiche</p>
+        <h1>Il tuo monopattino,<br /><span class="accent">di nuovo in strada.</span></h1>
+        <p class="lead">Riparazioni rapide, manutenzione e monopattini usati controllati e garantiti. Tutte le marche: Xiaomi, Segway-Ninebot, Navee e altre.</p>
+        <div class="cta-row">
+          <a class="btn" href={wa('Ciao! Il mio monopattino ha bisogno di una riparazione.')}>Richiedi un preventivo</a>
+          <a class="btn btn-ghost" href="/usato">Vedi l'usato</a>
+        </div>
+        <ul class="badges">
+          <li>✓ Preventivo gratuito</li>
+          <li>✓ Riparazioni in 1–3 giorni</li>
+          <li>✓ Garanzia sugli interventi</li>
+        </ul>
+      </div>
+      <div class="hero-art">
+        <Image
+          src={officina}
+          alt="L'officina Scooter Lab: due tecnici al lavoro su un monopattino elettrico"
+          widths={[480, 841]}
+          sizes="(max-width: 900px) 100vw, 480px"
+          loading="eager"
+          fetchpriority="high"
+          class="hero-photo"
+        />
+      </div>
     </div>
-  </header>
+  </section>
 
-  <main>
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div>
-          <p class="eyebrow">Riparazioni e modifiche</p>
-          <h1>Il tuo monopattino,<br /><span class="accent">di nuovo in strada.</span></h1>
-          <p class="lead">Riparazioni rapide, manutenzione e monopattini usati controllati e garantiti. Tutte le marche: Xiaomi, Segway-Ninebot, Navee e altre.</p>
-          <div class="cta-row">
-            <a class="btn" href={wa('Ciao! Il mio monopattino ha bisogno di una riparazione.')}>Richiedi un preventivo</a>
-            <a class="btn btn-ghost" href="#usato">Vedi l'usato</a>
-          </div>
-          <ul class="badges">
-            <li>✓ Preventivo gratuito</li>
-            <li>✓ Riparazioni in 1–3 giorni</li>
-            <li>✓ Garanzia sugli interventi</li>
-          </ul>
-        </div>
-        <div class="hero-art">
-          <Image
-            src={officina}
-            alt="L'officina Scooter Lab: due tecnici al lavoro su un monopattino elettrico"
-            widths={[480, 841]}
-            sizes="(max-width: 900px) 100vw, 480px"
-            loading="eager"
-            fetchpriority="high"
-            class="hero-photo"
-          />
-        </div>
-      </div>
-    </section>
-
-    <section id="riparazioni" class="section">
-      <div class="wrap">
-        <p class="eyebrow">Riparazioni e manutenzione</p>
-        <h2>Dove interveniamo</h2>
-        <p class="sub">Tocca una parte del monopattino per vedere cosa ripariamo e quanto costa.</p>
-        <RepairDiagram />
-      </div>
-    </section>
-
-    <section class="section alt">
-      <div class="wrap">
-        <p class="eyebrow">Come funziona</p>
-        <h2>Semplice, veloce, trasparente</h2>
-        <ol class="steps">
-          {steps.map((s, i) => (
-            <li>
-              <span class="step-n">{i + 1}</span>
-              <h3>{s.title}</h3>
-              <p>{s.text}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-
-    <section id="usato" class="section">
-      <div class="wrap">
-        <p class="eyebrow">Usato garantito</p>
-        <h2>Monopattini di seconda mano</h2>
-        <p class="sub">Ogni monopattino è revisionato nella nostra officina, testato su strada e venduto con 6 mesi di garanzia.</p>
-        <div class="grid grid-3">
-          {scooters.map((s) => (
-            <article class="card scooter">
-              <div class={photo(s.image) ? 'scooter-img has-photo' : 'scooter-img'}>
-                {photo(s.image)
-                  ? <Image src={photo(s.image)} alt={s.model} widths={[320, 640]} sizes="(max-width: 600px) 90vw, 340px" />
-                  : <ScooterMark />}
-              </div>
-              <h3>{s.model}</h3>
-              <ul class="specs">
-                {s.year && <li>{s.year}</li>}
-                {s.km != null && <li>{s.km.toLocaleString('de-CH')} km</li>}
-                <li>{s.speed}</li>
-                {s.condition && <li>{s.condition}</li>}
-              </ul>
-              <div class="scooter-foot">
-                <span class="big-price">{chf(s.price)}</span>
-                <a class="btn btn-sm" href={wa(`Ciao! Sono interessato al ${s.model} (${chf(s.price)}). È ancora disponibile?`)}>Chiedi info</a>
-              </div>
-            </article>
-          ))}
-        </div>
-        <p class="note">Vuoi vendere il tuo monopattino? <a href={wa('Ciao! Vorrei vendere il mio monopattino.')}>Scrivici per una valutazione</a>.</p>
-      </div>
-    </section>
-
-    <section id="contatti" class="section alt">
-      <div class="wrap contact-grid">
-        <div>
-          <p class="eyebrow">Contatti</p>
-          <h2>Siamo a disposizione</h2>
-          <ul class="contact-list">
-            <li><span>Telefono</span><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></li>
-            <li><span>WhatsApp</span><a href={wa('Ciao ScooterLab!')}>Scrivici</a></li>
-            <li><span>Email</span><a href={`mailto:${site.email}`}>{site.email}</a></li>
-            <li><span>Instagram</span><a href={`https://www.instagram.com/${site.instagram}/`} target="_blank" rel="noopener">@{site.instagram}</a></li>
-          </ul>
-        </div>
-        <div class="card hours">
-          <h3>Orari di apertura</h3>
-          <table>
-            {site.hours.map(([d, h]) => <tr><th>{d}</th><td>{h}</td></tr>)}
-          </table>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
+  <section id="riparazioni" class="section">
     <div class="wrap">
-      <span>© {new Date().getFullYear()} {site.name}</span>
-      <span>scooterlabticino.ch</span>
+      <p class="eyebrow">Riparazioni e manutenzione</p>
+      <h2>Dove interveniamo</h2>
+      <p class="sub">Tocca una parte del monopattino per vedere cosa ripariamo e quanto costa.</p>
+      <RepairDiagram />
     </div>
-  </footer>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <p class="eyebrow">Come funziona</p>
+      <h2>Semplice, veloce, trasparente</h2>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li>
+            <span class="step-n">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section id="usato" class="section">
+    <div class="wrap">
+      <p class="eyebrow">Usato garantito</p>
+      <h2>Monopattini di seconda mano</h2>
+      <p class="sub">Ogni monopattino è revisionato nella nostra officina, testato su strada e venduto con 6 mesi di garanzia.</p>
+      <ScooterCards />
+      <p class="note">Vuoi vendere il tuo monopattino? <a href="/usato#vendi">Guarda quanto lo paghiamo</a>.</p>
+    </div>
+  </section>
+
+  <section id="contatti" class="section alt">
+    <div class="wrap contact-grid">
+      <div>
+        <p class="eyebrow">Contatti</p>
+        <h2>Siamo a disposizione</h2>
+        <ul class="contact-list">
+          <li><span>Telefono</span><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></li>
+          <li><span>WhatsApp</span><a href={wa('Ciao ScooterLab!')}>Scrivici</a></li>
+          <li><span>Email</span><a href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li><span>Instagram</span><a href={`https://www.instagram.com/${site.instagram}/`} target="_blank" rel="noopener">@{site.instagram}</a></li>
+        </ul>
+      </div>
+      <div class="card hours">
+        <h3>Orari di apertura</h3>
+        <table>
+          {site.hours.map(([d, h]) => <tr><th>{d}</th><td>{h}</td></tr>)}
+        </table>
+      </div>
+    </div>
+  </section>
 </Layout>

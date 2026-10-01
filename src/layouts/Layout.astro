@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import { site } from '../data/site.js';
+import Logo from '../components/Logo.astro';
+import { site, wa } from '../data/site.js';
 
 const { title = `${site.name} — ${site.tagline}`, description = 'Riparazione, manutenzione e vendita di monopattini elettrici usati in Ticino. Diagnosi rapida, preventivi chiari, ricambi di qualità.' } = Astro.props;
 ---
@@ -22,6 +23,27 @@ const { title = `${site.name} — ${site.tagline}`, description = 'Riparazione, 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <slot />
+    <header class="nav">
+      <div class="wrap nav-inner">
+        <Logo />
+        <nav>
+          <a href="/#riparazioni">Riparazioni</a>
+          <a href="/usato">Usato</a>
+          <a href="/#contatti">Contatti</a>
+        </nav>
+        <a class="btn btn-sm" href={wa('Ciao ScooterLab! Vorrei informazioni.')}>WhatsApp</a>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">
+        <span>© {new Date().getFullYear()} {site.name}</span>
+        <span>scooterlabticino.ch</span>
+      </div>
+    </footer>
   </body>
 </html>

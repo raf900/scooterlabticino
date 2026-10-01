@@ -1,4 +1,7 @@
 // Dati dell'attività — TODO: sostituire i valori segnaposto con quelli reali.
+export const wa = (text) => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
+export const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
+
 export const site = {
   name: 'ScooterLab Ticino',
   tagline: 'Riparazione e vendita di monopattini elettrici in Ticino',
@@ -61,6 +64,14 @@ export const scooters = [
   { model: 'Xiaomi Pro 2', image: 'xiaomi-pro-2.png', year: 2020, km: 800, speed: '40 km/h', price: 140, condition: 'Molto buono' },
   { model: 'Xiaomi 4 Pro', image: 'xiaomi-4-pro.png', year: 2022, km: 400, speed: '35 km/h', price: 200, condition: 'Molto buono' },
   { model: 'Xiaomi 5 Pro', image: 'xiaomi-5-pro.png', year: 2025, km: 200, speed: '35 km/h', price: 300, condition: 'Come nuovo' },
+];
+
+// Quanto paghiamo i monopattini usati: min = condizioni scarse, max = ottime condizioni (CHF).
+// TODO: righe di esempio, da sostituire con il listino vero.
+export const buyPrices = [
+  { brand: 'Xiaomi', model: 'Pro 2', min: 50, max: 120 },
+  { brand: 'Xiaomi', model: '4 Pro', min: 80, max: 170 },
+  { brand: 'Segway-Ninebot', model: 'MAX G30', min: 90, max: 200 },
 ];
 
 export const steps = [
