@@ -1,7 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ScooterCards from '../components/ScooterCards.astro';
-import { buyPrices, wa, chf } from '../data/site.js';
+import { buyBrands, buyPrices, wa, chf } from '../data/site.js';
+
+const groups = buyBrands
+  .map((brand) => ({ brand, rows: buyPrices.filter((r) => r.brand === brand) }))
+  .filter((g) => g.rows.length);
 ---
 <Layout
   title="Monopattini usati — Scooter Lab Ticino"
@@ -21,21 +25,30 @@ import { buyPrices, wa, chf } from '../data/site.js';
       <p class="eyebrow">Vendi il tuo monopattino</p>
       <h2>Quanto paghiamo il tuo monopattino</h2>
       <p class="sub">Prezzi indicativi in base alle condizioni. Il prezzo finale lo confermiamo dopo un controllo in officina.</p>
-      <div class="buy-table card">
-        <table>
-          <thead>
-            <tr><th>Marca e modello</th><th>Condizioni scarse</th><th>Ottime condizioni</th></tr>
-          </thead>
-          <tbody>
-            {buyPrices.map((r) => (
-              <tr>
-                <th scope="row"><span class="buy-brand">{r.brand}</span> {r.model}</th>
-                <td>{chf(r.min)}</td>
-                <td class="buy-max">{chf(r.max)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div class="buy-groups">
+        {groups.map((g, i) => (
+          <details class="buy-table card" open={i === 0}>
+            <summary>
+              <span class="buy-name">{g.brand}</span>
+              <span class="buy-count">{g.rows.length} {g.rows.length === 1 ? 'modello' : 'modelli'}</span>
+              <svg class="buy-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </summary>
+            <table>
+              <thead>
+                <tr><th>Modello</th><th>Condizioni scarse</th><th>Ottime condizioni</th></tr>
+              </thead>
+              <tbody>
+                {g.rows.map((r) => (
+                  <tr>
+                    <th scope="row"><span class="buy-brand">{r.brand}</span> {r.model}</th>
+                    <td>{chf(r.min)}</td>
+                    <td class="buy-max">{chf(r.max)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </details>
+        ))}
       </div>
       <div class="cta-row">
         <a class="btn" href={wa('Ciao! Vorrei vendere il mio monopattino. Modello: ')}>Chiedi una valutazione</a>

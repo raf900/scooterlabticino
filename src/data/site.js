@@ -67,7 +67,10 @@ export const scooters = [
 ];
 
 // Quanto paghiamo i monopattini usati: min = condizioni scarse, max = ottime condizioni (CHF).
-// Mostrati nell'ordine di questa lista.
+// Ordine delle marche nella fisarmonica; una marca appare solo se ha almeno un modello.
+export const buyBrands = ['Xiaomi', 'Ninebot', 'Kukirin', 'Navee'];
+
+// Modelli mostrati nell'ordine di questa lista. brand deve essere uno di buyBrands.
 export const buyPrices = [
   { brand: 'Xiaomi', model: 'Pro 1', min: 50, max: 75 },
   { brand: 'Xiaomi', model: 'Pro 2', min: 60, max: 80 },

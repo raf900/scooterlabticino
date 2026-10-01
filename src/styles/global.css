@@ -110,7 +110,16 @@ a { color: var(--accent); }
 /* Pagina usato */
 .page-top { padding-top: 56px; }
 .page-title { font-size: clamp(2rem, 4.5vw, 3rem); }
-.buy-table { padding: 0; overflow: hidden; margin-top: 1rem; }
+.buy-groups { display: grid; gap: 12px; margin-top: 1rem; }
+.buy-table { padding: 0; overflow: hidden; }
+.buy-table summary { display: flex; align-items: center; gap: 12px; padding: 18px 20px; cursor: pointer; list-style: none; }
+.buy-table summary::-webkit-details-marker { display: none; }
+.buy-table summary:hover .buy-name { color: var(--accent); }
+.buy-name { font-family: var(--display); font-weight: 800; font-size: 1.15rem; transition: color .2s; }
+.buy-count { font-size: .8rem; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; }
+.buy-chevron { width: 22px; height: 22px; margin-left: auto; fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s; }
+.buy-table[open] .buy-chevron { transform: rotate(180deg); }
+.buy-table[open] summary { border-bottom: 1px solid var(--line); }
 .buy-table:hover { transform: none; }
 .buy-table table { width: 100%; border-collapse: collapse; }
 .buy-table th, .buy-table td { padding: 14px 20px; text-align: left; border-bottom: 1px solid var(--line); }
