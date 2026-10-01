@@ -1,21 +1,17 @@
 ---
-// Marchio Scooter Lab: silhouette del monopattino (dall'illustrazione) con scie di velocità blu.
+// Marchio Scooter Lab: lo stesso monopattino dello schema riparazioni, in blu, con scie di velocità.
 import { scooterPaths } from '../data/scooterArt.js';
 
 const { class: className, ...rest } = Astro.props;
 
-// Parti usate per la silhouette (indici dei path dell'illustrazione); le ruote sono ridisegnate come anelli.
-const body = [1, 2, 3, 4, 5, 38, 39, 41, 43, 44, 45, 47, 48, 49, 50, 51].map((i) => scooterPaths[i].d);
-const wheels = [[282, 1225], [678, 1225]];
-
 // Scie: [y, x inizio, x fine, mezzo spessore] — rastremate, con l'estremo arrotondato vicino al piantone.
 const streak = ([y, x0, x1, h]) => `M${x0} ${y - h}L${x1} ${y - 1.5}a1.5 1.5 0 0 1 0 3L${x0} ${y + h}a${h} ${h} 0 0 1 0 ${-2 * h}Z`;
-const streaks = [[835, 445, 735, 15], [935, 425, 640, 12], [1035, 400, 565, 9]];
+const streaks = [[835, 435, 735, 15], [935, 415, 640, 12], [1035, 392, 565, 9]];
 
 // id univoco: il marchio compare più volte nella stessa pagina.
 const gid = `sm-grad-${Math.random().toString(36).slice(2, 8)}`;
 ---
-<svg class:list={['logo-mark', className]} viewBox="205 715 545 590" aria-hidden="true" {...rest}>
+<svg class:list={['logo-mark', 'sm-blue', className]} viewBox="222 730 525 555" aria-hidden="true" {...rest}>
   <defs>
     <linearGradient id={gid} gradientUnits="userSpaceOnUse" x1="390" y1="0" x2="740" y2="0">
       <stop offset="0" stop-color="var(--accent)" />
@@ -23,20 +19,17 @@ const gid = `sm-grad-${Math.random().toString(36).slice(2, 8)}`;
     </linearGradient>
   </defs>
   {streaks.map((s) => <path d={streak(s)} fill={`url(#${gid})`} />)}
-  <g class="sm-body">
-    {body.map((d) => <path d={d} />)}
-  </g>
-  {wheels.map(([cx, cy]) => (
-    <>
-      <circle cx={cx} cy={cy} r="47" class="sm-tyre" />
-      <circle cx={cx} cy={cy} r="13" class="sm-hub" />
-    </>
-  ))}
+  {scooterPaths.map((p) => <path d={p.d} class={p.tone} />)}
 </svg>
 
 <style>
-  .logo-mark { --sm-fg: var(--text); }
-  .sm-body path { fill: var(--sm-fg); stroke: var(--sm-fg); stroke-width: 14; stroke-linejoin: round; }
-  .sm-tyre { fill: none; stroke: var(--sm-fg); stroke-width: 20; }
-  .sm-hub { fill: var(--sm-fg); }
+  /* Stessi toni blu della zona selezionata nello schema riparazioni. */
+  .sm-blue .t1 { fill: #d4e7ff; }
+  .sm-blue .t2 { fill: #a3ccff; }
+  .sm-blue .t3 { fill: #63aaff; }
+  .sm-blue .t4 { fill: #2f8fff; }
+  .sm-blue .t5 { fill: #1d66c4; }
+  .sm-blue .t6 { fill: #164c92; }
+  .sm-blue .r { fill: #ff4d5e; }
+  .sm-blue .r2 { fill: #c23040; }
 </style>
