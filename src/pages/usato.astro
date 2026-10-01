@@ -2,8 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import ScooterCards from '../components/ScooterCards.astro';
 import { buyPrices, wa, chf } from '../data/site.js';
-
-const rows = [...buyPrices].sort((a, b) => `${a.brand} ${a.model}`.localeCompare(`${b.brand} ${b.model}`));
 ---
 <Layout
   title="Monopattini usati — Scooter Lab Ticino"
@@ -29,7 +27,7 @@ const rows = [...buyPrices].sort((a, b) => `${a.brand} ${a.model}`.localeCompare
             <tr><th>Marca e modello</th><th>Condizioni scarse</th><th>Ottime condizioni</th></tr>
           </thead>
           <tbody>
-            {rows.map((r) => (
+            {buyPrices.map((r) => (
               <tr>
                 <th scope="row"><span class="buy-brand">{r.brand}</span> {r.model}</th>
                 <td>{chf(r.min)}</td>

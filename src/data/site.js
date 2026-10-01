@@ -67,11 +67,16 @@ export const scooters = [
 ];
 
 // Quanto paghiamo i monopattini usati: min = condizioni scarse, max = ottime condizioni (CHF).
-// TODO: righe di esempio, da sostituire con il listino vero.
+// Mostrati nell'ordine di questa lista.
 export const buyPrices = [
-  { brand: 'Xiaomi', model: 'Pro 2', min: 50, max: 120 },
-  { brand: 'Xiaomi', model: '4 Pro', min: 80, max: 170 },
-  { brand: 'Segway-Ninebot', model: 'MAX G30', min: 90, max: 200 },
+  { brand: 'Xiaomi', model: 'Pro 1', min: 50, max: 75 },
+  { brand: 'Xiaomi', model: 'Pro 2', min: 60, max: 80 },
+  { brand: 'Xiaomi', model: '3', min: 65, max: 85 },
+  { brand: 'Xiaomi', model: '3 Lite', min: 65, max: 85 },
+  { brand: 'Xiaomi', model: '4', min: 90, max: 130 },
+  { brand: 'Xiaomi', model: '4 Pro 2nd Gen', min: 140, max: 180 },
+  { brand: 'Xiaomi', model: '5', min: 180, max: 220 },
+  { brand: 'Xiaomi', model: '6', min: 200, max: 250 },
 ];
 
 export const steps = [
