@@ -61,9 +61,10 @@ export const scooters = [
   // year, km e condition sono facoltativi: se mancano non vengono mostrati.
   // year = anno di uscita del modello.
   // image = nome del file in src/assets/
-  { model: 'Xiaomi Pro 2', image: 'xiaomi-pro-2.png', year: 2020, km: 800, speed: '40 km/h', price: 140, condition: 'Molto buono' },
-  { model: 'Xiaomi 4 Pro', image: 'xiaomi-4-pro.png', year: 2022, km: 400, speed: '35 km/h', price: 200, condition: 'Molto buono' },
-  { model: 'Xiaomi 5 Pro', image: 'xiaomi-5-pro.png', year: 2025, km: 200, speed: '35 km/h', price: 300, condition: 'Come nuovo' },
+  // status: 'disponibile' (verde), 'arrivo' (arancione), 'esaurito' (rosso)
+  { model: 'Xiaomi Pro 2', image: 'xiaomi-pro-2.png', status: 'disponibile', year: 2020, km: 800, speed: '40 km/h', price: 140, condition: 'Molto buono' },
+  { model: 'Xiaomi 4 Pro', image: 'xiaomi-4-pro.png', status: 'arrivo', year: 2022, km: 400, speed: '35 km/h', price: 200, condition: 'Molto buono' },
+  { model: 'Xiaomi 5 Pro', image: 'xiaomi-5-pro.png', status: 'esaurito', year: 2025, km: 200, speed: '35 km/h', price: 300, condition: 'Come nuovo' },
 ];
 
 // Quanto paghiamo i monopattini usati: min = condizioni scarse, max = ottime condizioni (CHF).

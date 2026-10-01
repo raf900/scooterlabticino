@@ -5,6 +5,7 @@ import { scooters, wa, chf } from '../data/site.js';
 
 const assets = import.meta.glob('../assets/*.{png,jpg,jpeg,webp}', { eager: true, import: 'default' });
 const photo = (file) => file && assets[`../assets/${file}`];
+const statusLabel = { disponibile: 'Disponibile', arrivo: 'In arrivo', esaurito: 'Non disponibile' };
 ---
 <div class="grid grid-3">
   {scooters.map((s) => (
@@ -13,6 +14,7 @@ const photo = (file) => file && assets[`../assets/${file}`];
         {photo(s.image)
           ? <Image src={photo(s.image)} alt={s.model} widths={[320, 640]} sizes="(max-width: 600px) 90vw, 340px" />
           : <ScooterMark />}
+        {s.status && <span class={`status status-${s.status}`}>{statusLabel[s.status]}</span>}
       </div>
       <h3>{s.model}</h3>
       <ul class="specs">

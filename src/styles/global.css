@@ -101,6 +101,11 @@ a { color: var(--accent); }
 .scooter-img svg { width: 55%; height: auto; }
 .scooter-img.has-photo { aspect-ratio: 4 / 3; background: radial-gradient(80% 70% at 50% 45%, #fff, #e3e9f2); }
 .scooter-img.has-photo img { position: absolute; inset: 14px; width: calc(100% - 28px); height: calc(100% - 28px); object-fit: contain; mix-blend-mode: multiply; }
+.status { position: absolute; top: 12px; left: 12px; z-index: 1; display: inline-flex; align-items: center; gap: 6px; color: #fff; font-size: .75rem; font-weight: 700; padding: 4px 11px; border-radius: 999px; box-shadow: 0 4px 12px -4px rgb(0 0 0 / .4); }
+.status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .85; }
+.status-disponibile { background: #16a34a; }
+.status-arrivo { background: #ea7a0c; }
+.status-esaurito { background: #dc2626; }
 .specs { list-style: none; padding: 0; margin: 0 0 18px; display: flex; flex-wrap: wrap; gap: 6px; }
 .specs li { font-size: .82rem; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; }
 .scooter-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
