@@ -20,7 +20,6 @@ const rows = [
   { y: 1030, w: 18, len: 280, dash: 46 },
   { y: 1080, w: 12, len: 180, dash: 30 },
   { y: 1130, w: 16, len: 220, dash: 0 },
-  { y: 1180, w: 12, len: 140, dash: 0 },
 ];
 const lines = rows.flatMap(({ y, w, len, dash }) => {
   const x0 = startX(y), x1 = x0 + len + tail;
