@@ -118,8 +118,15 @@ const cls = (id) => `zone ${id === initial || initial === 'completo' ? 'active' 
   .zone.active .t4 { fill: #2f8fff; }
   .zone.active .t5 { fill: #1d66c4; }
   .zone.active .t6 { fill: #164c92; }
+  /* Tema chiaro: blu dal più scuro al più chiaro */
+  :global([data-theme='light']) .zone.active .t1 { fill: #0e3a7a; }
+  :global([data-theme='light']) .zone.active .t2 { fill: #1653b0; }
+  :global([data-theme='light']) .zone.active .t3 { fill: #1a6fe0; }
+  :global([data-theme='light']) .zone.active .t4 { fill: #5ea4ff; }
+  :global([data-theme='light']) .zone.active .t5 { fill: #a3ccff; }
+  :global([data-theme='light']) .zone.active .t6 { fill: #d4e7ff; }
   .dg-lead { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 5; stroke-linecap: round; }
-  .dg-frame { fill: none; stroke: #3a4c6c; stroke-width: 2.5; stroke-dasharray: 2 9; stroke-linecap: round; pointer-events: none; }
+  .dg-frame { fill: none; stroke: var(--frame); stroke-width: 2.5; stroke-dasharray: 2 9; stroke-linecap: round; pointer-events: none; }
   .zone.active :is(.dg-frame, .dg-lead) { stroke: var(--accent); }
 
   .dg-marker {
