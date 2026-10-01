@@ -59,6 +59,17 @@ a { color: var(--accent); }
 .nav nav a:hover { color: var(--text); }
 .nav nav a[aria-current='page'] { color: var(--accent); }
 
+/* Illustrazione del monopattino (logo e schema riparazioni): toni dal chiaro allo scuro */
+.sc-art .t1 { fill: #e8eef8; }
+.sc-art .t2 { fill: #c4cfe0; }
+.sc-art .t3 { fill: #94a3bb; }
+.sc-art .t4 { fill: #62738f; }
+.sc-art .t5 { fill: #3d4c68; }
+.sc-art .t6 { fill: #28344b; }
+.sc-art .r { fill: #ff4d5e; }
+.sc-art .r2 { fill: #c23040; }
+.sc-bolt { fill: var(--accent); }
+
 /* Menu mobile (visibile solo sotto i 600px, vedi media query) */
 .menu-btn {
   display: none; flex-direction: column; justify-content: center; gap: 5px;

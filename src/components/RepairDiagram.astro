@@ -1,73 +1,55 @@
 ---
 import { site, zones } from '../data/site.js';
+import { scooterViewBox, scooterPaths } from '../data/scooterArt.js';
 
 const initial = 'davanti';
 const wa = (text) => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
 
-// Posizione dei marcatori numerati, nelle coordinate del viewBox (800×480).
+// Lo schema usa un viewBox 640×520; l'illustrazione viene scalata e centrata dentro.
+const W = 640, H = 520;
+const [vx, vy, vw, vh] = scooterViewBox;
+const s = 440 / vh;
+const art = `translate(${(W - vw * s) / 2} 40) scale(${s}) translate(${-vx} ${-vy})`;
+
+// Marcatori numerati e linee guida [x1 y1 x2 y2], nelle coordinate del viewBox.
 const markers = {
-  volante: [360, 36],
-  davanti: [60, 236],
-  dietro: [752, 248],
-  scocca: [400, 250],
-  elettronica: [460, 440],
-  completo: [700, 14],
+  volante: [330, 46],
+  davanti: [56, 330],
+  dietro: [590, 330],
+  scocca: [330, 190],
+  elettronica: [330, 494],
+  completo: [560, 16],
 };
-const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}`;
+const leads = {
+  volante: [310, 50, 226, 52],
+  davanti: [70, 348, 125, 405],
+  dietro: [576, 348, 507, 405],
+  scocca: [310, 188, 228, 175],
+  elettronica: [330, 474, 330, 447],
+};
+const cls = (id) => `zone ${id === initial || initial === 'completo' ? 'active' : ''}`;
 ---
 <div class="dg" data-diagram data-default={initial}>
   <div class="dg-figure">
-    <svg class="dg-svg" viewBox="0 0 800 480" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <ellipse cx="400" cy="462" rx="340" ry="10" class="dg-floor" />
+    <svg class="dg-svg sc-art" viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
+      <ellipse cx="320" cy="484" rx="230" ry="8" class="dg-floor" />
 
       <g class={cls('completo')} data-zone="completo">
-        <rect x="20" y="14" width="760" height="454" rx="28" class="dg-frame" />
+        <rect x="16" y="16" width="608" height="488" rx="28" class="dg-frame" />
       </g>
 
-      <g class={cls('scocca')} data-zone="scocca">
-        <path d="M175 292 240 70" stroke-width="14" />
-        <circle cx="176" cy="292" r="9" stroke-width="5" />
-        <path d="M178 298 240 344" stroke-width="14" />
-        <rect x="232" y="336" width="320" height="30" rx="14" stroke-width="8" />
-        <path d="M300 366 276 426" stroke-width="8" />
-        <path d="M400 266v64" class="dg-lead" />
-      </g>
+      {Object.entries(leads).map(([id, [x1, y1, x2, y2]]) => (
+        <g class={cls(id)} data-zone={id}>
+          <path d={`M${x1} ${y1} ${x2} ${y2}`} class="dg-lead" />
+        </g>
+      ))}
 
-      <g class={cls('elettronica')} data-zone="elettronica">
-        <rect x="258" y="344" width="264" height="14" rx="5" stroke-width="3" class="dg-thin" />
-        <path d="M302 344v14M346 344v14M390 344v14M434 344v14M478 344v14" stroke-width="2" class="dg-thin" />
-        <path d="M242 96 184 300 244 346" stroke-width="3" stroke-dasharray="6 7" class="dg-thin" />
-        <circle cx="204" cy="160" r="8" stroke-width="4" />
-        <rect x="726" y="364" width="12" height="8" rx="2" class="dg-tail" />
-        <path d="M456 424 442 366" class="dg-lead" />
-      </g>
-
-      <g class={cls('davanti')} data-zone="davanti">
-        <path d="M150 380 176 292" stroke-width="16" />
-        <path d="M67 350A88 88 0 0 1 194 304" stroke-width="8" />
-        <circle cx="150" cy="380" r="70" stroke-width="16" />
-        <circle cx="150" cy="380" r="44" stroke-width="3" class="dg-thin" />
-        <circle cx="150" cy="380" r="26" stroke-width="3" stroke-dasharray="4 5" class="dg-thin" />
-        <circle cx="150" cy="380" r="9" class="dg-fill" />
-        <path d="M68 252 100 324" class="dg-lead" />
-      </g>
-
-      <g class={cls('dietro')} data-zone="dietro">
-        <path d="M555 349A90 90 0 0 1 730 372" stroke-width="8" />
-        <circle cx="640" cy="380" r="70" stroke-width="16" />
-        <circle cx="640" cy="380" r="36" stroke-width="3" class="dg-thin" />
-        <circle cx="640" cy="380" r="24" stroke-width="3" stroke-dasharray="4 5" class="dg-thin" />
-        <circle cx="640" cy="380" r="9" class="dg-fill" />
-        <path d="M742 262 694 326" class="dg-lead" />
-      </g>
-
-      <g class={cls('volante')} data-zone="volante">
-        <path d="M182 70H298" stroke-width="10" />
-        <path d="M182 70h24M274 70h24" stroke-width="16" class="dg-grip" />
-        <rect x="229" y="52" width="26" height="14" rx="4" stroke-width="4" />
-        <path d="M210 78 230 92" stroke-width="5" />
-        <path d="M268 78 262 90" stroke-width="5" />
-        <path d="M346 42 302 64" class="dg-lead" />
+      <g transform={art}>
+        {zones.filter((z) => z.id !== 'completo').map((z) => (
+          <g class={cls(z.id)} data-zone={z.id}>
+            {scooterPaths.filter((p) => p.zone === z.id).map((p) => <path d={p.d} class={p.tone} />)}
+          </g>
+        ))}
       </g>
     </svg>
 
@@ -78,7 +60,7 @@ const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}
         data-pick={z.id}
         aria-pressed={String(z.id === initial)}
         aria-label={z.title}
-        style={`left:${markers[z.id][0] / 8}%;top:${markers[z.id][1] / 4.8}%`}
+        style={`left:${(markers[z.id][0] / W) * 100}%;top:${(markers[z.id][1] / H) * 100}%`}
       >{i + 1}</button>
     ))}
   </div>
@@ -124,18 +106,20 @@ const cls = (id, extra = '') => `zone ${extra} ${id === initial ? 'active' : ''}
   .dg-svg { display: block; width: 100%; height: auto; }
   .dg-floor { fill: rgb(47 143 255 / .12); }
 
-  .zone { stroke: var(--text); cursor: pointer; transition: opacity .25s, stroke .25s, filter .25s; }
+  .zone { cursor: pointer; transition: opacity .25s, filter .25s; }
+  .zone path { transition: fill .25s, stroke .25s; }
   .dg:has(.zone.active) .zone:not(.active) { opacity: .35; }
-  .zone.active { stroke: var(--accent); filter: drop-shadow(0 0 8px rgb(47 143 255 / .65)); }
-  .dg-thin { stroke: #3a4c6c; }
-  .dg-grip { stroke: #50627f; }
-  .dg-fill { fill: var(--muted); stroke: none; }
-  .dg-tail { fill: #ff4d5e; stroke: none; }
-  .dg-lead { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 5; }
-  .dg-frame { stroke: #3a4c6c; stroke-width: 2.5; stroke-dasharray: 2 9; pointer-events: none; }
-  .zone.active .dg-frame { stroke: var(--accent); }
-  .zone.active :is(.dg-thin, .dg-grip, .dg-lead) { stroke: var(--accent); }
-  .zone.active .dg-fill { fill: var(--accent); }
+  .zone.active { filter: drop-shadow(0 0 8px rgb(47 143 255 / .6)); }
+  /* Zona attiva: stessi toni dell'illustrazione, in blu. */
+  .zone.active .t1 { fill: #d4e7ff; }
+  .zone.active .t2 { fill: #a3ccff; }
+  .zone.active .t3 { fill: #63aaff; }
+  .zone.active .t4 { fill: #2f8fff; }
+  .zone.active .t5 { fill: #1d66c4; }
+  .zone.active .t6 { fill: #164c92; }
+  .dg-lead { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 5; stroke-linecap: round; }
+  .dg-frame { fill: none; stroke: #3a4c6c; stroke-width: 2.5; stroke-dasharray: 2 9; stroke-linecap: round; pointer-events: none; }
+  .zone.active :is(.dg-frame, .dg-lead) { stroke: var(--accent); }
 
   .dg-marker {
     position: absolute; transform: translate(-50%, -50%);
