@@ -11,7 +11,7 @@ const { class: className } = Astro.props;
 
 <style is:global>
   .tt {
-    --tt-w: 36px; --tt-h: 20px; --tt-k: 14px; --tt-night: #15244a;
+    --tt-w: 40px; --tt-h: 22px; --tt-k: 16px; --tt-night: #15244a;
     position: relative; flex-shrink: 0; width: var(--tt-w); height: var(--tt-h); padding: 0;
     border: 1px solid var(--line); border-radius: 999px; overflow: hidden; cursor: pointer;
     background: #101c3a;
@@ -26,14 +26,14 @@ const { class: className } = Astro.props;
     transition: opacity .3s, transform .4s ease;
     animation: tt-twinkle 2.4s ease-in-out infinite alternate;
   }
-  .tt-stars i:nth-child(1) { left: 5px; top: 5px; }
-  .tt-stars i:nth-child(2) { left: 10px; top: 11px; animation-delay: .8s; }
-  .tt-stars i:nth-child(3) { left: 14px; top: 4px; width: 1.5px; height: 1.5px; animation-delay: 1.6s; }
+  .tt-stars i:nth-child(1) { left: 6px; top: 5px; }
+  .tt-stars i:nth-child(2) { left: 11px; top: 12px; animation-delay: .8s; }
+  .tt-stars i:nth-child(3) { left: 16px; top: 5px; width: 1.5px; height: 1.5px; animation-delay: 1.6s; }
   @keyframes tt-twinkle { from { opacity: .35; } to { opacity: 1; } }
 
   /* nuvola (giorno) */
   .tt-cloud {
-    position: absolute; right: 4px; top: 8px; width: 9px; height: 4px; border-radius: 999px; background: #fff;
+    position: absolute; right: 5px; top: 9px; width: 10px; height: 4px; border-radius: 999px; background: #fff;
     opacity: 0; transform: translateX(10px); transition: opacity .35s, transform .5s cubic-bezier(.2, .8, .2, 1);
   }
   .tt-cloud::before { content: ''; position: absolute; left: 2px; bottom: 1.5px; width: 5px; height: 5px; border-radius: 50%; background: inherit; }
@@ -48,7 +48,7 @@ const { class: className } = Astro.props;
   /* ombra che crea la falce di luna */
   .tt-knob::after {
     content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%;
-    top: -2px; left: -5px; background: var(--tt-night);
+    top: -2px; left: -6px; background: var(--tt-night);
     transition: transform .4s ease, opacity .25s;
   }
 
@@ -56,7 +56,7 @@ const { class: className } = Astro.props;
   [data-theme='light'] .tt-stars i { opacity: 0; transform: translateY(10px); animation: none; }
   [data-theme='light'] .tt-cloud { opacity: .95; transform: none; }
   [data-theme='light'] .tt-knob { left: 2px; transform: rotate(-180deg); background: #ffd84d; box-shadow: 0 0 5px rgb(255 196 40 / .8); }
-  [data-theme='light'] .tt-knob::after { transform: translate(-11px, -8px) scale(.3); opacity: 0; }
+  [data-theme='light'] .tt-knob::after { transform: translate(-12px, -9px) scale(.3); opacity: 0; }
 
   /* Con JavaScript attivo l'animazione la fa lo script qui sotto: niente transizioni CSS che si sovrappongono. */
   .tt.tt-js::before, .tt.tt-js *, .tt.tt-js *::before, .tt.tt-js *::after { transition: none; }
@@ -93,7 +93,7 @@ const { class: className } = Astro.props;
     ], { duration: 650, easing: ease });
 
     // l'ombra della falce entra (verso notte) o esce (verso giorno) a metà corsa
-    const shadowOff = { transform: 'translate(-11px, -8px) scale(.3)', opacity: 0 };
+    const shadowOff = { transform: 'translate(-12px, -9px) scale(.3)', opacity: 0 };
     const shadowOn = { transform: 'none', opacity: 1 };
     knob.animate(toNight ? [shadowOff, shadowOff, shadowOn] : [shadowOn, shadowOff, shadowOff],
       { duration: 650, easing: ease, pseudoElement: '::after' });
