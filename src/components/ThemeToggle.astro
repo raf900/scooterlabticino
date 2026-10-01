@@ -1,74 +1,62 @@
 ---
-// Interruttore tema animato: notte (luna + stelle) ↔ giorno (sole + nuvole).
+// Interruttore tema animato, versione compatta: notte (luna + stelle) ↔ giorno (sole + nuvola).
 // Lo stato visivo segue [data-theme] su <html>; il click è gestito nel Layout ([data-theme-toggle]).
 const { class: className } = Astro.props;
 ---
 <button type="button" class:list={['tt', className]} aria-label="Tema chiaro" aria-pressed="false" data-theme-toggle>
-  <span class="tt-stars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-  <span class="tt-clouds" aria-hidden="true"><i></i><i></i></span>
+  <span class="tt-stars" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span class="tt-cloud" aria-hidden="true"></span>
   <span class="tt-knob" aria-hidden="true"></span>
 </button>
 
 <style is:global>
   .tt {
-    --tt-w: 62px; --tt-h: 32px; --tt-k: 24px; --tt-night: #14234a;
+    --tt-w: 44px; --tt-h: 24px; --tt-k: 18px; --tt-night: #15244a;
     position: relative; flex-shrink: 0; width: var(--tt-w); height: var(--tt-h); padding: 0;
     border: 1px solid var(--line); border-radius: 999px; overflow: hidden; cursor: pointer;
-    background: linear-gradient(160deg, #0a1430, #1c2e5e);
-    box-shadow: inset 0 1px 4px rgb(0 0 0 / .45);
+    background: #101c3a;
   }
   .tt:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-  /* cielo di giorno sopra quello notturno, in dissolvenza */
-  .tt::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(160deg, #3f93ff, #9fd2ff);
-    opacity: 0; transition: opacity .5s ease;
-  }
+  /* cielo di giorno in dissolvenza sopra quello notturno */
+  .tt::before { content: ''; position: absolute; inset: 0; background: #6fb3ff; opacity: 0; transition: opacity .4s ease; }
 
   /* stelle (notte) */
   .tt-stars i {
     position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff;
-    transition: opacity .35s, transform .5s ease;
+    transition: opacity .3s, transform .4s ease;
     animation: tt-twinkle 2.4s ease-in-out infinite alternate;
   }
-  .tt-stars i:nth-child(1) { left: 9px; top: 8px; }
-  .tt-stars i:nth-child(2) { left: 18px; top: 17px; width: 3px; height: 3px; animation-delay: .6s; }
-  .tt-stars i:nth-child(3) { left: 25px; top: 7px; animation-delay: 1.2s; }
-  .tt-stars i:nth-child(4) { left: 11px; top: 22px; animation-delay: .3s; }
-  .tt-stars i:nth-child(5) { left: 28px; top: 21px; width: 1.5px; height: 1.5px; animation-delay: 1.8s; }
+  .tt-stars i:nth-child(1) { left: 6px; top: 6px; }
+  .tt-stars i:nth-child(2) { left: 12px; top: 13px; animation-delay: .8s; }
+  .tt-stars i:nth-child(3) { left: 17px; top: 5px; width: 1.5px; height: 1.5px; animation-delay: 1.6s; }
   @keyframes tt-twinkle { from { opacity: .35; } to { opacity: 1; } }
 
-  /* nuvole (giorno) */
-  .tt-clouds i {
-    position: absolute; height: 7px; border-radius: 999px; background: #fff;
-    opacity: 0; transform: translateX(16px); transition: opacity .4s, transform .6s cubic-bezier(.2, .8, .2, 1);
+  /* nuvola (giorno) */
+  .tt-cloud {
+    position: absolute; right: 5px; top: 10px; width: 11px; height: 5px; border-radius: 999px; background: #fff;
+    opacity: 0; transform: translateX(10px); transition: opacity .35s, transform .5s cubic-bezier(.2, .8, .2, 1);
   }
-  .tt-clouds i::before { content: ''; position: absolute; left: 30%; bottom: 3px; width: 8px; height: 8px; border-radius: 50%; background: inherit; }
-  .tt-clouds i:nth-child(1) { right: 7px; top: 8px; width: 17px; }
-  .tt-clouds i:nth-child(2) { right: 13px; top: 18px; width: 13px; transition-delay: .08s; }
+  .tt-cloud::before { content: ''; position: absolute; left: 3px; bottom: 2px; width: 6px; height: 6px; border-radius: 50%; background: inherit; }
 
   /* pomello: luna a destra (notte) → sole a sinistra (giorno) */
   .tt-knob {
-    position: absolute; z-index: 1; top: 3px; left: calc(var(--tt-w) - 2px - var(--tt-k) - 3px);
+    position: absolute; z-index: 1; top: 2px; left: calc(var(--tt-w) - 2px - var(--tt-k) - 2px);
     width: var(--tt-k); height: var(--tt-k); border-radius: 50%; overflow: hidden;
-    background: #e9eef8; box-shadow: 0 0 10px rgb(220 230 255 / .45);
-    transition: left .6s cubic-bezier(.68, -.35, .27, 1.35), background .45s, box-shadow .45s, transform .6s ease;
+    background: #e9eef8;
+    transition: left .5s cubic-bezier(.68, -.35, .27, 1.35), background .4s, box-shadow .4s, transform .5s ease;
   }
-  /* l'ombra che crea la falce di luna */
+  /* ombra che crea la falce di luna */
   .tt-knob::after {
     content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%;
-    top: -4px; left: -8px; background: var(--tt-night);
-    transition: transform .5s ease, opacity .3s;
+    top: -3px; left: -6px; background: var(--tt-night);
+    transition: transform .4s ease, opacity .25s;
   }
 
   [data-theme='light'] .tt::before { opacity: 1; }
-  [data-theme='light'] .tt-stars i { opacity: 0; transform: translateY(-12px); animation: none; }
-  [data-theme='light'] .tt-clouds i { opacity: .95; transform: none; }
-  [data-theme='light'] .tt-knob {
-    left: 3px; transform: rotate(-200deg);
-    background: #ffd84d; box-shadow: 0 0 0 4px rgb(255 216 77 / .3), 0 0 14px rgb(255 196 40 / .9);
-  }
-  [data-theme='light'] .tt-knob::after { transform: translate(-22px, -16px) scale(.3); opacity: 0; }
+  [data-theme='light'] .tt-stars i { opacity: 0; transform: translateY(-8px); animation: none; }
+  [data-theme='light'] .tt-cloud { opacity: .95; transform: none; }
+  [data-theme='light'] .tt-knob { left: 2px; transform: rotate(-180deg); background: #ffd84d; box-shadow: 0 0 6px rgb(255 196 40 / .8); }
+  [data-theme='light'] .tt-knob::after { transform: translate(-14px, -10px) scale(.3); opacity: 0; }
 
   @media (prefers-reduced-motion: reduce) {
     .tt *, .tt::before, .tt *::before, .tt *::after { transition: none !important; animation: none !important; }
