@@ -71,7 +71,7 @@ export const scooters = [
     description: 'Un classico affidabile, leggero e pieghevole: perfetto per gli spostamenti in città. Revisionato nella nostra officina e pronto per la strada.',
     specs: [
       ['Motore', '300 W (picco 600 W)'],
-      ['Batteria', '36 V – 474 Wh (stato 92%)'], // TODO: stato reale
+      ['Batteria', '36 V – 474 Wh (salute 92%)'], // TODO: stato reale
       ['Autonomia dichiarata', '45 km'],
       ['Pneumatici', '8,5" con camera d’aria'],
       ['Freni', 'Disco posteriore + E-ABS anteriore'],
@@ -88,7 +88,7 @@ export const scooters = [
     description: 'Ruote da 10" tubeless, più autonomia e più comfort rispetto ai modelli precedenti. Ideale per tragitti quotidiani anche lunghi.',
     specs: [
       ['Motore', '350 W (picco 700 W)'],
-      ['Batteria', '36 V – 446 Wh (stato 96%)'], // TODO: stato reale
+      ['Batteria', '36 V – 446 Wh (salute 96%)'], // TODO: stato reale
       ['Autonomia dichiarata', '55 km'],
       ['Pneumatici', '10" tubeless'],
       ['Freni', 'Tamburo anteriore + disco posteriore'],
@@ -105,7 +105,7 @@ export const scooters = [
     description: 'Il modello più recente: motore potente, sospensione anteriore e pneumatici autosigillanti. Praticamente nuovo.',
     specs: [
       ['Motore', '400 W (picco 1000 W)'],
-      ['Batteria', '46,8 V – 477 Wh (stato 99%)'], // TODO: stato reale
+      ['Batteria', '46,8 V – 477 Wh (salute 99%)'], // TODO: stato reale
       ['Autonomia dichiarata', '60 km'],
       ['Pneumatici', '10" tubeless autosigillanti'],
       ['Sospensioni', 'Anteriore'],
