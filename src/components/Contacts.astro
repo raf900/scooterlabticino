@@ -5,10 +5,10 @@ import { site, wa } from '../data/site.js';
 const { heading = 'h2' } = Astro.props;
 const H = heading;
 ---
+<p class="eyebrow">Contatti</p>
+<H class={heading === 'h1' ? 'page-title' : undefined}>Siamo a disposizione</H>
 <div class="contact-grid">
-  <div>
-    <p class="eyebrow">Contatti</p>
-    <H class={heading === 'h1' ? 'page-title' : undefined}>Siamo a disposizione</H>
+  <div class="card contact-card">
     <ul class="contact-list">
       <li><span>Telefono</span><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></li>
       <li><span>WhatsApp</span><a href={wa('Ciao ScooterLab!')}>Scrivici</a></li>
