@@ -9,19 +9,18 @@ const { class: className, tail = 0, ...rest } = Astro.props;
 const body = scooterPaths.filter((_, i) => i !== 0).map((p) => p.d);
 const wheels = [[282, 1225], [678, 1225]];
 
-// Scie: partono appena dietro il piantone seguendone l'inclinazione, lunghezze e spessori diversi,
-// alcune finiscono con un trattino staccato.
-const stemX = (y) => 400 - (y - 744) * 0.249;
+// Scie: partono dalla parte bassa del monopattino, appena dietro la ruota posteriore,
+// lunghezze e spessori diversi, alcune finiscono con un trattino staccato.
 const rows = [
-  { y: 815, w: 18, len: 250, dash: 40 },
-  { y: 865, w: 13, len: 185, dash: 0 },
-  { y: 915, w: 18, len: 285, dash: 50 },
-  { y: 965, w: 12, len: 160, dash: 28 },
-  { y: 1015, w: 16, len: 220, dash: 0 },
-  { y: 1065, w: 11, len: 135, dash: 24 },
+  { y: 1105, w: 12, off: 36, len: 150, dash: 24 },
+  { y: 1140, w: 16, off: 0, len: 230, dash: 40 },
+  { y: 1175, w: 13, off: 22, len: 180, dash: 0 },
+  { y: 1210, w: 18, off: 4, len: 270, dash: 46 },
+  { y: 1245, w: 12, off: 16, len: 160, dash: 26 },
+  { y: 1278, w: 15, off: 8, len: 210, dash: 0 },
 ];
-const lines = rows.flatMap(({ y, w, len, dash }) => {
-  const x0 = stemX(y) + 42, x1 = x0 + len + tail;
+const lines = rows.flatMap(({ y, w, off, len, dash }) => {
+  const x0 = 770 + off, x1 = x0 + len + tail;
   const segs = [{ d: `M${x0} ${y}H${x1}`, w, o: 1 }];
   if (dash) segs.push({ d: `M${x1 + w + 10} ${y}h${dash}`, w, o: 0.55 });
   return segs;
