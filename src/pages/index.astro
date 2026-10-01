@@ -4,7 +4,9 @@ import { Image } from 'astro:assets';
 import officina from '../assets/officina.webp';
 import RepairDiagram from '../components/RepairDiagram.astro';
 import ScooterCards from '../components/ScooterCards.astro';
-import { site, steps, wa } from '../data/site.js';
+import Steps from '../components/Steps.astro';
+import Contacts from '../components/Contacts.astro';
+import { wa } from '../data/site.js';
 ---
 <Layout>
   <section class="hero">
@@ -46,21 +48,7 @@ import { site, steps, wa } from '../data/site.js';
     </div>
   </section>
 
-  <section class="section alt">
-    <div class="wrap">
-      <p class="eyebrow">Come funziona</p>
-      <h2>Semplice, veloce, trasparente</h2>
-      <ol class="steps">
-        {steps.map((s, i) => (
-          <li>
-            <span class="step-n">{i + 1}</span>
-            <h3>{s.title}</h3>
-            <p>{s.text}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
+  <Steps />
 
   <section id="usato" class="section">
     <div class="wrap">
@@ -73,23 +61,8 @@ import { site, steps, wa } from '../data/site.js';
   </section>
 
   <section id="contatti" class="section alt">
-    <div class="wrap contact-grid">
-      <div>
-        <p class="eyebrow">Contatti</p>
-        <h2>Siamo a disposizione</h2>
-        <ul class="contact-list">
-          <li><span>Telefono</span><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></li>
-          <li><span>WhatsApp</span><a href={wa('Ciao ScooterLab!')}>Scrivici</a></li>
-          <li><span>Email</span><a href={`mailto:${site.email}`}>{site.email}</a></li>
-          <li><span>Instagram</span><a href={`https://www.instagram.com/${site.instagram}/`} target="_blank" rel="noopener">@{site.instagram}</a></li>
-        </ul>
-      </div>
-      <div class="card hours">
-        <h3>Orari di apertura</h3>
-        <table>
-          {site.hours.map(([d, h]) => <tr><th>{d}</th><td>{h}</td></tr>)}
-        </table>
-      </div>
+    <div class="wrap">
+      <Contacts />
     </div>
   </section>
 </Layout>

@@ -1,0 +1,25 @@
+---
+import { site, wa } from '../data/site.js';
+
+// heading: 'h1' sulla pagina Contatti, 'h2' in home
+const { heading = 'h2' } = Astro.props;
+const H = heading;
+---
+<div class="contact-grid">
+  <div>
+    <p class="eyebrow">Contatti</p>
+    <H class={heading === 'h1' ? 'page-title' : undefined}>Siamo a disposizione</H>
+    <ul class="contact-list">
+      <li><span>Telefono</span><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></li>
+      <li><span>WhatsApp</span><a href={wa('Ciao ScooterLab!')}>Scrivici</a></li>
+      <li><span>Email</span><a href={`mailto:${site.email}`}>{site.email}</a></li>
+      <li><span>Instagram</span><a href={`https://www.instagram.com/${site.instagram}/`} target="_blank" rel="noopener">@{site.instagram}</a></li>
+    </ul>
+  </div>
+  <div class="card hours">
+    <h3>Orari di apertura</h3>
+    <table>
+      {site.hours.map(([d, h]) => <tr><th>{d}</th><td>{h}</td></tr>)}
+    </table>
+  </div>
+</div>

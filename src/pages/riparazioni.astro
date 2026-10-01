@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RepairDiagram from '../components/RepairDiagram.astro';
+import Steps from '../components/Steps.astro';
+import { wa } from '../data/site.js';
+---
+<Layout
+  title="Riparazioni monopattini elettrici — Scooter Lab Ticino"
+  description="Riparazione e manutenzione di monopattini elettrici in Ticino: ruote, freni, motore, batteria, elettronica e check-up completo. Prezzi chiari."
+>
+  <section class="section page-top">
+    <div class="wrap">
+      <p class="eyebrow">Riparazioni e manutenzione</p>
+      <h1 class="page-title">Riparazioni</h1>
+      <p class="sub">Tocca una parte del monopattino per vedere cosa ripariamo e quanto costa. Preventivo gratuito prima di ogni intervento.</p>
+      <RepairDiagram />
+      <div class="cta-row">
+        <a class="btn" href={wa('Ciao! Il mio monopattino ha bisogno di una riparazione.')}>Richiedi un preventivo</a>
+      </div>
+    </div>
+  </section>
+  <Steps />
+</Layout>

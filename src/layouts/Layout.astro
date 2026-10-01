@@ -3,7 +3,9 @@ import '../styles/global.css';
 import Logo from '../components/Logo.astro';
 import { site, wa } from '../data/site.js';
 
-const { title = `${site.name} — ${site.tagline}`, description = 'Riparazione, manutenzione e vendita di monopattini elettrici usati in Ticino. Diagnosi rapida, preventivi chiari, ricambi di qualità.' } = Astro.props;
+const nav = [['/riparazioni', 'Riparazioni'], ['/usato', 'Usato'], ['/contatti', 'Contatti']];
+const path = Astro.url.pathname;
+const { title =`${site.name} — ${site.tagline}`, description = 'Riparazione, manutenzione e vendita di monopattini elettrici usati in Ticino. Diagnosi rapida, preventivi chiari, ricambi di qualità.' } = Astro.props;
 ---
 <!doctype html>
 <html lang="it">
@@ -27,9 +29,9 @@ const { title = `${site.name} — ${site.tagline}`, description = 'Riparazione, 
       <div class="wrap nav-inner">
         <Logo />
         <nav>
-          <a href="/#riparazioni">Riparazioni</a>
-          <a href="/usato">Usato</a>
-          <a href="/#contatti">Contatti</a>
+          {nav.map(([href, label]) => (
+            <a href={href} aria-current={path.startsWith(href) ? 'page' : undefined}>{label}</a>
+          ))}
         </nav>
         <a class="btn btn-sm" href={wa('Ciao ScooterLab! Vorrei informazioni.')}>WhatsApp</a>
       </div>
