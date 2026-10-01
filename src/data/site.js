@@ -72,9 +72,7 @@ export const buyPrices = [
   { brand: 'Xiaomi', model: 'Pro 1', min: 50, max: 75 },
   { brand: 'Xiaomi', model: 'Pro 2', min: 60, max: 80 },
   { brand: 'Xiaomi', model: '3', min: 65, max: 85 },
-  { brand: 'Xiaomi', model: '3 Lite', min: 65, max: 85 },
   { brand: 'Xiaomi', model: '4', min: 90, max: 130 },
-  { brand: 'Xiaomi', model: '4 Pro 2nd Gen', min: 140, max: 180 },
   { brand: 'Xiaomi', model: '5', min: 180, max: 220 },
   { brand: 'Xiaomi', model: '6', min: 200, max: 250 },
 ];
