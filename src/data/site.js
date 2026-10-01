@@ -37,16 +37,16 @@ export const zones = [
     price: 'da CHF 35',
   },
   {
-    id: 'elettronica', label: 'Elettronica', title: 'Batteria ed elettronica',
-    text: 'Test di capacità della batteria, controller, cablaggi, luci e porta di ricarica.',
-    parts: ['Batteria', 'Controller', 'Cavi e connettori', 'Sensori', 'Luci', 'Porta di ricarica'],
-    price: 'su preventivo',
-  },
-  {
     id: 'dietro', label: 'Ruota dietro', title: 'Motore',
     text: 'Pneumatico, freno posteriore e motore nel mozzo: diagnosi e riparazione.',
     parts: ['Pneumatico', 'Cerchio', 'Motore', 'Freno (disco/pastiglie)', 'Cuscinetti', 'Parafango'],
     price: 'da CHF 35',
+  },
+  {
+    id: 'elettronica', label: 'Elettronica', title: 'Batteria ed elettronica',
+    text: 'Test di capacità della batteria, controller, cablaggi, luci e porta di ricarica.',
+    parts: ['Batteria', 'Controller', 'Cavi e connettori', 'Sensori', 'Luci', 'Porta di ricarica'],
+    price: 'su preventivo',
   },
   {
     id: 'completo', label: 'Check-up', title: 'Check-up completo',
