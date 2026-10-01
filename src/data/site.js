@@ -128,12 +128,12 @@ export const buyBrands = ['Xiaomi', 'Ninebot', 'Kukirin', 'Navee'];
 
 // Modelli mostrati nell'ordine di questa lista. brand deve essere uno di buyBrands.
 export const buyPrices = [
-  { brand: 'Xiaomi', model: 'Pro 1', min: 50, max: 75 },
-  { brand: 'Xiaomi', model: 'Pro 2', min: 60, max: 80 },
-  { brand: 'Xiaomi', model: '3', min: 65, max: 85 },
-  { brand: 'Xiaomi', model: '4', min: 90, max: 130 },
-  { brand: 'Xiaomi', model: '5', min: 180, max: 220 },
-  { brand: 'Xiaomi', model: '6', min: 200, max: 250 },
+  { brand: 'Xiaomi', model: 'Scooter 1', min: 50, max: 75 },
+  { brand: 'Xiaomi', model: 'Scooter 2', min: 60, max: 80 },
+  { brand: 'Xiaomi', model: 'Scooter 3', min: 65, max: 85 },
+  { brand: 'Xiaomi', model: 'Scooter 4', min: 90, max: 130 },
+  { brand: 'Xiaomi', model: 'Scooter 5', min: 180, max: 220 },
+  { brand: 'Xiaomi', model: 'Scooter 6', min: 200, max: 250 },
   // TODO: modelli e prezzi segnaposto per mostrare le altre marche.
   { brand: 'Ninebot', model: 'Max G30', min: 100, max: 150 },
   { brand: 'Kukirin', model: 'G2', min: 80, max: 120 },
