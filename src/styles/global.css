@@ -53,9 +53,12 @@ a { color: var(--accent); }
 .logo { --logo-halo: var(--bg); display: flex; align-items: center; color: var(--text); text-decoration: none; }
 .drawer .logo { --logo-halo: var(--bg-alt); }
 .logo-mark { height: 34px; width: auto; }
-/* La scritta si sovrappone alla fine delle scie: l'alone del colore di sfondo le fa sembrare passare dietro le lettere. */
+/* Logo: scritta + monopattino bianco a destra, specchiato (va verso destra), con le scie che finiscono dietro "LAB".
+   L'alone del colore di sfondo attorno alle lettere fa sembrare che le scie passino dietro. */
+.logo .logo-mark { transform: scaleX(-1); font-size: 1.2rem; margin-left: -.9em; --sm-color: var(--text); }
+.drawer-head .logo .logo-mark { font-size: 1.05rem; }
 .logo-word {
-  position: relative; margin-left: -.9em;
+  position: relative; z-index: 1;
   font-family: var(--display); font-weight: 800; font-size: 1.2rem; letter-spacing: .02em; white-space: nowrap;
   -webkit-text-stroke: .12em var(--logo-halo); paint-order: stroke fill;
 }
@@ -227,7 +230,7 @@ a { color: var(--accent); }
   .menu-btn { display: flex; }
   .drawer, .drawer-backdrop { display: flex; }
   .logo-mark { height: 28px; }
-  .logo-word { font-size: 1.05rem; }
+  .logo-word, .logo .logo-mark { font-size: 1.05rem; }
   .hero { padding: 48px 0 64px; }
   .section { padding: 64px 0; }
   .grid-3, .steps { grid-template-columns: 1fr; }
