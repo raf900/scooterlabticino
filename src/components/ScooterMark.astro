@@ -3,7 +3,8 @@
 import { scooterPaths } from '../data/scooterArt.js';
 
 // tail: allunga le scie verso destra (unità del disegno), per farle passare dietro la scritta nel logo.
-const { class: className, tail = 0, ...rest } = Astro.props;
+// dashes: trattini staccati in fondo alle scie (spenti nel logo, dove finirebbero dentro le lettere).
+const { class: className, tail = 0, dashes = true, ...rest } = Astro.props;
 
 // Tutto tranne il cavo del freno (path 0).
 const body = scooterPaths.filter((_, i) => i !== 0).map((p) => p.d);
@@ -24,18 +25,19 @@ const rows = [
 const lines = rows.flatMap(({ y, w, len, dash }) => {
   const x0 = startX(y), x1 = x0 + len + tail;
   const segs = [{ d: `M${x0} ${y}H${x1}`, w, o: 1 }];
-  if (dash) segs.push({ d: `M${x1 + w + 10} ${y}h${dash}`, w, o: 0.55 });
+  if (dash && dashes) segs.push({ d: `M${x1 + w + 10} ${y}h${dash}`, w, o: 0.55 });
   return segs;
 });
 
 // Il viewBox include anche le scie.
-const right = Math.max(780, ...rows.map(({ y, len, dash, w }) => startX(y) + len + tail + (dash ? w + 10 + dash : 0) + w / 2 + 4));
+// (le scie allungate con tail possono uscire dal viewBox: overflow visibile, finiscono dietro la scritta)
+const right = Math.max(780, ...rows.map(({ y, len, dash, w }) => startX(y) + len + (dash ? w + 10 + dash : 0) + w / 2 + 4));
 const viewBox = `220 728 ${Math.ceil(right - 220)} 562`;
 
 // id univoci: il marchio compare più volte nella stessa pagina.
 const mid = `sm-mask-${Math.random().toString(36).slice(2, 8)}`;
 ---
-<svg class:list={['logo-mark', className]} viewBox={viewBox} aria-hidden="true" {...rest}>
+<svg class:list={['logo-mark', className]} viewBox={viewBox} overflow="visible" aria-hidden="true" {...rest}>
   <defs>
     <mask id={mid} maskUnits="userSpaceOnUse" x="200" y="700" width="620" height="620">
       <rect x="200" y="700" width="620" height="620" fill="#fff" />
