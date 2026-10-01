@@ -102,6 +102,7 @@ const { title =`${site.name} — ${site.tagline}`, description = 'Riparazione, m
         else delete document.documentElement.dataset.theme;
         try { localStorage.setItem('theme', light ? 'light' : 'dark'); } catch (e) {}
         syncThemeBtns();
+        document.dispatchEvent(new CustomEvent('themechange', { detail: { light } }));
       }));
       syncThemeBtns();
 

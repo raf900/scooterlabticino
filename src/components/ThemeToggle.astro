@@ -53,12 +53,75 @@ const { class: className } = Astro.props;
   }
 
   [data-theme='light'] .tt::before { opacity: 1; }
-  [data-theme='light'] .tt-stars i { opacity: 0; transform: translateY(-8px); animation: none; }
+  [data-theme='light'] .tt-stars i { opacity: 0; transform: translateY(10px); animation: none; }
   [data-theme='light'] .tt-cloud { opacity: .95; transform: none; }
   [data-theme='light'] .tt-knob { left: 2px; transform: rotate(-180deg); background: #ffd84d; box-shadow: 0 0 5px rgb(255 196 40 / .8); }
   [data-theme='light'] .tt-knob::after { transform: translate(-11px, -8px) scale(.3); opacity: 0; }
+
+  /* Con JavaScript attivo l'animazione la fa lo script qui sotto: niente transizioni CSS che si sovrappongono. */
+  .tt.tt-js::before, .tt.tt-js *, .tt.tt-js *::before, .tt.tt-js *::after { transition: none; }
 
   @media (prefers-reduced-motion: reduce) {
     .tt *, .tt::before, .tt *::before, .tt *::after { transition: none !important; animation: none !important; }
   }
 </style>
+
+<script>
+  // Animazione giorno ↔ notte. Il Layout cambia [data-theme] e lancia l'evento 'themechange':
+  // qui si anima dal vecchio al nuovo stato (lo stato finale lo dà già il CSS).
+  const SUN = '#ffd84d', MOON = '#e9eef8';
+  const GLOW = '0 0 5px rgb(255 196 40 / .8)', NO_GLOW = '0 0 0 rgb(255 196 40 / 0)';
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+
+  const toggles = document.querySelectorAll<HTMLElement>('.tt');
+  toggles.forEach((t) => t.classList.add('tt-js'));
+
+  function play(t: HTMLElement, toNight: boolean) {
+    const knob = t.querySelector<HTMLElement>('.tt-knob')!;
+    const cloud = t.querySelector<HTMLElement>('.tt-cloud')!;
+    const stars = t.querySelectorAll<HTMLElement>('.tt-stars i');
+    const travel = t.clientWidth - knob.offsetWidth - 4;   // distanza tra le due posizioni del pomello
+    const from = toNight ? -travel : travel;                // il CSS ha già spostato il pomello alla fine
+    const ease = 'cubic-bezier(.45, 0, .25, 1)';
+
+    // il sole/luna viaggia su un piccolo arco, ruotando
+    knob.animate([
+      // angoli coerenti con il CSS a riposo: giorno = rotate(-180deg), notte = nessuna rotazione
+      { transform: `translate(${from}px, 0) rotate(${toNight ? -180 : 0}deg)`, background: toNight ? SUN : MOON, boxShadow: toNight ? GLOW : NO_GLOW },
+      { transform: `translate(${from / 2}px, -3px) rotate(-90deg)`, offset: 0.5 },
+      { transform: `translate(0, 0) rotate(${toNight ? 0 : -180}deg)`, background: toNight ? MOON : SUN, boxShadow: toNight ? NO_GLOW : GLOW },
+    ], { duration: 650, easing: ease });
+
+    // l'ombra della falce entra (verso notte) o esce (verso giorno) a metà corsa
+    const shadowOff = { transform: 'translate(-11px, -8px) scale(.3)', opacity: 0 };
+    const shadowOn = { transform: 'none', opacity: 1 };
+    knob.animate(toNight ? [shadowOff, shadowOff, shadowOn] : [shadowOn, shadowOff, shadowOff],
+      { duration: 650, easing: ease, pseudoElement: '::after' });
+
+    // cielo: azzurro ↔ blu notte
+    t.animate([{ opacity: toNight ? 1 : 0 }, { opacity: toNight ? 0 : 1 }],
+      { duration: 550, easing: 'ease', pseudoElement: '::before' });
+
+    // nuvola: se ne va verso destra / torna
+    const cloudIn = { opacity: 0.95, transform: 'none' }, cloudOut = { opacity: 0, transform: 'translateX(10px)' };
+    cloud.animate(toNight ? [cloudIn, cloudOut] : [cloudOut, cloudIn],
+      { duration: 400, delay: toNight ? 0 : 300, easing: 'cubic-bezier(.2, .8, .2, 1)', fill: 'backwards' });
+
+    // stelle: salgono dal basso una dopo l'altra (verso notte) o scendono (verso giorno)
+    stars.forEach((s, i) => {
+      const down = { opacity: 0, transform: 'translateY(10px)' }, up = { opacity: 1, transform: 'translateY(0)' };
+      s.animate(toNight ? [down, up] : [up, down], {
+        duration: toNight ? 500 : 300,
+        delay: toNight ? 250 + i * 110 : i * 40,
+        easing: toNight ? 'cubic-bezier(.2, .9, .3, 1.4)' : 'ease-in',
+        fill: 'backwards',
+      });
+    });
+  }
+
+  document.addEventListener('themechange', (e) => {
+    if (reduced.matches) return;
+    const toNight = !(e as CustomEvent<{ light: boolean }>).detail.light;
+    toggles.forEach((t) => play(t, toNight));
+  });
+</script>
