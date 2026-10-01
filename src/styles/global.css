@@ -50,15 +50,9 @@ a { color: var(--accent); }
 .nav { position: sticky; top: 0; z-index: 10; background: rgb(10 15 26 / .85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .nav::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: .6; }
 .nav-inner { display: flex; align-items: center; gap: 24px; height: 68px; }
-.logo { --logo-halo: var(--bg); display: flex; align-items: center; color: var(--text); text-decoration: none; }
-.drawer .logo { --logo-halo: var(--bg-alt); }
+.logo { display: flex; align-items: center; color: var(--text); text-decoration: none; }
 .logo-mark { height: 34px; width: auto; }
-/* La scritta si sovrappone alla fine delle scie: l'alone del colore di sfondo le fa sembrare passare dietro le lettere. */
-.logo-word {
-  position: relative; margin-left: -.42em;
-  font-family: var(--display); font-weight: 800; font-size: 1.2rem; letter-spacing: .02em; white-space: nowrap;
-  -webkit-text-stroke: .28em var(--logo-halo); paint-order: stroke fill;
-}
+.logo-word { margin-left: .3em; font-family: var(--display); font-weight: 800; font-size: 1.2rem; letter-spacing: .02em; white-space: nowrap; }
 .logo-word b { color: var(--accent); }
 .nav nav { display: flex; gap: 22px; margin-left: auto; }
 .nav nav a { color: var(--muted); text-decoration: none; font-weight: 500; }
