@@ -55,7 +55,7 @@ a { color: var(--accent); }
 .logo-mark { height: 34px; width: auto; }
 /* La scritta si sovrappone alla fine delle scie: l'alone del colore di sfondo le fa sembrare passare dietro le lettere. */
 .logo-word {
-  position: relative; margin-left: -.42em;
+  position: relative; margin-left: -.75em;
   font-family: var(--display); font-weight: 800; font-size: 1.2rem; letter-spacing: .02em; white-space: nowrap;
   -webkit-text-stroke: .28em var(--logo-halo); paint-order: stroke fill;
 }
