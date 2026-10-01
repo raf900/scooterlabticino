@@ -12,20 +12,21 @@ const s = 440 / vh;
 const art = `translate(${(W - vw * s) / 2} 40) scale(${s}) translate(${-vx} ${-vy})`;
 
 // Marcatori numerati e linee guida [x1 y1 x2 y2], nelle coordinate del viewBox.
+// Disposti attorno al monopattino: 1–3 a sinistra dall'alto in basso, 4 sotto, 5 a destra, 6 sull'angolo.
 const markers = {
-  volante: [330, 46],
-  davanti: [56, 330],
-  dietro: [590, 330],
-  scocca: [330, 190],
-  elettronica: [330, 494],
-  completo: [560, 16],
+  volante: [64, 60],
+  scocca: [64, 200],
+  davanti: [64, 340],
+  elettronica: [330, 500],
+  dietro: [590, 360],
+  completo: [600, 34],
 };
 const leads = {
-  volante: [310, 50, 226, 52],
-  davanti: [70, 348, 125, 405],
-  dietro: [576, 348, 507, 405],
-  scocca: [310, 188, 228, 175],
-  elettronica: [330, 474, 330, 447],
+  volante: [86, 60, 182, 60],
+  scocca: [86, 200, 206, 200],
+  davanti: [80, 356, 120, 404],
+  elettronica: [330, 478, 330, 448],
+  dietro: [570, 376, 520, 410],
 };
 const cls = (id) => `zone ${id === initial || initial === 'completo' ? 'active' : ''}`;
 ---

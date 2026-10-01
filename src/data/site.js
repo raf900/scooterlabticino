@@ -16,12 +16,18 @@ export const site = {
   ],
 };
 
-// Zone del monopattino nello schema interattivo della sezione Riparazioni.
+// Zone del monopattino nello schema interattivo della sezione Riparazioni (l'ordine dà la numerazione).
 export const zones = [
   {
     id: 'volante', label: 'Volante', title: 'Volante e comandi',
     text: 'Leve freno, acceleratore, display e manopole: sostituzione e regolazione dei comandi.',
     parts: ['Manopole', 'Leve freno', 'Acceleratore', 'Display', 'Campanello', 'Cablaggi'],
+    price: 'da CHF 25',
+  },
+  {
+    id: 'scocca', label: 'Scocca', title: 'Scocca e telaio',
+    text: 'Telaio, piantone, meccanismo di chiusura, pedana e cavalletto. Eliminiamo giochi e scricchiolii.',
+    parts: ['Telaio', 'Piantone e chiusura', 'Pedana', 'Parafanghi', 'Cavalletto', 'Viti e fissaggi'],
     price: 'da CHF 25',
   },
   {
@@ -31,22 +37,16 @@ export const zones = [
     price: 'da CHF 35',
   },
   {
-    id: 'dietro', label: 'Ruota dietro', title: 'Motore',
-    text: 'Pneumatico, freno posteriore e motore nel mozzo: diagnosi e riparazione.',
-    parts: ['Pneumatico', 'Cerchio', 'Motore', 'Freno (disco/pastiglie)', 'Cuscinetti', 'Parafango'],
-    price: 'da CHF 35',
-  },
-  {
-    id: 'scocca', label: 'Scocca', title: 'Scocca e telaio',
-    text: 'Telaio, piantone, meccanismo di chiusura, pedana e cavalletto. Eliminiamo giochi e scricchiolii.',
-    parts: ['Telaio', 'Piantone e chiusura', 'Pedana', 'Parafanghi', 'Cavalletto', 'Viti e fissaggi'],
-    price: 'da CHF 25',
-  },
-  {
     id: 'elettronica', label: 'Elettronica', title: 'Batteria ed elettronica',
     text: 'Test di capacità della batteria, controller, cablaggi, luci e porta di ricarica.',
     parts: ['Batteria', 'Controller', 'Cavi e connettori', 'Sensori', 'Luci', 'Porta di ricarica'],
     price: 'su preventivo',
+  },
+  {
+    id: 'dietro', label: 'Ruota dietro', title: 'Motore',
+    text: 'Pneumatico, freno posteriore e motore nel mozzo: diagnosi e riparazione.',
+    parts: ['Pneumatico', 'Cerchio', 'Motore', 'Freno (disco/pastiglie)', 'Cuscinetti', 'Parafango'],
+    price: 'da CHF 35',
   },
   {
     id: 'completo', label: 'Check-up', title: 'Check-up completo',
