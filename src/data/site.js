@@ -84,15 +84,16 @@ export const scooters = [
   },
   {
     slug: 'xiaomi-4-pro', model: 'Xiaomi 4 Pro', photos: ['xiaomi-4-pro.png'], status: 'arrivo',
-    year: 2022, km: 400, speed: '35 km/h', price: 200, condition: 'Molto buono',
+    year: 2024, km: 400, speed: '35 km/h', price: 200, condition: 'Molto buono',
     description: 'Ruote da 10" tubeless, più autonomia e più comfort rispetto ai modelli precedenti. Ideale per tragitti quotidiani anche lunghi.',
+    // Dati ufficiali Xiaomi 4 Pro (2nd Gen), versione a 48 V.
     specs: [
-      ['Motore', '350 W (picco 700 W)'],
-      ['Batteria', '36 V – 446 Wh (salute 96%)'], // TODO: stato reale
-      ['Autonomia dichiarata', '55 km'],
+      ['Motore', '400 W (picco 1000 W)'],
+      ['Batteria', '48 V – 468 Wh (salute 96%)'], // TODO: salute reale
+      ['Autonomia dichiarata', '60 km'],
       ['Pneumatici', '10" tubeless'],
-      ['Freni', 'Tamburo anteriore + disco posteriore'],
-      ['Peso', '16,5 kg'],
+      ['Freni', 'Tamburo + E-ABS'],
+      ['Peso', '19 kg'],
       ['Carico massimo', '120 kg'],
     ],
     work: ['Test capacità batteria', 'Controllo e regolazione freni', 'Controllo pneumatici', 'Serraggio di tutte le viti', 'Prova su strada'],
@@ -102,13 +103,15 @@ export const scooters = [
   {
     slug: 'xiaomi-5-pro', model: 'Xiaomi 5 Pro', photos: ['xiaomi-5-pro.png'], status: 'esaurito',
     year: 2025, km: 200, speed: '35 km/h', price: 300, condition: 'Come nuovo',
-    description: 'Il modello più recente: motore potente, sospensione anteriore e pneumatici autosigillanti. Praticamente nuovo.',
+    description: 'Il modello più recente: motore potente, grande autonomia e pneumatici larghi da 10". Praticamente nuovo.',
+    // Dati ufficiali Xiaomi 5 Pro.
     specs: [
       ['Motore', '400 W (picco 1000 W)'],
-      ['Batteria', '46,8 V – 477 Wh (salute 99%)'], // TODO: stato reale
+      ['Batteria', '48 V – 477 Wh (salute 99%)'], // TODO: salute reale
       ['Autonomia dichiarata', '60 km'],
-      ['Pneumatici', '10" tubeless autosigillanti'],
-      ['Sospensioni', 'Anteriore'],
+      ['Pneumatici', '10" tubeless'],
+      ['Freni', 'Tamburo + E-ABS'],
+      ['Peso', '22,4 kg'],
       ['Carico massimo', '120 kg'],
     ],
     work: ['Test capacità batteria', 'Controllo e regolazione freni', 'Controllo pneumatici', 'Serraggio di tutte le viti', 'Prova su strada'],
