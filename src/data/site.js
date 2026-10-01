@@ -78,6 +78,10 @@ export const buyPrices = [
   { brand: 'Xiaomi', model: '4', min: 90, max: 130 },
   { brand: 'Xiaomi', model: '5', min: 180, max: 220 },
   { brand: 'Xiaomi', model: '6', min: 200, max: 250 },
+  // TODO: modelli e prezzi segnaposto per mostrare le altre marche.
+  { brand: 'Ninebot', model: 'Max G30', min: 100, max: 150 },
+  { brand: 'Kukirin', model: 'G2', min: 80, max: 120 },
+  { brand: 'Navee', model: 'N65', min: 90, max: 140 },
 ];
 
 export const steps = [
