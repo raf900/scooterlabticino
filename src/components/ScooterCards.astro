@@ -5,9 +5,11 @@ import { scooters, statusLabel, chf } from '../data/site.js';
 import { photo } from '../data/photos.js';
 
 // exclude: slug da non mostrare (es. il monopattino della pagina corrente)
-const { exclude } = Astro.props;
-const list = scooters.filter((s) => s.slug !== exclude);
+// onlyAvailable: mostra solo quelli 'disponibile' (usato in home)
+const { exclude, onlyAvailable = false } = Astro.props;
+const list = scooters.filter((s) => s.slug !== exclude && (!onlyAvailable || s.status === 'disponibile'));
 ---
+{list.length === 0 && <p class="sub">Al momento non ci sono monopattini disponibili. <a href="/usato">Guarda quelli in arrivo</a>.</p>}
 <div class="grid grid-3">
   {list.map((s) => {
     const img = photo(s.photos?.[0]);
