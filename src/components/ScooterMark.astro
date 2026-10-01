@@ -2,7 +2,8 @@
 // Marchio Scooter Lab: il monopattino dello schema riparazioni, tutto blu e un po' più spesso, con scie di velocità.
 import { scooterPaths } from '../data/scooterArt.js';
 
-const { class: className, ...rest } = Astro.props;
+// tail: allunga le scie verso destra (unità del disegno), per farle passare dietro la scritta nel logo.
+const { class: className, tail = 0, ...rest } = Astro.props;
 
 // Tutto tranne il cavo del freno (path 0).
 const body = scooterPaths.filter((_, i) => i !== 0).map((p) => p.d);
@@ -20,7 +21,7 @@ const rows = [
   { y: 1065, w: 11, len: 135, dash: 24 },
 ];
 const lines = rows.flatMap(({ y, w, len, dash }) => {
-  const x0 = stemX(y) + 42, x1 = x0 + len;
+  const x0 = stemX(y) + 42, x1 = x0 + len + tail;
   const segs = [{ d: `M${x0} ${y}H${x1}`, w, o: 1 }];
   if (dash) segs.push({ d: `M${x1 + w + 10} ${y}h${dash}`, w, o: 0.55 });
   return segs;
@@ -29,7 +30,7 @@ const lines = rows.flatMap(({ y, w, len, dash }) => {
 // id univoci: il marchio compare più volte nella stessa pagina.
 const mid = `sm-mask-${Math.random().toString(36).slice(2, 8)}`;
 ---
-<svg class:list={['logo-mark', className]} viewBox="220 728 560 562" aria-hidden="true" {...rest}>
+<svg class:list={['logo-mark', className]} viewBox="220 728 560 562" overflow="visible" aria-hidden="true" {...rest}>
   <defs>
     <mask id={mid} maskUnits="userSpaceOnUse" x="200" y="700" width="620" height="620">
       <rect x="200" y="700" width="620" height="620" fill="#fff" />
