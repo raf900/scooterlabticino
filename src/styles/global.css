@@ -27,7 +27,7 @@
   --accent: #1a6fe0;
   --accent-soft: rgb(26 111 224 / .1);
   --nav-bg: rgb(244 247 251 / .85);
-  --grid: rgb(13 22 38 / .07);
+  --grid: rgb(13 22 38 / .035);
   --frame: #a9b6c9;
   color-scheme: light;
 }
@@ -125,11 +125,11 @@ a { color: var(--accent); }
 .drawer {
   display: none; flex-direction: column; position: fixed; top: 0; right: 0; bottom: 0; z-index: 50;
   width: min(84vw, 320px); padding: 16px 20px 28px;
-  background: var(--bg-alt); border-left: 1px solid var(--line); box-shadow: -20px 0 60px -20px rgb(0 0 0 / .6);
+  background: var(--bg-alt); border-left: 1px solid var(--line);
   transform: translateX(100%); transition: transform .3s ease;
 }
 .menu-open { overflow: hidden; }
-.menu-open .drawer { transform: none; }
+.menu-open .drawer { transform: none; box-shadow: -20px 0 60px -20px rgb(0 0 0 / .6); }
 .menu-open .drawer-backdrop { opacity: 1; pointer-events: auto; }
 .drawer-head { display: flex; align-items: center; justify-content: space-between; height: 36px; margin-bottom: 28px; }
 .drawer-head .logo-mark { height: 28px; }
