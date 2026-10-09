@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
-import officina from '../assets/officina.webp';
+import hero from '../assets/hero.jpg';
 import RepairDiagram from '../components/RepairDiagram.astro';
 import ScooterCards from '../components/ScooterCards.astro';
 import Steps from '../components/Steps.astro';
@@ -27,9 +27,9 @@ import { wa } from '../data/site.js';
       </div>
       <div class="hero-art">
         <Image
-          src={officina}
-          alt="L'officina Scooter Lab: due tecnici al lavoro su un monopattino elettrico"
-          widths={[480, 841]}
+          src={hero}
+          alt="Un rider in impennata su un monopattino elettrico"
+          widths={[480, 960]}
           sizes="(max-width: 900px) 100vw, 480px"
           loading="eager"
           fetchpriority="high"

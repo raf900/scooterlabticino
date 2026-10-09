@@ -169,7 +169,7 @@ a { color: var(--accent); }
 [data-theme='light'] .hero-photo { box-shadow: 0 28px 72px -30px rgb(26 111 224 / .45), 0 0 0 8px rgb(26 111 224 / .06); }
 .hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
 .hero-photo {
-  display: block; width: 100%; height: auto;
+  display: block; width: 100%; height: auto; aspect-ratio: 841 / 768; object-fit: cover; object-position: 55% 50%;
   border-radius: 20px; border: 1px solid rgb(47 143 255 / .35);
   box-shadow: 0 30px 80px -30px rgb(47 143 255 / .55), 0 0 0 8px rgb(47 143 255 / .06);
 }
