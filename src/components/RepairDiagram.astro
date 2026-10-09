@@ -72,12 +72,12 @@ const cls = (id) => `zone ${id === initial || initial === 'completo' ? 'active' 
       <div class="dg-info" data-panel={z.id} aria-hidden={String(z.id !== initial)}>
         <h3><span class="dg-num">{i + 1}</span>{z.title}</h3>
         <p>{z.text}</p>
+        <p class="dg-hint">Seleziona una o più voci:</p>
         <ul class="dg-parts">
-          {z.parts.map((p) => <li>{p}</li>)}
+          {z.parts.map((p) => <li><button type="button" class="dg-part" aria-pressed="false" data-part={p}>{p}</button></li>)}
         </ul>
         <div class="dg-foot">
-          <span class="dg-price">{z.price}</span>
-          <a class="btn btn-sm" href={wa(`Ciao! Ho un problema a: ${z.title.toLowerCase()}. Posso avere un preventivo?`)}>Prenota su WhatsApp</a>
+          <a class="btn btn-sm" data-wa data-title={z.title} href={wa(`Ciao! Ho un problema a: ${z.title.toLowerCase()}. Posso avere un preventivo?`)}>Prenota su WhatsApp</a>
         </div>
       </div>
     ))}
@@ -86,6 +86,8 @@ const cls = (id) => `zone ${id === initial || initial === 'completo' ? 'active' 
 </div>
 
 <script>
+  import { wa } from '../data/site.js';
+
   document.querySelectorAll<HTMLElement>('[data-diagram]').forEach((root) => {
     const select = (id: string) => {
       // Il check-up completo accende tutto il monopattino, cornice compresa.
@@ -97,6 +99,24 @@ const cls = (id) => `zone ${id === initial || initial === 'completo' ? 'active' 
       const id = (el.dataset.pick ?? el.dataset.zone)!;
       el.addEventListener('click', () => select(id));
       el.addEventListener('mouseenter', () => select(id));
+    });
+
+    // Voci selezionabili: il pulsante diventa "Scrivi su WhatsApp" con l'elenco delle voci scelte.
+    root.querySelectorAll<HTMLElement>('[data-panel]').forEach((panel) => {
+      const btn = panel.querySelector<HTMLAnchorElement>('[data-wa]')!;
+      const base = { href: btn.href, text: btn.textContent };
+      const parts = panel.querySelectorAll<HTMLButtonElement>('[data-part]');
+      parts.forEach((p) => p.addEventListener('click', () => {
+        p.setAttribute('aria-pressed', String(p.getAttribute('aria-pressed') !== 'true'));
+        const picked = [...parts].filter((x) => x.getAttribute('aria-pressed') === 'true').map((x) => x.dataset.part);
+        if (picked.length) {
+          const msg = `Ciao! Vorrei un preventivo per: ${btn.dataset.title} – ${picked.join(', ')}.`;
+          btn.href = wa(msg);
+          btn.textContent = 'Scrivi su WhatsApp';
+        } else {
+          btn.href = base.href; btn.textContent = base.text;
+        }
+      }));
     });
   });
 </script>
@@ -151,10 +171,16 @@ const cls = (id) => `zone ${id === initial || initial === 'completo' ? 'active' 
   .dg-info h3 { display: flex; align-items: center; gap: 12px; font-size: 1.35rem; }
   .dg-num { display: grid; place-items: center; flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 1rem; box-shadow: 0 0 20px -4px var(--accent); }
   .dg-parts { list-style: none; padding: 0; margin: 0 0 22px; display: flex; flex-wrap: wrap; gap: 6px; }
-  .dg-parts li { font-size: .82rem; color: var(--text); border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; }
-  .dg-parts li::before { content: '✓ '; color: var(--accent); }
+  .dg-hint { margin: 0 0 10px; font-size: .85rem; color: var(--muted); }
+  .dg-part {
+    font: inherit; font-size: .85rem; color: var(--text); background: none; cursor: pointer;
+    border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px;
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  .dg-part:hover { border-color: var(--accent); }
+  .dg-part[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .dg-part[aria-pressed='true']::before { content: '✓ '; }
   .dg-foot { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-  .dg-price { font-family: var(--display); font-weight: 800; font-size: 1.4rem; color: var(--accent); }
 
   @media (max-width: 900px) {
     .dg { grid-template-columns: 1fr; }

@@ -1,0 +1,18 @@
+---
+import { reviews } from '../data/site.js';
+---
+<section class="section reviews-sec">
+  <div class="wrap">
+    <p class="eyebrow">Recensioni</p>
+    <h2>Cosa dicono i nostri clienti</h2>
+    <div class="reviews">
+      {reviews.map((r) => (
+        <figure class="card review">
+          <div class="stars" aria-label={`${r.stars} stelle su 5`}>{'★'.repeat(r.stars)}{'☆'.repeat(5 - r.stars)}</div>
+          <blockquote>{r.text}</blockquote>
+          <figcaption>{r.name}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
