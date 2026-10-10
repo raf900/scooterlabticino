@@ -95,29 +95,36 @@ const cls = (id) => `zone ${id === initial || initial === 'completo' ? 'active' 
       root.querySelectorAll<HTMLElement>('[data-panel]').forEach((el) => el.setAttribute('aria-hidden', String(el.dataset.panel !== id)));
       root.querySelectorAll<HTMLElement>('[data-pick]').forEach((el) => el.setAttribute('aria-pressed', String(el.dataset.pick === id)));
     };
+    // Si cambia parte solo con il clic (niente cambio al passaggio del mouse, per non perdere il pannello aperto).
     root.querySelectorAll<HTMLElement>('[data-pick], svg [data-zone]').forEach((el) => {
       const id = (el.dataset.pick ?? el.dataset.zone)!;
       el.addEventListener('click', () => select(id));
-      el.addEventListener('mouseenter', () => select(id));
     });
 
-    // Voci selezionabili: il pulsante diventa "Scrivi su WhatsApp" con l'elenco delle voci scelte.
-    root.querySelectorAll<HTMLElement>('[data-panel]').forEach((panel) => {
-      const btn = panel.querySelector<HTMLAnchorElement>('[data-wa]')!;
-      const base = { href: btn.href, text: btn.textContent };
-      const parts = panel.querySelectorAll<HTMLButtonElement>('[data-part]');
-      parts.forEach((p) => p.addEventListener('click', () => {
-        p.setAttribute('aria-pressed', String(p.getAttribute('aria-pressed') !== 'true'));
-        const picked = [...parts].filter((x) => x.getAttribute('aria-pressed') === 'true').map((x) => x.dataset.part);
-        if (picked.length) {
-          const msg = `Ciao! Vorrei un preventivo per: ${btn.dataset.title} – ${picked.join(', ')}.`;
-          btn.href = wa(msg);
-          btn.textContent = 'Scrivi su WhatsApp';
+    // Voci selezionabili, tenute anche cambiando parte: un unico messaggio WhatsApp con tutte le voci scelte.
+    const parts = root.querySelectorAll<HTMLButtonElement>('[data-part]');
+    const buttons = root.querySelectorAll<HTMLAnchorElement>('[data-wa]');
+    const base = [...buttons].map((b) => ({ href: b.href, text: b.textContent }));
+    const update = () => {
+      const groups: string[] = [];
+      root.querySelectorAll<HTMLElement>('[data-panel]').forEach((panel) => {
+        const picked = [...panel.querySelectorAll<HTMLButtonElement>('[data-part][aria-pressed="true"]')].map((x) => x.dataset.part);
+        root.querySelector(`[data-pick="${panel.dataset.panel}"]`)?.classList.toggle('has-picks', picked.length > 0);
+        if (picked.length) groups.push(`• ${panel.querySelector<HTMLElement>('[data-wa]')!.dataset.title}: ${picked.join(', ')}`);
+      });
+      buttons.forEach((b, i) => {
+        if (groups.length) {
+          b.href = wa(`Ciao! Vorrei un preventivo per:\n${groups.join('\n')}`);
+          b.textContent = 'Scrivi su WhatsApp';
         } else {
-          btn.href = base.href; btn.textContent = base.text;
+          b.href = base[i].href; b.textContent = base[i].text;
         }
-      }));
-    });
+      });
+    };
+    parts.forEach((p) => p.addEventListener('click', () => {
+      p.setAttribute('aria-pressed', String(p.getAttribute('aria-pressed') !== 'true'));
+      update();
+    }));
   });
 </script>
 
@@ -155,6 +162,11 @@ const cls = (id) => `zone ${id === initial || initial === 'completo' ? 'active' 
     border: 2px solid var(--accent); background: var(--bg); color: var(--text);
     font: 800 1.15rem var(--display); cursor: pointer;
     transition: background .2s, box-shadow .2s, transform .2s;
+  }
+  /* Pallino sul numero quando in quella parte ci sono voci selezionate. */
+  .dg-marker.has-picks::after {
+    content: ''; position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; border-radius: 50%;
+    background: #2ecc71; border: 2px solid var(--bg);
   }
   /* Area di tocco invisibile più grande del cerchio. */
   .dg-marker::before { content: ''; position: absolute; inset: -10px; border-radius: 50%; }
