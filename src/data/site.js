@@ -5,8 +5,8 @@ export const chf = (n) => `CHF ${n.toLocaleString('de-CH')}.–`;
 export const site = {
   name: 'ScooterLab Ticino',
   tagline: 'Riparazione e vendita di monopattini elettrici in Ticino',
-  phone: '+41 76 442 02 27',
-  whatsapp: '41764420227', // numero senza "+" e spazi, per il link wa.me
+  phone: '+41 79 453 05 76',
+  whatsapp: '41794530576', // numero senza "+" e spazi, per il link wa.me
   email: 'info@scooterlabticino.ch',
   instagram: 'scooterlabticino',
   hours: [
