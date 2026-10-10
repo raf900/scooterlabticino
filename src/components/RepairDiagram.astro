@@ -67,6 +67,12 @@ const cls = (id) => `zone ${id === initial || initial === 'completo' ? 'active' 
   </div>
 
   <div class="dg-panel card">
+    <!-- Su telefono: numeri anche sopra la descrizione, per cambiare parte senza tornare su -->
+    <div class="dg-tabs">
+      {zones.map((z, i) => (
+        <button type="button" class="dg-tab" data-pick={z.id} aria-pressed={String(z.id === initial)} aria-label={z.title}>{i + 1}</button>
+      ))}
+    </div>
     <div class="dg-stack">
     {zones.map((z, i) => (
       <div class="dg-info" data-panel={z.id} aria-hidden={String(z.id !== initial)}>
@@ -109,7 +115,7 @@ const cls = (id) => `zone ${id === initial || initial === 'completo' ? 'active' 
       const groups: string[] = [];
       root.querySelectorAll<HTMLElement>('[data-panel]').forEach((panel) => {
         const picked = [...panel.querySelectorAll<HTMLButtonElement>('[data-part][aria-pressed="true"]')].map((x) => x.dataset.part);
-        root.querySelector(`[data-pick="${panel.dataset.panel}"]`)?.classList.toggle('has-picks', picked.length > 0);
+        root.querySelectorAll(`[data-pick="${panel.dataset.panel}"]`).forEach((m) => m.classList.toggle('has-picks', picked.length > 0));
         if (picked.length) groups.push(`• ${panel.querySelector<HTMLElement>('[data-wa]')!.dataset.title}: ${picked.join(', ')}`);
       });
       buttons.forEach((b, i) => {
@@ -164,7 +170,7 @@ const cls = (id) => `zone ${id === initial || initial === 'completo' ? 'active' 
     transition: background .2s, box-shadow .2s, transform .2s;
   }
   /* Pallino sul numero quando in quella parte ci sono voci selezionate. */
-  .dg-marker.has-picks::after {
+  .dg-marker.has-picks::after, .dg-tab.has-picks::after {
     content: ''; position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; border-radius: 50%;
     background: #2ecc71; border: 2px solid var(--bg);
   }
@@ -174,6 +180,15 @@ const cls = (id) => `zone ${id === initial || initial === 'completo' ? 'active' 
     background: var(--accent); color: #fff; box-shadow: 0 0 0 6px rgb(47 143 255 / .2), 0 0 24px var(--accent);
     transform: translate(-50%, -50%) scale(1.08);
   }
+
+  /* Riga di numeri sopra la descrizione: solo su telefono/tablet */
+  .dg-tabs { display: none; }
+  .dg-tab {
+    position: relative; width: 40px; height: 40px; border-radius: 50%;
+    border: 2px solid var(--accent); background: var(--bg); color: var(--text);
+    font: 800 1rem var(--display); cursor: pointer; transition: background .2s, box-shadow .2s;
+  }
+  .dg-tab[aria-pressed='true'] { background: var(--accent); color: #fff; box-shadow: 0 0 0 4px rgb(47 143 255 / .2), 0 0 16px var(--accent); }
 
   /* Tutti i pannelli nella stessa cella: il box prende l'altezza del più lungo e non cambia dimensione. */
   .dg-stack { display: grid; }
@@ -196,6 +211,9 @@ const cls = (id) => `zone ${id === initial || initial === 'completo' ? 'active' 
 
   @media (max-width: 900px) {
     .dg { grid-template-columns: 1fr; }
+    /* su telefono/tablet i numeri stanno solo sopra la descrizione */
+    .dg-marker, .dg-lead { display: none; }
+    .dg-tabs { display: flex; justify-content: space-between; gap: 6px; margin-bottom: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
   }
   @media (max-width: 600px) {
     .dg-marker { width: 36px; height: 36px; font-size: 1rem; }

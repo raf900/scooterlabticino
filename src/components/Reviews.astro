@@ -1,18 +1,34 @@
 ---
 import { reviews } from '../data/site.js';
+
+const avg = reviews.reduce((n, r) => n + r.stars, 0) / reviews.length;
+const initials = (name) => name.trim().slice(0, 1).toUpperCase();
 ---
 <section class="section reviews-sec">
   <div class="wrap">
     <p class="eyebrow">Recensioni</p>
     <h2>Cosa dicono i nostri clienti</h2>
-    <div class="reviews">
+    <p class="reviews-avg"><b>{avg.toFixed(1).replace('.', ',')}</b> <span class="stars">★</span> su 5 · {reviews.length} recensioni</p>
+    <!-- Scorrono in orizzontale (dito, rotella o frecce) -->
+    <div class="reviews" data-reviews>
       {reviews.map((r) => (
         <figure class="card review">
-          <div class="stars" aria-label={`${r.stars} stelle su 5`}>{'★'.repeat(r.stars)}{'☆'.repeat(5 - r.stars)}</div>
+          <div class="stars" aria-label={`${r.stars} stelle su 5`}>{'★'.repeat(r.stars)}<span class="off">{'★'.repeat(5 - r.stars)}</span></div>
           <blockquote>{r.text}</blockquote>
-          <figcaption>{r.name}</figcaption>
+          <figcaption><span class="avatar" aria-hidden="true">{initials(r.name)}</span>{r.name}</figcaption>
         </figure>
       ))}
     </div>
+    <div class="reviews-nav">
+      <button type="button" aria-label="Recensioni precedenti" data-rev="-1">‹</button>
+      <button type="button" aria-label="Recensioni successive" data-rev="1">›</button>
+    </div>
   </div>
 </section>
+
+<script>
+  const row = document.querySelector<HTMLElement>('[data-reviews]');
+  document.querySelectorAll<HTMLButtonElement>('[data-rev]').forEach((b) => b.addEventListener('click', () => {
+    row?.scrollBy({ left: Number(b.dataset.rev) * row.clientWidth * 0.9, behavior: 'smooth' });
+  }));
+</script>

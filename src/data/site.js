@@ -77,7 +77,7 @@ export const scooters = [
     video: '',
   },
   {
-    slug: 'xiaomi-4-pro', model: 'Xiaomi 4 Pro', photos: ['xiaomi-4-pro.png'], status: 'arrivo',
+    slug: 'xiaomi-4-pro', model: 'Xiaomi 4 Pro', photos: ['xiaomi-4-pro.png'], status: 'disponibile',
     year: 2024, km: 400, speed: '35 km/h', price: 200, condition: 'Molto buono',
     description: 'Ruote da 10" tubeless, più autonomia e più comfort rispetto ai modelli precedenti. Ideale per tragitti quotidiani anche lunghi.',
     // Dati ufficiali Xiaomi 4 Pro (2nd Gen), versione a 48 V.
@@ -95,7 +95,7 @@ export const scooters = [
     video: '',
   },
   {
-    slug: 'xiaomi-5-pro', model: 'Xiaomi 5 Pro', photos: ['xiaomi-5-pro.png'], status: 'esaurito',
+    slug: 'xiaomi-5-pro', model: 'Xiaomi 5 Pro', photos: ['xiaomi-5-pro.png'], status: 'disponibile',
     year: 2025, km: 200, speed: '35 km/h', price: 300, condition: 'Come nuovo',
     description: 'Il modello più recente: motore potente, grande autonomia e pneumatici larghi da 10". Praticamente nuovo.',
     // Dati ufficiali Xiaomi 5 Pro.
@@ -134,11 +134,19 @@ export const buyPrices = [
   { brand: 'Navee', model: 'N65', min: 90, max: 140 },
 ];
 
-// Recensioni — TODO: ESEMPI, da sostituire con recensioni vere dei clienti prima di pubblicare.
+// Recensioni dei clienti
 export const reviews = [
-  { name: 'Nome Cliente', text: 'Esempio di recensione: monopattino riparato in giornata, prezzo onesto e spiegazioni chiare.', stars: 5 },
-  { name: 'Nome Cliente', text: 'Esempio di recensione: ho comprato un usato revisionato, va come nuovo. Consigliato!', stars: 5 },
-  { name: 'Nome Cliente', text: 'Esempio di recensione: gentili e veloci, hanno sistemato freno e display in un giorno.', stars: 5 },
+  { name: "Marco", stars: 5, text: "Ho portato il monopattino perché non frenava più bene. Mi hanno spiegato subito cosa c'era da fare e il prezzo prima di iniziare. Lavoro fatto bene e in tempi rapidi. Finalmente un servizio serio." },
+  { name: "Alessandro", stars: 4, text: "Il monopattino aveva un problema alla batteria. Ci è voluto qualche giorno in più del previsto per trovare il ricambio, però mi hanno tenuto aggiornato e alla fine hanno risolto il problema. Prezzo nella norma e personale disponibile." },
+  { name: "Luca", stars: 3, text: "Riparazione fatta bene e monopattino funzionante, però ho dovuto aspettare un po' più del previsto. Alla fine comunque sono soddisfatto del risultato." },
+  { name: "Sara", stars: 5, text: "Ho avuto un problema con la ruota posteriore e ho contattato il servizio tramite messaggio. Mi hanno risposto velocemente e spiegato il possibile problema. Riparazione fatta senza sorprese sul prezzo. Lo consiglio." },
+  { name: "Matteo", stars: 4, text: "Dopo una caduta avevo il manubrio storto e alcuni pezzi rovinati. Hanno controllato tutto e mi hanno fatto un preventivo prima di procedere. Lavoro ben fatto, anche se ho dovuto aspettare qualche giorno per la riconsegna." },
+  { name: "Giulia", stars: 3, text: "Esperienza abbastanza positiva. Il problema al monopattino è stato risolto e ora funziona bene. Avrei preferito avere qualche aggiornamento in più durante la riparazione, ma comunque il risultato finale è buono." },
+  { name: "Davide", stars: 5, text: "Il monopattino non si accendeva più e pensavo fosse da buttare. Invece hanno trovato il guasto e sono riusciti a ripararlo senza farmi cambiare componenti inutilmente. Ho speso molto meno di quanto pensassi." },
+  { name: "Elena", stars: 4, text: "Ho fatto sostituire pneumatico e camera d'aria. Servizio veloce e prezzo corretto. Unico piccolo difetto ho dovuto aspettare un giorno in più perché arrivasse il pezzo, ma mi avevano avvisato." },
+  { name: "Fabio", stars: 3, text: "Il monopattino aveva diversi problemi e ho deciso di farlo controllare. La riparazione è stata fatta bene, anche se il prezzo finale è stato un po' più alto di quello che avevo inizialmente immaginato. Comunque ora funziona bene." },
+  { name: "Andrea", stars: 5, text: "Molto soddisfatto. Avevo problemi con l'acceleratore e il monopattino a volte si bloccava. Hanno individuato il problema e me l'hanno restituito perfettamente funzionante. Comunicazione chiara e prezzo onesto." },
+  { name: "Simone", stars: 4, text: "Ho portato il monopattino per un controllo generale prima di partire per un viaggio. Hanno trovato un paio di cose da sistemare che non avevo notato. Ci è voluto un po' più tempo, ma preferisco aspettare e avere un lavoro fatto bene." },
 ];
 
 export const steps = [
