@@ -305,7 +305,7 @@ a { color: var(--accent); }
   .hero-text > * { order: 3; }
   .hero-text .eyebrow { order: 1; }
   .hero-text h1 { order: 1; margin-bottom: 24px; }
-  .hero-art { order: 2; margin-bottom: 24px; }
+  .hero-art { order: 2; margin-bottom: 24px; width: 100%; }   /* larghezza esplicita: le foto dello slideshow sono posizionate in assoluto */
   .grid-3 { grid-template-columns: 1fr 1fr; }
   .reviews { grid-auto-columns: calc((100% - 20px) / 2); }
 }
