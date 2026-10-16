@@ -1,0 +1,225 @@
+---
+// Pagina Riparazioni: schema del monopattino (senza numeri) a sinistra, listino ricambi selezionabile a destra.
+// Si scelgono i ricambi, si vede il totale indicativo e si manda la richiesta su WhatsApp.
+import { chf, labor, partsList, wa, zones } from '../data/site.js';
+import { scooterViewBox, scooterPaths } from '../data/scooterArt.js';
+
+const [vx, vy, vw, vh] = scooterViewBox;
+const W = 560, H = 480;
+const s = 440 / vh;
+const art = `translate(${(W - vw * s) / 2} 20) scale(${s}) translate(${-vx} ${-vy})`;
+---
+<div class="rpk" data-picker>
+  <div class="rpk-figure">
+    <svg class="sc-art" viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
+      <ellipse cx={W / 2} cy="464" rx="210" ry="8" class="rpk-floor" />
+      <g transform={art}>
+        {zones.filter((z) => z.id !== 'completo').map((z) => (
+          <g class="zone" data-zone={z.id}>
+            {scooterPaths.filter((p) => p.zone === z.id).map((p) => <path d={p.d} class={p.tone} />)}
+          </g>
+        ))}
+      </g>
+    </svg>
+    <p class="rpk-hint">Tocca una parte del monopattino o scegli i ricambi dall'elenco.</p>
+  </div>
+
+  <div class="rpk-list card">
+    {partsList.map((g) => (
+      <details class="rpk-group" data-group={g.zone} open>
+        <summary>{g.title}<span class="rpk-count" data-count></span></summary>
+        <ul>
+          {g.parts.map((p) => (
+            <li>
+              <label class="rpk-item">
+                <input type="checkbox" data-part={p.nome} data-section={g.title} data-price={p.prezzo} data-min={p.minuti}
+                  data-deal-with={p.con} data-deal-price={p.prezzoCon} data-deal-min={p.minutiCon} />
+                <span class="rpk-name">{p.nome}<small class="rpk-deal">{p.con ? `CHF ${p.prezzoCon}.– con ${p.con.toLowerCase()}` : ''}</small></span>
+                <span class="rpk-price" data-price-label>da {chf(p.prezzo)}</span>
+              </label>
+            </li>
+          ))}
+        </ul>
+      </details>
+    ))}
+
+    <!-- Manodopera: calcolata in base ai ricambi scelti -->
+    <section class="rpk-labor">
+      <h3>Manodopera</h3>
+      <p class="rpk-labor-rate">{labor.minuti} min di lavoro · {chf(labor.prezzo)}</p>
+      <div class="rpk-labor-row"><span>Tempo stimato</span><b data-labor-time>—</b></div>
+      <div class="rpk-labor-row"><span>Costo manodopera</span><b data-labor-cost>{chf(0)}</b></div>
+    </section>
+
+    <div class="rpk-foot">
+      <div class="rpk-total"><span>Totale indicativo</span><b data-total>CHF 0.–</b></div>
+      <p class="rpk-note">Prezzi e tempi indicativi, possono variare in base al modello. Preventivo gratuito e senza impegno.</p>
+      <a class="btn" data-wa href={wa('Ciao! Vorrei informazioni su una riparazione.')}>Chiedi informazioni<span class="rpk-wa"> su WhatsApp</span></a>
+    </div>
+    <p class="rpk-note rpk-note-m">Prezzi e tempi indicativi, possono variare in base al modello. Preventivo gratuito.</p>
+  </div>
+</div>
+
+<script>
+  import { chf, labor, wa } from '../data/site.js';
+
+  // 75 → "1 h 15 min"
+  const duration = (min: number) => {
+    const h = Math.floor(min / 60), m = min % 60;
+    return [h && `${h} h`, m && `${m} min`].filter(Boolean).join(' ') || '—';
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-picker]').forEach((root) => {
+    const boxes = [...root.querySelectorAll<HTMLInputElement>('[data-part]')];
+    const btn = root.querySelector<HTMLAnchorElement>('[data-wa]')!;
+    const total = root.querySelector<HTMLElement>('[data-total]')!;
+    const laborTime = root.querySelector<HTMLElement>('[data-labor-time]')!;
+    const laborCost = root.querySelector<HTMLElement>('[data-labor-cost]')!;
+    const base = btn.href;
+
+    // Accende una parte dello schema (null = tutte normali)
+    const light = (zone: string | null) =>
+      root.querySelectorAll<SVGGElement>('.zone').forEach((z) => z.classList.toggle('active', z.dataset.zone === zone));
+    // Le parti con ricambi scelti restano evidenziate
+    // Prezzo effettivo: ridotto se nella stessa sezione è scelto anche il ricambio indicato (es. camera d'aria + gomma)
+    const hasDeal = (b: HTMLInputElement) => {
+      const withName = b.dataset.dealWith;
+      return !!withName && !!b.closest<HTMLElement>('[data-group]')!.querySelector<HTMLInputElement>(`[data-part="${withName}"]`)?.checked;
+    };
+    const priceOf = (b: HTMLInputElement) => Number(hasDeal(b) ? b.dataset.dealPrice : b.dataset.price);
+    const minutesOf = (b: HTMLInputElement) => Number(hasDeal(b) ? b.dataset.dealMin : b.dataset.min);
+    const refresh = () => {
+      boxes.filter((b) => b.dataset.dealWith).forEach((b) => {
+        const p = priceOf(b), full = Number(b.dataset.price);
+        b.closest('label')!.querySelector<HTMLElement>('[data-price-label]')!.innerHTML =
+          p < full ? `<s>${chf(full)}</s> ${chf(p)}` : `da ${chf(full)}`;
+      });
+      const picked = boxes.filter((b) => b.checked);
+      root.querySelectorAll<SVGGElement>('.zone').forEach((z) => z.classList.toggle('picked', picked.some((b) => b.closest<HTMLElement>('[data-group]')!.dataset.group === z.dataset.zone)));
+      root.querySelectorAll<HTMLElement>('[data-group]').forEach((g) => {
+        const n = g.querySelectorAll('[data-part]:checked').length;
+        g.querySelector<HTMLElement>('[data-count]')!.textContent = n ? String(n) : '';
+      });
+      // manodopera: somma dei minuti, arrotondata al blocco successivo (15 min)
+      const minutes = Math.ceil(picked.reduce((n, b) => n + minutesOf(b), 0) / labor.minuti) * labor.minuti;
+      const laborPrice = (minutes / labor.minuti) * labor.prezzo;
+      laborTime.textContent = duration(minutes);
+      laborCost.textContent = chf(laborPrice);
+      total.textContent = chf(picked.reduce((n, b) => n + priceOf(b), 0) + laborPrice);
+      if (!picked.length) { btn.href = base; return; }
+      // messaggio: ricambi raggruppati per sezione
+      const groups = new Map<string, string[]>();
+      picked.forEach((b) => groups.set(b.dataset.section!, [...(groups.get(b.dataset.section!) ?? []), b.dataset.part!]));
+      const lines = [...groups].map(([sec, parts]) => `• ${sec}: ${parts.join(', ')}`);
+      if (minutes) lines.push(`• Manodopera stimata: ${duration(minutes)} (${chf(laborPrice)})`);
+      btn.href = wa(`Ciao! Vorrei informazioni per questi ricambi:\n${lines.join('\n')}\nTotale indicativo: da ${total.textContent}`);
+    };
+    boxes.forEach((b) => b.addEventListener('change', refresh));
+
+    // Telefono: quando si arriva all'elenco lo schema resta in alto, rimpicciolito
+    const fig = root.querySelector<HTMLElement>('.rpk-figure')!;
+    const list = root.querySelector<HTMLElement>('.rpk-list')!;
+    const onScroll = () => fig.classList.toggle('compact', matchMedia('(max-width: 900px)').matches && list.getBoundingClientRect().top < 260);
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Passando sull'elenco si accende la parte corrispondente
+    root.querySelectorAll<HTMLElement>('[data-group]').forEach((g) => {
+      g.addEventListener('mouseenter', () => light(g.dataset.group!));
+      g.addEventListener('mouseleave', () => light(null));
+      g.addEventListener('focusin', () => light(g.dataset.group!));
+    });
+
+    // Toccando lo schema si apre e si mostra il gruppo di ricambi
+    root.querySelectorAll<SVGGElement>('.zone').forEach((z) => z.addEventListener('click', () => {
+      const groups = [...root.querySelectorAll<HTMLDetailsElement>(`[data-group="${z.dataset.zone}"]`)];
+      groups.forEach((g) => (g.open = true));
+      light(z.dataset.zone!);
+      groups[0]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      groups.forEach((g) => { g.classList.add('flash'); setTimeout(() => g.classList.remove('flash'), 1200); });
+    }));
+  });
+</script>
+
+<style>
+  .rpk { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; margin-top: 2rem; }
+  .rpk-figure { position: sticky; top: 90px; }
+  .rpk-figure svg { display: block; width: 100%; height: auto; }
+  .rpk-floor { fill: rgb(47 143 255 / .12); }
+  .rpk-hint { text-align: center; color: var(--muted); font-size: .88rem; margin: 6px 0 0; }
+
+  .zone { cursor: pointer; transition: opacity .25s, filter .25s; }
+  .zone path { transition: fill .25s; }
+  .rpk:has(.zone.active) .zone:not(.active) { opacity: .35; }
+  .zone.active, .zone.picked { filter: drop-shadow(0 0 8px rgb(47 143 255 / .6)); }
+  .zone:is(.active, .picked) .t1 { fill: #d4e7ff; }
+  .zone:is(.active, .picked) .t2 { fill: #a3ccff; }
+  .zone:is(.active, .picked) .t3 { fill: #63aaff; }
+  .zone:is(.active, .picked) .t4 { fill: #2f8fff; }
+  .zone:is(.active, .picked) .t5 { fill: #1d66c4; }
+  .zone:is(.active, .picked) .t6 { fill: #164c92; }
+  :global([data-theme='light']) .zone:is(.active, .picked) .t1 { fill: #0e3a7a; }
+  :global([data-theme='light']) .zone:is(.active, .picked) .t2 { fill: #1653b0; }
+  :global([data-theme='light']) .zone:is(.active, .picked) .t3 { fill: #1a6fe0; }
+  :global([data-theme='light']) .zone:is(.active, .picked) .t4 { fill: #5ea4ff; }
+  :global([data-theme='light']) .zone:is(.active, .picked) .t5 { fill: #a3ccff; }
+  :global([data-theme='light']) .zone:is(.active, .picked) .t6 { fill: #d4e7ff; }
+
+  .rpk-list { padding: 8px 18px 18px; text-align: left; }
+  .rpk-group { border-bottom: 1px solid var(--line); scroll-margin-top: 90px; border-radius: 8px; transition: background .4s; }
+  .rpk-group.flash { background: var(--accent-soft); }
+  .rpk-group summary {
+    display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 12px 0;
+    font-family: var(--display); font-weight: 700; color: var(--text);
+  }
+  .rpk-count:not(:empty) {
+    display: grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px;
+    background: var(--accent); color: #fff; font-size: .75rem;
+  }
+  .rpk-group ul { list-style: none; margin: 0 0 10px; padding: 0; }
+  .rpk-item {
+    display: grid; grid-template-columns: 18px minmax(0, 11.5rem) auto; justify-content: start; align-items: center;
+    column-gap: 12px; padding: 7px 8px; border-radius: 8px; cursor: pointer;
+  }
+  .rpk-item:hover { background: var(--accent-soft); }
+  .rpk-item input { width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
+  .rpk-name { display: grid; }
+  .rpk-deal { color: var(--muted); font-size: .75rem; }
+  .rpk-deal:empty { display: none; }
+  .rpk-labor { padding: 12px 0 4px; border-bottom: 1px solid var(--line); }
+  .rpk-labor h3 { font-size: 1rem; margin: 0 0 2px; }
+  .rpk-labor-rate { color: var(--muted); font-size: .85rem; margin: 0 0 8px; }
+  .rpk-labor-row { display: flex; justify-content: space-between; padding: 4px 8px; }
+  .rpk-labor-row b { color: var(--text); }
+  .rpk-price s { opacity: .6; margin-right: 4px; }
+  .rpk-price { color: var(--muted); font-size: .9rem; white-space: nowrap; }
+  .rpk-item:has(input:checked) .rpk-price { color: var(--accent); font-weight: 600; }
+
+  .rpk-foot { position: sticky; bottom: 0; background: var(--card); padding-top: 16px; margin-top: 4px; }
+  .rpk-total { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--display); }
+  .rpk-total b { font-size: 1.5rem; color: var(--accent); }
+  .rpk-note { font-size: .8rem; color: var(--muted); margin: 6px 0 14px; }
+  .rpk-foot .btn { width: 100%; text-align: center; }
+  .rpk-note-m { display: none; }
+
+  @media (max-width: 900px) {
+    .rpk { grid-template-columns: 1fr; gap: 16px; }
+    .rpk-figure {
+      position: sticky; top: 68px; z-index: 2; width: 100%; margin-inline: auto;
+      background: var(--bg); padding: 6px 0; border-bottom: 1px solid transparent; transition: border-color .2s;
+    }
+    .rpk-figure svg { max-height: 300px; transition: max-height .3s ease; }
+    .rpk-figure.compact { border-bottom-color: var(--line); }
+    .rpk-figure.compact svg { max-height: 130px; }
+    .rpk-figure.compact .rpk-hint { display: none; }
+    .rpk-group { scroll-margin-top: 230px; }
+    /* barra in basso più compatta: totale e pulsante sulla stessa riga */
+    .rpk-foot { box-shadow: 0 -12px 16px -12px rgb(0 0 0 / .4); padding: 10px 0 8px; display: flex; align-items: center; gap: 12px; }
+    .rpk-total { flex-direction: column; align-items: flex-start; font-size: .8rem; }
+    .rpk-total b { font-size: 1.2rem; }
+    .rpk-foot .rpk-note { display: none; }
+    .rpk-note-m { display: block; margin: 10px 0 0; }
+    .rpk-wa { display: none; }
+    .rpk-foot .btn { width: auto; flex: 1; padding: 10px 12px; font-size: .9rem; white-space: nowrap; }
+  }
+</style>

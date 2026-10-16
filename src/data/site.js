@@ -134,6 +134,81 @@ export const buyPrices = [
   { brand: 'Navee', model: 'N65', min: 90, max: 140 },
 ];
 
+// Listino ricambi (pagina Riparazioni), dall'alto verso il basso del monopattino.
+// prezzo = CHF del ricambio ("da"), minuti = tempo di lavoro per montarlo.
+// Gomme e camere d'aria hanno un prezzo fisso con il montaggio compreso (0 minuti).
+// con / prezzoCon / minutiCon (facoltativi): prezzo e tempo ridotti se nella stessa sezione è scelto anche quel ricambio
+// (es. la camera d'aria costa CHF 5 e non richiede lavoro in più se si cambia anche la gomma).
+// zone = parte dello schema che si accende.
+export const partsList = [
+  { title: 'Volante', zone: 'volante', parts: [
+    { nome: 'Manopole', prezzo: 10, minuti: 15 },
+    { nome: 'Campanello', prezzo: 7, minuti: 15 },
+    { nome: 'Freno destro', prezzo: 15, minuti: 15 },
+    { nome: 'Freno sinistro', prezzo: 15, minuti: 15 },
+    { nome: 'Cavo freno', prezzo: 10, minuti: 15 },
+    { nome: 'Acceleratore', prezzo: 7, minuti: 15 },
+    { nome: 'Luce', prezzo: 7, minuti: 15 },
+    { nome: 'Schermo', prezzo: 15, minuti: 15 },
+    { nome: 'Copertura schermo', prezzo: 3, minuti: 15 },
+    { nome: 'Ferro volante', prezzo: 20, minuti: 30 },
+  ] },
+  { title: 'Tubo', zone: 'scocca', parts: [
+    { nome: 'Viti di fissaggio', prezzo: 3, minuti: 15 },
+    { nome: 'Sistema di chiusura', prezzo: 40, minuti: 30 },
+    { nome: 'Gommini di copertura', prezzo: 3, minuti: 15 },
+    { nome: 'Cuscinetti', prezzo: 10, minuti: 30 },
+  ] },
+  { title: 'Ruota davanti', zone: 'davanti', parts: [
+    { nome: "Camera d'aria", prezzo: 25, minuti: 0, con: 'Gomma', prezzoCon: 5, minutiCon: 0 },
+    { nome: 'Gomma', prezzo: 35, minuti: 0 },
+    { nome: 'Ferro ruota', prezzo: 30, minuti: 30 },
+    { nome: 'Motore', prezzo: 75, minuti: 30 },
+    { nome: 'Cavo motore', prezzo: 10, minuti: 60 },
+    { nome: 'Coperchi laterali', prezzo: 3, minuti: 15 },
+    { nome: 'Parafango', prezzo: 10, minuti: 15 },
+    { nome: 'Disco freno', prezzo: 10, minuti: 15 },
+    { nome: 'Pastiglie freno', prezzo: 10, minuti: 15 },
+    { nome: 'Pinza freno', prezzo: 10, minuti: 15 },
+    { nome: 'Sospensione', prezzo: 20, minuti: 15 },
+    { nome: 'Luce anteriore', prezzo: 10, minuti: 15 },
+    { nome: 'Cuscinetti', prezzo: 10, minuti: 60 },
+  ] },
+  { title: 'Pedana e telaio', zone: 'scocca', parts: [
+    { nome: 'Tappetino pedana', prezzo: 10, minuti: 30 },
+    { nome: 'Cavalletto', prezzo: 10, minuti: 15 },
+    { nome: 'Coperchio inferiore', prezzo: 10, minuti: 15 },
+    { nome: 'Viti pedana', prezzo: 3, minuti: 15 },
+    { nome: 'Cavi interni', prezzo: 10, minuti: 60 },
+  ] },
+  { title: 'Ruota dietro', zone: 'dietro', parts: [
+    { nome: "Camera d'aria", prezzo: 25, minuti: 0, con: 'Gomma', prezzoCon: 5, minutiCon: 0 },
+    { nome: 'Gomma', prezzo: 35, minuti: 0 },
+    { nome: 'Ferro ruota', prezzo: 30, minuti: 30 },
+    { nome: 'Motore', prezzo: 75, minuti: 30 },
+    { nome: 'Cavo motore', prezzo: 10, minuti: 60 },
+    { nome: 'Disco freno', prezzo: 10, minuti: 15 },
+    { nome: 'Pastiglie freno', prezzo: 10, minuti: 15 },
+    { nome: 'Pinza freno', prezzo: 10, minuti: 15 },
+    { nome: 'Parafango', prezzo: 15, minuti: 15 },
+    { nome: 'Fanale posteriore', prezzo: 10, minuti: 15 },
+    { nome: 'Sospensione', prezzo: 35, minuti: 15 },
+    { nome: 'Coperchi laterali', prezzo: 3, minuti: 15 },
+    { nome: 'Cuscinetti', prezzo: 10, minuti: 60 },
+  ] },
+  { title: 'Batteria ed elettronica', zone: 'elettronica', parts: [
+    { nome: 'Batteria', prezzo: 350, minuti: 30 },
+    { nome: 'Controller', prezzo: 40, minuti: 30 },
+    { nome: 'Caricatore', prezzo: 45, minuti: 0 },
+    { nome: 'Porta di ricarica', prezzo: 10, minuti: 15 },
+    { nome: 'Cablaggi', prezzo: 10, minuti: 30 },
+  ] },
+];
+
+// Manodopera: CHF per ogni blocco di 15 minuti (il tempo totale si arrotonda al quarto d'ora).
+export const labor = { minuti: 15, prezzo: 5 };
+
+
 // Recensioni dei clienti
 export const reviews = [
   { name: "Marco", stars: 5, text: "Ho portato il monopattino perché non frenava più bene. Mi hanno spiegato subito cosa c'era da fare e il prezzo prima di iniziare. Lavoro fatto bene e in tempi rapidi. Finalmente un servizio serio." },
