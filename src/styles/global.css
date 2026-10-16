@@ -167,6 +167,13 @@ a { color: var(--accent); }
 /* Tema chiaro: alone blu leggero, in equilibrio con la griglia */
 [data-theme='light'] .hero { background: radial-gradient(55% 70% at 80% 55%, rgb(26 111 224 / .17), transparent 70%); }
 [data-theme='light'] .hero-photo { box-shadow: 0 28px 72px -30px rgb(26 111 224 / .45), 0 0 0 8px rgb(26 111 224 / .06); }
+/* Slideshow: le foto sono sovrapposte e si alternano in dissolvenza */
+.hero-slides { position: relative; overflow: hidden; }
+.hero-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease; }
+.hero-slide.on { opacity: 1; }
+.hero-dots { position: absolute; left: 0; right: 0; bottom: 12px; display: flex; justify-content: center; gap: 6px; }
+.hero-dots button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 999px; background: rgb(255 255 255 / .55); cursor: pointer; transition: width .3s, background .3s; }
+.hero-dots button[aria-current='true'] { width: 22px; background: #fff; }
 .hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
 .hero-photo {
   display: block; width: 100%; height: auto; aspect-ratio: 841 / 768; object-fit: cover; object-position: 55% 50%;
@@ -284,16 +291,25 @@ a { color: var(--accent); }
 .footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
 @media (max-width: 900px) {
+  /* menu laterale anche su tablet: con 4 voci il menu in alto non ci sta più */
+  .nav nav, .nav-wa { display: none; }
+  .menu-btn { display: flex; }
+  .nav-theme { display: none; }   /* su telefono e tablet il tema si cambia dal menu laterale */
+  .drawer, .drawer-backdrop { display: flex; }
+  .steps { grid-template-columns: 1fr 1fr; }
   .hero-grid, .contact-grid { grid-template-columns: 1fr; }
   .hero-art { max-width: 560px; }
+  /* telefono/tablet: titolo, poi foto, poi testo e pulsanti */
+  .hero-text { display: contents; }
+  .hero-grid { gap: 0; }
+  .hero-text > * { order: 3; }
+  .hero-text .eyebrow { order: 1; }
+  .hero-text h1 { order: 1; margin-bottom: 24px; }
+  .hero-art { order: 2; margin-bottom: 24px; }
   .grid-3 { grid-template-columns: 1fr 1fr; }
   .reviews { grid-auto-columns: calc((100% - 20px) / 2); }
 }
 @media (max-width: 600px) {
-  .nav nav, .nav-wa { display: none; }
-  .menu-btn { display: flex; }
-  .nav-theme { display: none; }   /* su telefono il tema si cambia dal menu laterale */
-  .drawer, .drawer-backdrop { display: flex; }
   .logo-mark { height: 28px; }
   .logo-word, .logo .logo-mark { font-size: 1.05rem; }
   .hero { padding: 48px 0 28px; }

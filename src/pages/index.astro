@@ -1,24 +1,34 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
-import hero from '../assets/hero.jpg';
+// Foto dell'hero (slideshow): [file, descrizione, inquadratura orizzontale]
+const heroPhotos = import.meta.glob<{ default: ImageMetadata }>('../assets/hero/h*.jpg', { eager: true });
+const slides = [
+  ['h1', 'Un rider in impennata su un monopattino elettrico', '55%'],
+  ['h2', 'Una ragazza in monopattino elettrico in città', '35%'],
+  ['h3', 'Una donna in monopattino elettrico su una strada alberata', '45%'],
+  ['h4', 'Un ragazzo in monopattino elettrico in velocità', '22%'],
+  ['h5', 'Una ragazza in monopattino elettrico su un piazzale', '45%'],
+  ['h6', 'Un uomo in monopattino elettrico su un sentiero', '50%'],
+  ['h7', 'Un uomo con il casco su un monopattino elettrico', '30%'],
+  ['h8', 'Una ragazza in monopattino elettrico nel parco', '55%'],
+  ['h9', 'Un uomo in monopattino elettrico su un percorso nel verde', '55%'],
+].map(([f, alt, x]) => ({ src: heroPhotos[`../assets/hero/${f}.jpg`].default, alt, x }));
 import RepairDiagram from '../components/RepairDiagram.astro';
 import ScooterCards from '../components/ScooterCards.astro';
 import Steps from '../components/Steps.astro';
 import Reviews from '../components/Reviews.astro';
 import Contacts from '../components/Contacts.astro';
-import { wa } from '../data/site.js';
 ---
 <Layout>
   <section class="hero">
     <div class="wrap hero-grid">
-      <div>
+      <div class="hero-text">
         <p class="eyebrow">Riparazioni e modifiche</p>
         <h1>Il tuo monopattino,<br /><span class="accent">di nuovo in strada.</span></h1>
         <p class="lead">Riparazioni rapide, manutenzione e monopattini usati controllati e garantiti. Tutte le marche: Xiaomi, Ninebot, Navee e altre.</p>
         <div class="cta-row">
-          <a class="btn" href={wa('Ciao! Il mio monopattino ha bisogno di una riparazione.')}>Richiedi un preventivo</a>
-          <a class="btn btn-ghost" href="/usato">Vedi l'usato</a>
+          <a class="btn" href="/riparazioni">Richiedi un preventivo</a>
         </div>
         <ul class="badges">
           <li>✓ Preventivo gratuito</li>
@@ -27,15 +37,16 @@ import { wa } from '../data/site.js';
         </ul>
       </div>
       <div class="hero-art">
-        <Image
-          src={hero}
-          alt="Un rider in impennata su un monopattino elettrico"
-          widths={[480, 960]}
-          sizes="(max-width: 900px) 100vw, 480px"
-          loading="eager"
-          fetchpriority="high"
-          class="hero-photo"
-        />
+        <div class="hero-photo hero-slides" data-slides>
+          {slides.map((sl, i) => (
+            <Image src={sl.src} alt={sl.alt} widths={[480, 960]} sizes="(max-width: 900px) 100vw, 480px"
+              loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined}
+              class:list={['hero-slide', i === 0 && 'on']} style={`object-position:${sl.x} 50%`} />
+          ))}
+          <div class="hero-dots">
+            {slides.map((_, i) => <button type="button" aria-label={`Foto ${i + 1}`} aria-current={i === 0 ? 'true' : undefined} data-dot={i}></button>)}
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -68,3 +79,23 @@ import { wa } from '../data/site.js';
     </div>
   </section>
 </Layout>
+
+<script>
+  // Slideshow dell'hero: cambia foto ogni 5 s (ferma se l'utente preferisce meno animazioni); i pallini scelgono la foto.
+  document.querySelectorAll<HTMLElement>('[data-slides]').forEach((box) => {
+    const slides = [...box.querySelectorAll<HTMLElement>('.hero-slide')];
+    const dots = [...box.querySelectorAll<HTMLButtonElement>('[data-dot]')];
+    let i = 0, timer = 0;
+    const show = (n: number) => {
+      slides[i].classList.remove('on'); dots[i].removeAttribute('aria-current');
+      i = (n + slides.length) % slides.length;
+      slides[i].classList.add('on'); dots[i].setAttribute('aria-current', 'true');
+    };
+    const start = () => {
+      clearInterval(timer);
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(() => show(i + 1), 5000);
+    };
+    dots.forEach((d, n) => d.addEventListener('click', () => { show(n); start(); }));
+    start();
+  });
+</script>
