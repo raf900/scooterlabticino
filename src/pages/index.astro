@@ -96,6 +96,18 @@ import Contacts from '../components/Contacts.astro';
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(() => show(i + 1), 5000);
     };
     dots.forEach((d, n) => d.addEventListener('click', () => { show(n); start(); }));
+
+    // Scorrere col dito (o trascinare col mouse) verso sinistra/destra per cambiare foto
+    let x0: number | null = null;
+    box.addEventListener('pointerdown', (e) => { x0 = e.clientX; });
+    box.addEventListener('pointerup', (e) => {
+      if (x0 === null) return;
+      const dx = e.clientX - x0;
+      x0 = null;
+      if (Math.abs(dx) > 40) { show(i + (dx < 0 ? 1 : -1)); start(); }
+    });
+    box.addEventListener('pointercancel', () => { x0 = null; });
+    box.addEventListener('dragstart', (e) => e.preventDefault());
     start();
   });
 </script>
