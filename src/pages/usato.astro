@@ -1,57 +1,154 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ScooterCards from '../components/ScooterCards.astro';
-import { buyBrands, buyPrices, wa, chf } from '../data/site.js';
+import { getImage } from 'astro:assets';
+import { scooters, wa, chf, speedLabel } from '../data/site.js';
+import { photo } from '../data/photos.js';
 
-const groups = buyBrands
-  .map((brand) => ({ brand, rows: buyPrices.filter((r) => r.brand === brand) }))
-  .filter((g) => g.rows.length);
+// Dati per il confronto (2–3 monopattini affiancati), letti dallo script della pagina
+const spec = (s, k) => s.specs?.find(([n]) => n === k)?.[1] ?? '—';
+// [etichetta, valore mostrato, numero per il confronto, meglio se 'max' o 'min' (vuoto = non si confronta)]
+const num = (t) => parseFloat(String(t).replace(',', '.').replace(/[^\d.]/g, ' ').trim().split(' ')[0]) || null;
+const wh = (t) => {
+  const w = String(t).match(/([\d.,]+)\s*Wh/);
+  if (w) return num(w[1]);
+  const v = String(t).match(/([\d.,]+)\s*V/), mah = String(t).match(/([\d.,]+)\s*mAh/);
+  return v && mah ? (num(v[1]) * num(mah[1])) / 1000 : null;
+};
+const rows = [
+  ['Prezzo', (s) => chf(s.price), (s) => s.price, 'min'],
+  ['LAB score', (s) => (s.punteggio ? `${s.punteggio.totale.toLocaleString('it-CH')} / 10` : '—'), (s) => s.punteggio?.totale, 'max'],
+  ['Anno', (s) => s.year ?? '—', (s) => s.year, 'max'],
+  ['Km percorsi', (s) => (s.km != null ? `${s.km.toLocaleString('de-CH')} km` : '—'), (s) => s.km, 'min'],
+  ['Velocità', (s) => (s.velocita ? speedLabel(s) : '—'), (s) => parseInt(s.velocitaMax) || s.velocita, 'max'],
+  ['Autonomia', (s) => spec(s, 'Autonomia dichiarata'), (s) => num(spec(s, 'Autonomia dichiarata')), 'max'],
+  ['Motore', (s) => spec(s, 'Motore'), (s) => num(spec(s, 'Motore')), 'max'],
+  ['Batteria', (s) => spec(s, 'Batteria'), (s) => wh(spec(s, 'Batteria')), 'max'],
+  ['Salute batteria', (s) => (s.diagnosi?.saluteBatteria ? `${s.diagnosi.saluteBatteria}%` : '—'), (s) => s.diagnosi?.saluteBatteria, 'max'],
+  ['Cicli di carica', (s) => s.diagnosi?.cicliInteri ?? '—', (s) => s.diagnosi?.cicliInteri, 'min'],
+  ['Pneumatici', (s) => spec(s, 'Pneumatici'), (s) => num(spec(s, 'Pneumatici')), 'max'],
+  ['Freni', (s) => spec(s, 'Freni')],
+  ['Sospensioni', (s) => (spec(s, 'Sospensioni') === '—' ? 'No' : spec(s, 'Sospensioni')), (s) => (spec(s, 'Sospensioni') === '—' ? 0 : 1), 'max'],
+  ['Peso', (s) => spec(s, 'Peso'), (s) => num(spec(s, 'Peso')), 'min'],
+  ['Carico massimo', (s) => spec(s, 'Carico massimo'), (s) => num(spec(s, 'Carico massimo')), 'max'],
+  ['Dimensioni (aperto)', (s) => spec(s, 'Dimensioni (aperto)')],
+];
+const compare = {
+  labels: rows.map(([l]) => l),
+  better: rows.map((r) => r[3] ?? ''),
+  items: await Promise.all(scooters.map(async (s) => ({
+    slug: s.slug,
+    model: s.model,
+    img: photo(s.photos?.[0]) ? (await getImage({ src: photo(s.photos[0]), width: 360 })).src : '',
+    values: rows.map(([, f]) => String(f(s))),
+    nums: rows.map(([, , n]) => { const v = n?.(s); return typeof v === 'number' && !isNaN(v) ? v : null; }),
+  }))),
+};
 ---
 <Layout
   title="Monopattini usati — Scooter Lab Ticino"
-  description="Monopattini elettrici usati revisionati e garantiti in Ticino. Vendi il tuo monopattino: ecco quanto lo paghiamo."
+  description="Monopattini elettrici usati revisionati e garantiti in Ticino."
 >
   <section class="section page-top">
     <div class="wrap">
       <p class="eyebrow">Usato garantito</p>
       <h1 class="page-title">Monopattini usati</h1>
       <p class="sub">Ogni monopattino è revisionato nella nostra officina, testato su strada e venduto con 6 mesi di garanzia.</p>
-      <ScooterCards />
+      <ScooterCards sortable />
     </div>
   </section>
 
-  <section id="vendi" class="section alt">
+  <!-- Confronto: compare quando si scelgono almeno 2 monopattini con "Confronta" -->
+  <section id="confronto" class="section cmp-section" hidden>
     <div class="wrap">
-      <p class="eyebrow">Vendi il tuo monopattino</p>
-      <h2>Quanto paghiamo il tuo monopattino</h2>
-      <p class="sub">Prezzi indicativi in base alle condizioni. Il prezzo finale lo confermiamo dopo un controllo in officina.</p>
-      <div class="buy-groups">
-        {groups.map((g, i) => (
-          <details class="buy-table card" open={i === 0}>
-            <summary>
-              <span class="buy-name">{g.brand}</span>
-              <svg class="buy-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
-            </summary>
-            <table>
-              <thead>
-                <tr><th>Modello</th><th>Condizioni scarse</th><th>Ottime condizioni</th></tr>
-              </thead>
-              <tbody>
-                {g.rows.map((r) => (
-                  <tr>
-                    <th scope="row"><span class="buy-brand">{r.brand}</span> {r.model}</th>
-                    <td>{chf(r.min)}</td>
-                    <td class="buy-max">{chf(r.max)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </details>
-        ))}
+      <div class="cmp-head">
+        <div>
+          <p class="eyebrow">Confronto</p>
+          <h2>Confronta i monopattini</h2>
+        </div>
+        <button type="button" class="filters-reset" data-cmp-clear>Svuota il confronto</button>
       </div>
-      <div class="cta-row">
-        <a class="btn" href={wa('Ciao! Vorrei vendere il mio monopattino. Modello: ')}>Chiedi una valutazione</a>
+      <div class="cmp-scroll"><table class="cmp-table" data-cmp-table></table></div>
+    </div>
+  </section>
+  <script type="application/json" id="cmp-data" set:html={JSON.stringify(compare)} />
+
+  <section id="vendi" class="section alt">
+    <div class="wrap sell">
+      <div>
+        <p class="eyebrow">Vendi il tuo monopattino</p>
+        <h2>Vuoi vendere il tuo monopattino?</h2>
+        <p class="sub">Effettuiamo una valutazione, lo ripariamo e lo mettiamo in vendita sul nostro sito. Contattaci per saperne di più.</p>
+        <a class="btn" href={wa('Ciao! Vorrei vendere il mio monopattino. Come funziona?')}>Contattaci su WhatsApp</a>
       </div>
+      <ol class="sell-steps">
+        <li><span>1</span><div><b>Valutazione</b><small>Controlliamo il monopattino in officina.</small></div></li>
+        <li><span>2</span><div><b>Riparazione</b><small>Lo sistemiamo e lo prepariamo per la vendita.</small></div></li>
+        <li><span>3</span><div><b>In vendita</b><small>Lo pubblichiamo qui, sul nostro sito.</small></div></li>
+      </ol>
     </div>
   </section>
 </Layout>
+
+<script>
+  // Confronto: "Confronta" attiva la scelta sulle card (max 3); con almeno 2 scelti compare la tabella.
+  const data = JSON.parse(document.getElementById('cmp-data')!.textContent!);
+  const section = document.getElementById('confronto')!;
+  const table = section.querySelector<HTMLTableElement>('[data-cmp-table]')!;
+  const toggle = document.querySelector<HTMLButtonElement>('[data-cmp-toggle]')!;
+  const boxes = [...document.querySelectorAll<HTMLInputElement>('[data-cmp]')];
+  const shop = document.querySelector<HTMLElement>('.shop')!;
+  const MAX = 3;
+  const esc = (t: string) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+  const render = () => {
+    const picked = boxes.filter((b) => b.checked).map((b) => data.items.find((i: any) => i.slug === b.value));
+    boxes.forEach((b) => (b.disabled = !b.checked && picked.length >= MAX));
+    toggle.textContent = picked.length ? `⇄ Confronta (${picked.length})` : '⇄ Confronta';
+    section.hidden = picked.length < 2;
+    if (picked.length < 2) return;
+    table.style.setProperty('--cols', String(picked.length));
+    table.innerHTML =
+      `<thead><tr><th></th>${picked.map((p: any) => `<th><a href="/usato/${p.slug}">${p.img ? `<img src="${p.img}" alt="">` : ''}<span>${esc(p.model)}</span></a></th>`).join('')}</tr></thead>` +
+      `<tbody>${data.labels.map((l: string, r: number) => {
+        // il migliore della riga (anche più di uno a pari merito); se sono tutti uguali, nessuno
+        const vals = picked.map((p: any) => p.nums[r]).filter((v: number | null) => v != null);
+        const dir = data.better[r];
+        const best = dir && vals.length > 1 ? (dir === 'max' ? Math.max(...vals) : Math.min(...vals)) : null;
+        const allSame = vals.every((v: number) => v === vals[0]);
+        return `<tr><th>${esc(l)}</th>${picked.map((p: any) => {
+          const win = best != null && !allSame && p.nums[r] === best;
+          return `<td${win ? ' class="best"' : ''}>${esc(p.values[r])}</td>`;
+        }).join('')}</tr>`;
+      }).join('')}</tbody>`;
+  };
+
+  toggle.addEventListener('click', () => {
+    const on = !shop.classList.contains('comparing');
+    shop.classList.toggle('comparing', on);
+    toggle.setAttribute('aria-pressed', String(on));
+    // con almeno 2 già scelti, il pulsante porta direttamente al confronto
+    if (!on && boxes.filter((b) => b.checked).length >= 2) section.scrollIntoView({ behavior: 'smooth' });
+  });
+  boxes.forEach((b) => b.addEventListener('change', () => {
+    render();
+    if (boxes.filter((x) => x.checked).length === 2 && b.checked) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }));
+  section.querySelector('[data-cmp-clear]')!.addEventListener('click', () => {
+    boxes.forEach((b) => (b.checked = false));
+    render();
+    document.querySelector('.shop')!.scrollIntoView({ behavior: 'smooth' });
+  });
+  render();
+</script>
+
+<style>
+  .sell { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; }
+  .sell .sub { margin-bottom: 1.4rem; }
+  .sell-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .sell-steps li { display: flex; align-items: center; gap: 14px; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+  .sell-steps span { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font: 800 .9rem var(--display); }
+  .sell-steps div { display: grid; }
+  .sell-steps small { color: var(--muted); font-size: .88rem; }
+  @media (max-width: 900px) { .sell { grid-template-columns: 1fr; gap: 24px; } }
+</style>
