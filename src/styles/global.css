@@ -228,121 +228,11 @@ a { color: var(--accent); }
 .reviews-sec { padding-bottom: 44px; }
 .review figcaption { color: var(--muted); font-weight: 600; font-size: .9rem; }
 
-/* Scooters */
-.scooter { display: flex; flex-direction: column; }
-.scooter[hidden] { display: none; }
-/* LAB-score: punteggio ScooterLab in alto a destra sulla foto, con "LAB" e il monopattino del logo */
-.score-badge {
-  position: absolute; right: 8px; top: 8px; z-index: 1; display: grid; justify-items: center; gap: 1px;
-  background: rgb(10 15 26 / .88); color: #fff; border-radius: 10px; padding: 4px 8px 5px;
-  box-shadow: 0 4px 12px -6px rgb(0 0 0 / .5); line-height: 1;
-}
-.score-name { display: flex; align-items: center; gap: 2px; font: 800 .55rem var(--display); letter-spacing: .04em; color: #fff; }
-.score-name b { color: #2f8fff; font-weight: 800; }
-.score-name .score-mark { height: 10px; width: auto; transform: scaleX(-1); --sm-color: #fff; }
-.score-name { white-space: nowrap; }
-.score-val { font: 600 .85rem var(--display); }
-.score-val small { font-size: .62rem; font-weight: 500; opacity: .7; margin-left: 1px; }   /* card esclusa dai filtri */
-.scooter-img { position: relative; display: grid; place-items: center; aspect-ratio: 16 / 10; background: radial-gradient(70% 60% at 50% 70%, rgb(47 143 255 / .16), var(--bg) 75%); border-radius: 12px; margin-bottom: 18px; color: #5d6f8f; }
-.scooter-img svg { width: 55%; height: auto; }
-.scooter-img.has-photo { aspect-ratio: 4 / 3; background: radial-gradient(80% 70% at 50% 45%, #fff, #e3e9f2); }
-.scooter-img.has-photo img { position: absolute; inset: 14px; width: calc(100% - 28px); height: calc(100% - 28px); object-fit: contain; }
-.scooter-img.cutout img { mix-blend-mode: multiply; }   /* solo per le foto .png scontornate su bianco */
-.status { position: absolute; top: 12px; left: 12px; z-index: 1; display: inline-flex; align-items: center; gap: 6px; color: #fff; font-size: .75rem; font-weight: 700; padding: 4px 11px; border-radius: 999px; box-shadow: 0 4px 12px -4px rgb(0 0 0 / .4); }
-.status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .85; }
-.status-disponibile { background: #16a34a; }
-.status-arrivo { background: #ea7a0c; }
-.status-esaurito { background: #dc2626; }
-.scooter-link { color: inherit; text-decoration: none; }
-.scooter-link:hover { color: var(--accent); }
-/* Pagina Usato: filtri a sinistra, elenco a destra */
-.shop { display: grid; grid-template-columns: 300px 1fr; grid-template-areas: '. bar' 'filters main'; gap: 0 28px; align-items: start; }
-.shop > .sort-bar { grid-area: bar; }
-.shop > .filters { grid-area: filters; }
-.shop > .shop-main { grid-area: main; }
-.shop .grid-3 { grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.shop .scooter { padding: 14px; }
-.shop .scooter h3 { font-size: 1rem; }
-.shop .scooter-img { margin-bottom: 12px; }
-.shop .big-price { font-size: 1.25rem; }
-.shop .specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
-.shop .specs li { padding: 4px 4px; font-size: .78rem; }
-@media (max-width: 1000px) { .shop .grid-3 { grid-template-columns: repeat(2, 1fr); } }
-.filters { position: sticky; top: 90px; padding: 18px; text-align: left; }
-.filters-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.filters-head h2 { font-size: 1.1rem; margin: 0; }
-.filters-reset { font: inherit; font-size: .82rem; color: var(--accent); background: none; border: 0; cursor: pointer; padding: 0; }
-.range { padding: 14px 0; border-top: 1px solid var(--line); }
-.range-top { display: flex; justify-content: space-between; gap: 8px; font-size: .88rem; margin-bottom: 10px; white-space: nowrap; }
-.range-top b { font-weight: 600; white-space: nowrap; }
-/* doppio cursore: due input sovrapposti, si trascinano solo i pallini */
-.range-track { position: relative; height: 20px; }
-.range-track::before { content: ''; position: absolute; left: 0; right: 0; top: 8px; height: 4px; border-radius: 999px; background: var(--line); }
-.range-track input { position: absolute; inset: 0; width: 100%; margin: 0; background: none; pointer-events: none; -webkit-appearance: none; appearance: none; accent-color: var(--accent); }
-.range-track input::-webkit-slider-runnable-track { background: none; height: 20px; }
-.range-track input::-moz-range-track { background: none; }
-.range-track input::-webkit-slider-thumb { -webkit-appearance: none; pointer-events: auto; width: 18px; height: 18px; margin-top: 1px; border-radius: 50%; background: var(--accent); border: 3px solid var(--card); box-shadow: 0 0 0 1px var(--accent); cursor: grab; }
-.range-track input::-moz-range-thumb { pointer-events: auto; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 3px solid var(--card); box-shadow: 0 0 0 1px var(--accent); cursor: grab; }
-.filters-toggle { display: none; font: inherit; font-size: .9rem; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
-/* Confronto monopattini (pagina Usato) */
-.cmp-section { scroll-margin-top: 70px; padding-top: 48px; }
-.cmp-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 18px; }
-.cmp-head h2 { margin: 0; }
-.cmp-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
-.cmp-table { width: 100%; border-collapse: collapse; font-size: .9rem; table-layout: fixed; min-width: calc(130px + var(--cols, 2) * 150px); }
-.cmp-table th, .cmp-table td { padding: 8px 12px; border-bottom: 1px solid var(--line); text-align: center; vertical-align: middle; }
-.cmp-table tbody th { text-align: left; color: var(--muted); font-weight: 500; width: 130px; position: sticky; left: 0; background: var(--card); }
-.cmp-table thead th:first-child { width: 130px; position: sticky; left: 0; background: var(--card); }
-.cmp-table thead a { display: grid; justify-items: center; gap: 6px; color: var(--text); text-decoration: none; font-family: var(--display); font-weight: 700; }
-.cmp-table thead img { width: 100%; max-width: 140px; aspect-ratio: 4 / 3; object-fit: contain; background: radial-gradient(80% 70% at 50% 45%, #fff, #e3e9f2); border-radius: 10px; padding: 6px; }
-.cmp-table tbody tr:last-child * { border-bottom: 0; }
-.cmp-table tbody tr:nth-child(even) td { background: rgb(127 127 127 / .04); }
-.cmp-table td.best { color: #22a55a; font-weight: 700; background: rgb(34 165 90 / .12) !important; }
-.cmp-table td.best::before { content: '✓ '; }
-/* Confronto: pulsante e scelta sulle card (visibile solo in modalità confronto) */
-.cmp-toggle { font: inherit; font-size: .9rem; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
-.cmp-toggle[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
-.cmp-pick { display: none; align-items: center; justify-content: center; gap: 8px; font-size: .85rem; font-weight: 600; color: var(--accent); background: var(--accent-soft); border-radius: 8px; padding: 7px 10px; margin-bottom: 10px; cursor: pointer; }
-.cmp-pick input { width: 16px; height: 16px; accent-color: var(--accent); }
-.cmp-pick:has(input:disabled) { opacity: .45; cursor: not-allowed; }
-.comparing .cmp-pick { display: flex; }
-.sort-count { margin-right: auto; color: var(--muted); font-size: .9rem; }
-.filters-empty button { font-size: inherit; }
-.sort-bar { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 10px; margin: 0 0 18px; }
-.sort-bar label { color: var(--muted); font-size: .9rem; }
-.sort-bar select { font: inherit; font-size: .9rem; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
-.sort-bar select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.specs { list-style: none; padding: 0; margin: 0 0 18px; display: flex; flex-wrap: wrap; gap: 6px; }
-.specs li { font-size: .82rem; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; }
-/* etichetta piccola sopra al valore */
-.specs li { color: var(--text); display: grid; gap: 1px; border-radius: 10px; padding: 4px 10px; line-height: 1.2; text-align: center; }
-.specs li small { font-size: .62rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
-.scooter-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.big-price { font-family: var(--display); font-size: 1.35rem; font-weight: 700; }
 .note { margin-top: 2rem; color: var(--muted); }
 
-/* Pagina usato */
+/* Pagine interne */
 .page-top { padding-top: 56px; }
 .page-title { font-size: clamp(2rem, 4.5vw, 3rem); }
-.buy-groups { display: grid; gap: 12px; margin-top: 1rem; }
-.buy-table { padding: 0; overflow: hidden; }
-.buy-table summary { display: flex; align-items: center; gap: 12px; padding: 18px 20px; cursor: pointer; list-style: none; }
-.buy-table summary::-webkit-details-marker { display: none; }
-.buy-table summary:hover .buy-name { color: var(--accent); }
-.buy-name { font-family: var(--display); font-weight: 800; font-size: 1.15rem; transition: color .2s; }
-.buy-chevron { width: 22px; height: 22px; margin-left: auto; fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s; }
-.buy-table[open] .buy-chevron { transform: rotate(180deg); }
-.buy-table[open] summary { border-bottom: 1px solid var(--line); }
-.buy-table:hover { transform: none; }
-.buy-table table { width: 100%; border-collapse: collapse; }
-.buy-table th, .buy-table td { padding: 14px 20px; text-align: left; border-bottom: 1px solid var(--line); }
-.buy-table thead th { font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--bg); }
-.buy-table tbody th { font-weight: 600; }
-.buy-table tbody tr:last-child > * { border-bottom: 0; }
-.buy-table tbody tr:hover { background: var(--accent-soft); }
-.buy-table td { white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--muted); }
-.buy-table td.buy-max { color: var(--accent); font-weight: 700; }
-.buy-brand { color: var(--muted); font-weight: 500; }
 
 /* Contact */
 .contact-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: stretch; margin-top: 2rem; }
@@ -365,11 +255,6 @@ a { color: var(--accent); }
 .footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
 @media (max-width: 900px) {
-  .shop { grid-template-columns: 1fr; grid-template-areas: 'bar' 'filters' 'main'; }
-  .shop > .filters.open { margin-bottom: 18px; }
-  .filters { position: static; display: none; }
-  .filters.open { display: block; }
-  .filters-toggle { display: inline-block; }
   /* menu laterale anche su tablet: con 4 voci il menu in alto non ci sta più */
   .nav nav, .nav-wa { display: none; }
   .menu-btn { display: flex; }
@@ -396,10 +281,7 @@ a { color: var(--accent); }
   .reviews-sec { padding-bottom: 28px; }
   .reviews { grid-auto-columns: 86%; }
   .review figcaption { justify-content: center; }
-  .grid-3, .shop .grid-3 { grid-template-columns: 1fr; }
-  /* telefono: card un po' più strette e foto più bassa */
-  .grid-3 .scooter { width: 100%; max-width: 310px; margin-inline: auto; padding: 14px; }
-  .grid-3 .scooter-img.has-photo { aspect-ratio: 16 / 11; }
+  .grid-3 { grid-template-columns: 1fr; }
   /* telefono: i passi diventano card che scorrono in orizzontale, la successiva si intravede */
   .steps {
     grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 78%; gap: 12px;
@@ -414,11 +296,8 @@ a { color: var(--accent); }
   /* Tutto centrato su mobile */
   main, .footer { text-align: center; }
   .lead, .sub { margin-inline: auto; }
-  .cta-row, .badges, .specs, .footer .wrap { justify-content: center; }
+  .cta-row, .badges, .footer .wrap { justify-content: center; }
   .hero-art { margin-inline: auto; }
   .contact-list li { flex-direction: column; align-items: center; gap: 2px; }
   .contact-list span { width: auto; }
-  .buy-table th, .buy-table td { padding: 12px 10px; font-size: .88rem; }
-  .buy-table thead th { font-size: .68rem; letter-spacing: .03em; }
-  .buy-table tbody th { text-align: left; }
 }

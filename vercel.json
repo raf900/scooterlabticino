@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/usato", "destination": "/", "permanent": false },
+    { "source": "/usato/:path*", "destination": "/", "permanent": false }
+  ]
+}

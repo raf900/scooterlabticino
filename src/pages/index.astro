@@ -15,7 +15,6 @@ const slides = [
   ['h9', 'Un uomo in monopattino elettrico su un percorso nel verde', '55%'],
 ].map(([f, alt, x]) => ({ src: heroPhotos[`../assets/hero/${f}.jpg`].default, alt, x }));
 import RepairDiagram from '../components/RepairDiagram.astro';
-import ScooterCards from '../components/ScooterCards.astro';
 import Steps from '../components/Steps.astro';
 import Reviews from '../components/Reviews.astro';
 import Contacts from '../components/Contacts.astro';
@@ -26,7 +25,7 @@ import Contacts from '../components/Contacts.astro';
       <div class="hero-text">
         <p class="eyebrow">Riparazioni e modifiche</p>
         <h1>Il tuo monopattino,<br /><span class="accent">di nuovo in strada.</span></h1>
-        <p class="lead">Riparazioni rapide, manutenzione e monopattini usati controllati e garantiti. Tutte le marche: Xiaomi, Ninebot, Navee e altre.</p>
+        <p class="lead">Riparazioni rapide, manutenzione e modifiche, con ricambi di qualità. Tutte le marche: Xiaomi, Ninebot, Navee e altre.</p>
         <div class="cta-row">
           <a class="btn" href="/riparazioni">Richiedi un preventivo</a>
         </div>
@@ -62,16 +61,6 @@ import Contacts from '../components/Contacts.astro';
 
   <Steps />
   <Reviews />
-
-  <section id="usato" class="section">
-    <div class="wrap">
-      <p class="eyebrow">Usato garantito</p>
-      <h2>Monopattini di seconda mano</h2>
-      <p class="sub">Ogni monopattino è revisionato nella nostra officina, testato su strada e venduto con 6 mesi di garanzia.</p>
-      <ScooterCards onlyAvailable />
-      <p class="note"><a href="/usato">Vedi tutto l'usato</a></p>
-    </div>
-  </section>
 
   <section id="contatti" class="section alt">
     <div class="wrap">
